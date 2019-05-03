@@ -10,7 +10,8 @@ Below packages are used in this project.
 
 | Chapter | Topic | R package | Python package |
 | --- | --- | --- | --- |
-| All |Graphs | graphics | matplotlib |
+| All | Graphs | graphics | matplotlib |
+| All | Dataframes | base | pandas |
 | 3 Linear Regression | Linear models | stats | statsmodels |
 | 4 Classification | Generalized models | stats | statsmodels |
 | 4 Classification | Linear/quadratic discriminant analysis | MASS | sklearn |

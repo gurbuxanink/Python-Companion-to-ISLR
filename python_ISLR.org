@@ -1,0 +1,56 @@
+#+TITLE: Python Companion to ISLR
+
+* Introduction
+
+Using an =R= code block, we will save =Wage= data as a csv file.
+
+#+BEGIN_SRC R :exports none :results none
+  data(Wage, package = 'ISLR')
+  write.csv(Wage, file = 'data/Wage.csv')
+#+END_SRC
+
+Now we can read =Wage= data in =python= and plot graphs.
+
+#+BEGIN_SRC python :exports none :results file :var fname="figures/fig1_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import pandas as pd
+  import matplotlib.pyplot as plt
+
+  wages = pd.read_csv('data/Wage.csv', index_col=0)
+
+  fig = plt.figure()
+  ax1 = fig.add_subplot(131)
+  wages.plot(x='age', y='wage', kind='scatter', ax=ax1, alpha=0.7)
+  ax1.set_xlabel('Age')
+  ax1.set_ylabel('Wage')
+
+  ax2 = fig.add_subplot(132)
+  wages.plot(x='year', y='wage', kind='scatter', ax=ax2, alpha=0.7)
+  ax2.set_xlabel('Year')
+  ax2.set_ylabel('Wage')
+
+  ax3 = fig.add_subplot(133)
+  wages.boxplot(column='wage', by='education', ax=ax3, grid=False)
+  ax3.set_title('')
+  ax3.set_xlabel('Education level')
+  ax3.set_ylabel('Wage')
+
+  fig.suptitle('')
+  fig.tight_layout()
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+RESULTS:
+[[file:figures/fig1_1.png]]
+
+#+BEGIN_EXPORT latex
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=0.9\textwidth]{figures/fig1_1.png}
+  \end{center}
+  \caption{\texttt{Wage} data, which contains income survey information for males from the central Atlantic region of the United States.  Left: \testtt{wage} as a function of \texttt{age}.  On average, \texttt{wage} increases with \texttt{age} until about 60 years of age, at which point it begins to decline.  Center: \texttt{wage} as a function of \texttt{year}.  There is a slow but steady increase of approximately \$10,000 in the average \texttt{wage} between 2003 and 2009.  Right: Boxplots displaying \texttt{wage} as a function of \texttt{education}, with 1 indicating the lowest level (no highschool diploma) and 5 the highest level (an advanced graduate degree).  On average, \texttt{wage} increases with the level of education.}
+  \label{introFig1}
+\end{figure}
+#+END_EXPORT
