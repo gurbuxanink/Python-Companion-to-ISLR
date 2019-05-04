@@ -12,8 +12,9 @@ Below packages are used in this project.
 | --- | --- | --- | --- |
 | All | Graphs | graphics | matplotlib |
 | All | Dataframes | base | pandas |
-| 3 Linear Regression | Linear models | stats | statsmodels |
-| 4 Classification | Generalized models | stats | statsmodels |
-| 4 Classification | Linear/quadratic discriminant analysis | MASS | sklearn |
-| 4 Classification | K nearest neighbors | class | sklearn |
+| All | Matrix calculations | base | NumPy |
+| 3 Linear Regression | Linear models | stats | StatsModels |
+| 4 Classification | Generalized models | stats | StatsModels |
+| 4 Classification | Linear/quadratic discriminant analysis | MASS | scikit-learn |
+| 4 Classification | K nearest neighbors | class | scikit-learn |
 
