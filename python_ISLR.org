@@ -23,3 +23,24 @@ Figure [[fig:introFig1]] shows graphs of Wage versus three variables.
 [[file:figures/fig1_1.png]]
 
 
+Figure [[fig:introFig2]] shows boxplots of previous days' percentage changes in S&P
+500 grouped according to today's change Up or Down. 
+
+#+NAME: fig1_2plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig1_2.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('./code/chap1/')
+
+  import SmarketPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+
+#+NAME: fig:introFig2
+#+CAPTION: Left: Boxplots of the previous day's percentage change in the S&P 500 index for the days for which the market increased or decreased, obtained from the =Smarket= data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.
+#+RESULTS: fig1_2plot
+[[file:figures/fig1_2.png]]
