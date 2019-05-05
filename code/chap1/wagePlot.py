@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-# import statsmodels.api as sm
+import statsmodels.api as sm
 from statsmodels.formula.api import ols
 
-wages = pd.read_csv('data/Wage.csv', index_col=0)
+# wages = pd.read_csv('data/Wage.csv', index_col=0)
+wages = sm.datasets.get_rdataset('Wage', 'ISLR').data
 ed_level = wages[['education']].applymap(lambda x: x[:1])
 ed_level.rename(index=str, columns={'education': 'ed_level'}, inplace=True)
 ed_level.index = np.vectorize(int)(ed_level.index)

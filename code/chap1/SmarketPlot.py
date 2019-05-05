@@ -1,8 +1,10 @@
 # Boxplots of changes in S&P 500 
 import pandas as pd
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 
-smarket = pd.read_csv('data/Smarket.csv', index_col=0)
+# smarket = pd.read_csv('data/Smarket.csv', index_col=0)
+smarket = sm.datasets.get_rdataset('Smarket', 'ISLR').data
 
 fig = plt.figure()
 ax1 = fig.add_subplot(131)
