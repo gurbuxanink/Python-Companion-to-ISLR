@@ -20,13 +20,15 @@ ed_exog = np.linspace(income_ed['Education'].min(),
 fig = plt.figure()
 ax1 = fig.add_subplot(121)
 income_ed.plot(x='Education', y='Income', kind='scatter', legend=False, ax=ax1,
-               c='b', alpha=0.7)
+               c='r', alpha=0.7)
+ax1.set_xlabel('Years of Education')
 
 ax2 = fig.add_subplot(122)
 income_ed.plot(x='Education', y='Income', kind='scatter', legend=False, ax=ax2,
-               c='b', alpha=0.7)
+               c='r', alpha=0.7)
 ax2.set_ylabel('')
-ax2.plot(ed_exog, np.vectorize(edIncome)(ed_exog, 0.6, -9.6, 60, 20), 'r-')
+ax2.set_xlabel('Years of Education')
+ax2.plot(ed_exog, np.vectorize(edIncome)(ed_exog, 0.6, -9.6, 60, 20), 'b-')
 ax2.vlines(income_ed['Education'], income_true, income_ed['Income'],
            colors='b', alpha=0.7)
 
