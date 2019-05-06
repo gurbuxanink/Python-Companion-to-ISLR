@@ -44,3 +44,28 @@ Figure [[fig:introFig2]] shows boxplots of previous days' percentage changes in 
 #+CAPTION: Left: Boxplots of the previous day's percentage change in the S&P 500 index for the days for which the market increased or decreased, obtained from the =Smarket= data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.
 #+RESULTS: fig1_2plot
 [[file:figures/fig1_2.png]]
+
+* Statistical Learning
+
+Figure [[fig:statLearnFig1]] shows scatter plots of =Sales= versus =TV=, =Radio=,
+and =Newspaper= advertising.  In each panel, the figure also include an OLS
+regression line.  
+
+#+NAME: fig2_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('./code/chap2/')
+
+  import salesPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+
+#+NAME: fig:statLearnFig1
+#+CAPTION: The =Advertising= data set.
+#+RESULTS: fig2_1plot
+[[file:figures/fig2_1.png]]

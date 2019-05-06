@@ -1,5 +1,5 @@
-# Boxplots of changes in S&P 500 
-import pandas as pd
+# Boxplots of changes in S&P 500
+# import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
