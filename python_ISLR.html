@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-05-07 Tue 11:24 -->
+<!-- 2019-05-07 Tue 12:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Python Companion to ISLR</title>
@@ -234,21 +234,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7a5308b">1. Introduction</a></li>
-<li><a href="#org1d59ea5">2. Statistical Learning</a></li>
+<li><a href="#org46ca733">1. Introduction</a></li>
+<li><a href="#org8522120">2. Statistical Learning</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org7a5308b" class="outline-2">
-<h2 id="org7a5308b"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org46ca733" class="outline-2">
+<h2 id="org46ca733"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Figure <a href="#org6f58ba1">1</a> shows graphs of Wage versus three variables. 
+Figure <a href="#org396a9d3">1</a> shows graphs of Wage versus three variables. 
 </p>
 
 
-<div id="org6f58ba1" class="figure">
+<div id="org396a9d3" class="figure">
 <p><img src="figures/fig1_1.png" alt="fig1_1.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span><code>Wage</code> data, which contains income survey information for males from the central Atlantic region of the United States.  Left: <code>wage</code> as a function of <code>age</code>.  On average, <code>wage</code> increases with <code>age</code> until about 60 years of age, at which point it begins to decline.  Center: <code>wage</code> as a function of <code>year</code>.  There is a slow but steady increase of approximately $10,000 in the average <code>wage</code> between 2003 and 2009.  Right: Boxplots displaying <code>wage</code> as a function of <code>education</code>, with 1 indicating the lowest level (no highschool diploma) and 5 the highest level (an advanced graduate degree).  On average, <code>wage</code> increases with the level of <code>education</code>.</p>
@@ -256,12 +256,12 @@ Figure <a href="#org6f58ba1">1</a> shows graphs of Wage versus three variables.
 
 
 <p>
-Figure <a href="#org2e52aa9">2</a> shows boxplots of previous days' percentage changes in S&amp;P
+Figure <a href="#org3695323">2</a> shows boxplots of previous days' percentage changes in S&amp;P
 500 grouped according to today's change <code>Up</code> or <code>Down</code>. 
 </p>
 
 
-<div id="org2e52aa9" class="figure">
+<div id="org3695323" class="figure">
 <p><img src="figures/fig1_2.png" alt="fig1_2.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Left: Boxplots of the previous day's percentage change in the S&amp;P 500 index for the days for which the market increased or decreased, obtained from the <code>Smarket</code> data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.</p>
@@ -269,17 +269,17 @@ Figure <a href="#org2e52aa9">2</a> shows boxplots of previous days' percentage c
 </div>
 </div>
 
-<div id="outline-container-org1d59ea5" class="outline-2">
-<h2 id="org1d59ea5"><span class="section-number-2">2</span> Statistical Learning</h2>
+<div id="outline-container-org8522120" class="outline-2">
+<h2 id="org8522120"><span class="section-number-2">2</span> Statistical Learning</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Figure <a href="#orgea931de">3</a> shows scatter plots of <code>sales</code> versus <code>TV</code>, <code>radio</code>,
+Figure <a href="#org1670038">3</a> shows scatter plots of <code>sales</code> versus <code>TV</code>, <code>radio</code>,
 and <code>newspaper</code> advertising.  In each panel, the figure also includes an OLS
 regression line.  
 </p>
 
 
-<div id="orgea931de" class="figure">
+<div id="org1670038" class="figure">
 <p><img src="figures/fig2_1.png" alt="fig2_1.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>The <code>Advertising</code> data set. The plot displays <code>sales</code>, in thousands of units, as a function of <code>TV</code>, <code>radio</code>, and <code>newspaper</code> budgets, in thousands of dollars, for 200 different markets.  In each plot we show the simple least squares fit of <code>sales</code> to that variable.  In other words, each red line represents a simple model that can be used to predict <code>sales</code> using <code>TV</code>, <code>radio</code>, and <code>newspaper</code>, respectively.</p>
@@ -287,13 +287,13 @@ regression line.
 
 
 <p>
-Figure <a href="#orgbe39e07">4</a> is a plot of <code>Income</code> versus <code>Years of Education</code> from the
+Figure <a href="#orgc526c9f">4</a> is a plot of <code>Income</code> versus <code>Years of Education</code> from the
 Income data set.  In the left panel, the ``true'' function (given by blue line)
 is actually my guess.  
 </p>
 
 
-<div id="orgbe39e07" class="figure">
+<div id="orgc526c9f" class="figure">
 <p><img src="figures/fig2_2.png" alt="fig2_2.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>The <code>Income</code> data set.  Left: The red dots are the observed values of <code>income</code> (in tens of thousands of dollars) and <code>years of education</code> for 30 individuals.  Right: The blue curve represents the true underlying relationship between <code>income</code> and <code>years of education</code>, which is generally unknown (but is known in this case because the data are simulated).  The vertical lines represent the error associated with each observation.  Note that some of the errors are positive (when an observation lies above the blue curve) and some are negative (when an observation lies below the curve).  Overall, these errors have approximately mean zero.</p>
@@ -301,22 +301,37 @@ is actually my guess.
 
 
 <p>
-Figure <a href="#orga0106d9">5</a> shows an example of the parametric approach applied to
+Figure <a href="#org1604fa4">5</a> is a plot of <code>Income</code> versus <code>Years of Education</code> and
+<code>Seniority</code> from the <code>Income</code> data set.  Since the book does not provide the
+true values of <code>Income</code>, ``true'' values shown in the plot are actually third
+order polynomial fit.  
+</p>
+
+
+<div id="org1604fa4" class="figure">
+<p><img src="figures/fig2_3.png" alt="fig2_3.png" />
+</p>
+<p><span class="figure-number">Figure 5: </span>The plot displays <code>income</code> as a function of <code>years of education</code> and <code>seniority</code> in the <code>Income</code> data set.  The blue surface represents the true underlying relationship between <code>income</code> and <code>years of education</code> and <code>seniority</code>, which is known since the data are simulated.  The red dots indicate the observed values of these quantities for 30 individuals.</p>
+</div>
+
+
+<p>
+Figure <a href="#org382a8b3">6</a> shows an example of the parametric approach applied to
 the <code>Income</code> data from previous figure. 
 </p>
 
 
-<div id="orga0106d9" class="figure">
+<div id="org382a8b3" class="figure">
 <p><img src="figures/fig2_4.png" alt="fig2_4.png" />
 </p>
-<p><span class="figure-number">Figure 5: </span>A linear model fit by least squares to the <code>Income</code> data from previous figure.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.</p>
+<p><span class="figure-number">Figure 6: </span>A linear model fit by least squares to the <code>Income</code> data from figure <a href="#org1604fa4">5</a>.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Naresh Gurbuxani</p>
-<p class="date">Created: 2019-05-07 Tue 11:24</p>
+<p class="date">Created: 2019-05-07 Tue 12:59</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

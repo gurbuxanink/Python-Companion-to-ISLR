@@ -97,6 +97,34 @@ is actually my guess.
 [[file:figures/fig2_2.png]]
 
 
+Figure [[fig:statLearnFig3]] is a plot of =Income= versus =Years of Education= and
+=Seniority= from the =Income= data set.  Since the book does not provide the
+true values of =Income=, ``true'' values shown in the plot are actually third
+order polynomial fit.  
+
+#+NAME: fig2_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  import matplotlib.pyplot as plt
+  sys.path.append('./code/chap2')
+  import incEdSen3d
+
+  my_formula = 'Income ~ Education + I(Education**2) + I(Education**3) + Seniority + I(Seniority**2) + I(Seniority**3)'
+
+  incEdSen3d.plotIncomeEdSeniority(my_formula)
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+
+#+NAME: fig:statLearnFig3
+#+CAPTION: The plot displays =income= as a function of =years of education= and =seniority= in the =Income= data set.  The blue surface represents the true underlying relationship between =income= and =years of education= and =seniority=, which is known since the data are simulated.  The red dots indicate the observed values of these quantities for 30 individuals.
+#+RESULTS: fig2_3plot
+[[file:figures/fig2_3.png]]
+
+
 Figure [[fig:statLearnFig4]] shows an example of the parametric approach applied to
 the =Income= data from previous figure. 
 
@@ -116,6 +144,6 @@ the =Income= data from previous figure.
 # After drawing figure 2.3, add link in below caption.
 
 #+NAME: fig:statLearnFig4
-#+CAPTION: A linear model fit by least squares to the =Income= data from previous figure.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.
+#+CAPTION: A linear model fit by least squares to the =Income= data from figure [[fig:statLearnFig3]].  The observations are shown in red, and the blue plane indicates the least squares fit to the data.
 #+RESULTS: fig2_4plot
 [[file:figures/fig2_4.png]]
