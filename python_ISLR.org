@@ -1,4 +1,5 @@
 #+TITLE: Python Companion to ISLR
+#+LATEX_HEADER: \usepackage{placeins}
 
 * Introduction
 
@@ -24,7 +25,7 @@ Figure [[fig:introFig1]] shows graphs of Wage versus three variables.
 
 
 Figure [[fig:introFig2]] shows boxplots of previous days' percentage changes in S&P
-500 grouped according to today's change Up or Down. 
+500 grouped according to today's change =Up= or =Down=. 
 
 #+NAME: fig1_2plot
 #+BEGIN_SRC python :exports results :results file :var fname="figures/fig1_2.png"
@@ -44,6 +45,8 @@ Figure [[fig:introFig2]] shows boxplots of previous days' percentage changes in 
 #+CAPTION: Left: Boxplots of the previous day's percentage change in the S&P 500 index for the days for which the market increased or decreased, obtained from the =Smarket= data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.
 #+RESULTS: fig1_2plot
 [[file:figures/fig1_2.png]]
+
+#+LATEX: \FloatBarrier
 
 * Statistical Learning
 
@@ -92,3 +95,27 @@ is actually my guess.
 #+CAPTION: The =Income= data set.  Left: The red dots are the observed values of =income= (in tens of thousands of dollars) and =years of education= for 30 individuals.  Right: The blue curve represents the true underlying relationship between =income= and =years of education=, which is generally unknown (but is known in this case because the data are simulated).  The vertical lines represent the error associated with each observation.  Note that some of the errors are positive (when an observation lies above the blue curve) and some are negative (when an observation lies below the curve).  Overall, these errors have approximately mean zero.
 #+RESULTS: fig2_2plot
 [[file:figures/fig2_2.png]]
+
+
+Figure [[fig:statLearnFig4]] shows an example of the parametric approach applied to
+the =Income= data from previous figure. 
+
+#+NAME: fig2_4plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_4.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  import matplotlib.pyplot as plt
+  sys.path.append('./code/chap2')
+
+  import incomeEdSeniority2_4
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+# After drawing figure 2.3, add link in below caption.
+
+#+NAME: fig:statLearnFig4
+#+CAPTION: A linear model fit by least squares to the =Income= data from previous figure.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.
+#+RESULTS: fig2_4plot
+[[file:figures/fig2_4.png]]
