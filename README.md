@@ -1,5 +1,5 @@
 # Python-Companion-to-ISLR
- While reading the classic [Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/), I found it beneficial to reproduce the book's graphs, tables, and labs in Python.  I also used this opportunity to create a literate documente using Org mode in Emacs.
+ While reading the classic [Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/), I found it beneficial to reproduce the book's graphs, tables, and labs in Python.  I also used this opportunity to create a literate document using Org mode in Emacs.
 
 I hope you will find this project useful.  You are welcome to send me comments and feedback on any aspect of this project (e.g., Python code; use of Org mode and emacs; organization of code, data, and text).
 
