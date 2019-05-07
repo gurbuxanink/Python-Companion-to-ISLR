@@ -141,9 +141,30 @@ the =Income= data from previous figure.
   return fname
 #+END_SRC
 
-# After drawing figure 2.3, add link in below caption.
 
 #+NAME: fig:statLearnFig4
 #+CAPTION: A linear model fit by least squares to the =Income= data from figure [[fig:statLearnFig3]].  The observations are shown in red, and the blue plane indicates the least squares fit to the data.
 #+RESULTS: fig2_4plot
 [[file:figures/fig2_4.png]]
+
+
+Figure [[fig:statLearnFig7]] provides an illustration of the trade-off between
+flexibility and interpretability for some of the methods covered in this book.
+
+#+NAME: fig2_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/figure2_7.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  import matplotlib.pyplot as plt
+  sys.path.append('./code/chap2/')
+
+  import interpretVsFlexibility
+  plt.savefig(fname)
+  return(fname)
+#+END_SRC
+
+#+NAME: fig:statLearnFig7
+#+CAPTION: A representation of the tradeoff between flexibility and interpretability, using different statistical learning methods.  In general, as the flexibility of a method increases, its interpretability decreases.
+#+RESULTS: fig2_7plot
+[[file:figures/figure2_7.png]]
