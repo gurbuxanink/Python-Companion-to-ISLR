@@ -1,5 +1,6 @@
 #+TITLE: Python Companion to ISLR
 #+LATEX_HEADER: \usepackage{placeins}
+#+LATEX_HEADER: \hypersetup{colorlinks=true, allcolors=blue, linkbordercolor=white}
 
 * Introduction
 
@@ -168,3 +169,24 @@ flexibility and interpretability for some of the methods covered in this book.
 #+CAPTION: A representation of the tradeoff between flexibility and interpretability, using different statistical learning methods.  In general, as the flexibility of a method increases, its interpretability decreases.
 #+RESULTS: fig2_7plot
 [[file:figures/figure2_7.png]]
+
+
+Figure [[fig:statLearnFig8]] provides a simple illustration of the clustering problem.
+
+#+NAME: fig2_8plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_8.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  import matplotlib.pyplot as plt
+  sys.path.append('./code/chap2/')
+
+  import clusteringPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:statLearnFig8
+#+CAPTION: A clustering data set involving three groups.  Each group is shown using a different colored symbol.  Left: The three groups are well-separated.  In this setting, a clustering approach should successfully identify the three groups.  Right: There is some overlap among the groups.  Now the clustering taks is more challenging.
+#+RESULTS: fig2_8plot
+[[file:figures/fig2_8.png]]
