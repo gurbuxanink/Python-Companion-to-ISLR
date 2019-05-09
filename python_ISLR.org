@@ -51,6 +51,8 @@ Figure [[fig:introFig2]] shows boxplots of previous days' percentage changes in 
 
 * Statistical Learning
 
+** What is Statistical Learning?
+
 Figure [[fig:statLearnFig1]] shows scatter plots of =sales= versus =TV=, =radio=,
 and =newspaper= advertising.  In each panel, the figure also includes an OLS
 regression line.  
@@ -190,3 +192,104 @@ Figure [[fig:statLearnFig8]] provides a simple illustration of the clustering pr
 #+CAPTION: A clustering data set involving three groups.  Each group is shown using a different colored symbol.  Left: The three groups are well-separated.  In this setting, a clustering approach should successfully identify the three groups.  Right: There is some overlap among the groups.  Now the clustering taks is more challenging.
 #+RESULTS: fig2_8plot
 [[file:figures/fig2_8.png]]
+
+** Assessing Model Accuracy
+
+Figure [[fig:statLearnFig9]] illustrates the tradeoff between training MSE and test
+MSE.  We select a ``true function'' whose shape is similar to that shown in the
+book.  In the left panel, the orange, blue, and green curves illustrate three possible estimates
+for $f$ given by the black curve.  The orange line is the linear regression
+fit, which is relatively inflexible.  The blue and green curves were produced
+using /smoothing splines/ from =UnivariateSpline= function in =scipy= package.
+We obtain different levels of flexibility by varying the parameter =s=, which
+affects the number of knots.  
+
+For the right panel, we have chosen polynomial fits.  The degree of polynomial
+represents the level of flexibility.  This is because the function
+=UnivariateSpline= does not more than five degrees of freedom.  
+
+When we repeat the simulations for figure [[fig:statLearnFig9]], we see considerable
+variation in the right panel MSE plots.  But the overall conclusion remains the
+same.   
+
+#+NAME: fig2_9plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_9.png"
+  import matplotlib
+  import numpy as np
+  matplotlib.use('Agg')
+  import sys
+  import matplotlib.pyplot as plt
+  sys.path.append('./code/chap2/')
+  import biasVarTradeoff
+
+  # This function shape is similar to book figure 2.9 left panel
+  def myFunc(x):
+      return 6.0 + 2 * np.sin((x - 40.0) / 20.0)
+
+  biasVarTradeoff.mseVsFlexibility(myFunc)
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:statLearnFig9
+#+CAPTION: Left: Data simulated from $f$, shown in black.  Three estimates of $f$ are shown: the linear regression line (orange curve), and two smoothing spline fits (blue and green curves).  Right: Training MSE (grey curve), test MSE (red curve), and minimum possible test MSE over all methods (dashed grey line). 
+#+RESULTS: fig2_9plot
+[[file:figures/fig2_9.png]]
+
+
+Figure [[fig:statLearnFig10]] provides another example in which the true $f$ is
+approximately linear. 
+
+#+NAME: fig2_10plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_10.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import numpy as np
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('./code/chap2/')
+  import biasVarTradeoff
+
+  # This function has shape similar to book figure 2.10
+  def myFunc(x):
+      return 2 + 0.05 * x + 0.0005 * (x ** 2)
+
+  biasVarTradeoff.mseVsFlexibility(myFunc)
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:statLearnFig10
+#+CAPTION: Details are as in figure [[fig:statLearnFig9]] using a different true $f$ that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.
+#+RESULTS: fig2_10plot
+[[file:figures/fig2_10.png]]
+
+
+Figure [[fig:statLearnFig11]] displays an example in which $f$ is highly
+non-linear. The training and test MSE curves still exhibit the same general
+patterns.
+
+#+NAME: fig2_11plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_11.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import sys
+  sys.path.append('./code/chap2/')
+  import biasVarTradeoff
+
+  # This function has shape similar to book figure 2.11
+  def myFunc(x):
+      return 0.012 * ((x - 35) ** 2) - 0.00025 * ((x - 35) ** 3)
+
+  biasVarTradeoff.mseVsFlexibility(myFunc)
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+
+#+NAME: fig:statLearnFig11
+#+CAPTION: Details are as in figure [[fig:statLearnFig9]], using a different $f$ that is far from linear.  In this setting, linear regression provides a very poor fit to the data. 
+#+RESULTS: fig2_11plot
+[[file:figures/fig2_11.png]]
