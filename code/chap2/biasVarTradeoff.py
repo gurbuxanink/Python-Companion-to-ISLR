@@ -18,7 +18,7 @@ def mseVsFlexibility(true_func, x_min=0, x_max=100, df_size=50, error_sd=1.0):
         np.random.normal(loc=0, scale=error_sd, size=2*df_size)
     train_ind = random.sample(range(2*df_size), df_size)
     train_ind.sort()
-    test_ind = set(range(df_size)) - set(train_ind)
+    test_ind = set(range(2 * df_size)) - set(train_ind)
     test_ind = list(test_ind)
     train_df = my_df.iloc[train_ind]
     test_df = my_df.iloc[test_ind]
