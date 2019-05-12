@@ -293,3 +293,78 @@ patterns.
 #+CAPTION: Details are as in figure [[fig:statLearnFig9]], using a different $f$ that is far from linear.  In this setting, linear regression provides a very poor fit to the data. 
 #+RESULTS: fig2_11plot
 [[file:figures/fig2_11.png]]
+
+
+Figure [[fig:statLearnFig12]] displays the relationship between bias, variance, and
+test MSE.  This relationship is referred to as /bias-variance trade-off/.  When
+simulations are repeated, we see considerable variation in different graphs,
+especially for MSE lines.  But overall shape remains the same. 
+
+#+NAME: fig2_12plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_12.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import sys
+  sys.path.append('./code/chap2')
+  import biasVarError
+
+  # Use same functions which were used to generate figures 2.9, 2.10, and 2.11
+  def myFunc(x):
+      return 6.0 + 2 * np.sin((x - 40.0) / 20.0)
+
+  degree, mse, var, bias = biasVarError.mseBiasVar(myFunc)
+  fig = plt.figure()
+  ax1 = fig.add_subplot(131)
+  ax1.plot(degree, mse, color='brown', alpha=0.7)
+  ax1.plot(degree, bias, color='blue', linestyle='-.')
+  ax1.plot(degree, var, color='orange', linestyle='--', alpha=0.9)
+  ax1.set_ylim(0, min(5, max(mse)))
+  ax1.axhline(y=1, color='grey', linestyle='--')
+  min_mse_ind = mse.index(min(mse))
+  ax1.axvline(x=degree[min_mse_ind], color='grey', linestyle=':')
+  ax1.set_xlabel('Flexibility')
+
+
+  def myFunc(x):
+      return 2 + 0.05 * x + 0.0005 * (x ** 2)
+
+  degree, mse, var, bias = biasVarError.mseBiasVar(myFunc)
+  ax2 = fig.add_subplot(132)
+  ax2.plot(degree, mse, color='brown', alpha=0.7)
+  ax2.plot(degree, bias, color='blue', linestyle='-.')
+  ax2.plot(degree, var, color='orange', linestyle='--', alpha=0.9)
+  ax2.set_ylim(0, min(5, max(mse)))
+  ax2.axhline(y=1, color='grey', linestyle='--')
+  min_mse_ind = mse.index(min(mse))
+  ax2.axvline(x=degree[min_mse_ind], color='grey', linestyle=':')
+  ax2.set_xlabel('Flexibility')
+
+
+  def myFunc(x):
+      return 0.012 * ((x - 35) ** 2) - 0.00025 * ((x - 35) ** 3)
+
+  degree, mse, var, bias = biasVarError.mseBiasVar(myFunc)
+  ax3 = fig.add_subplot(133)
+  ax3.plot(degree, mse, color='brown', alpha=0.7, label='MSE')
+  ax3.plot(degree, bias, color='blue', linestyle='-.',
+	   label=r'$Bias^2$')
+  ax3.plot(degree, var, color='orange', linestyle='--', label='Var',
+	   alpha=0.9)
+  ax3.set_ylim(0, min(50, max(mse)))
+  ax3.axhline(y=1, color='grey', linestyle='--')
+  min_mse_ind = mse.index(min(mse))
+  ax3.axvline(x=degree[min_mse_ind], color='grey', linestyle=':')
+  ax3.set_xlabel('Flexibility')
+  ax3.legend()
+
+  fig.tight_layout()
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:statLearnFig12
+#+CAPTION: Squared bias (blue curve), variance (orange curve), $Var(\epsilon)$ (dashed line), and test MSE (red curve) for the three data sets in figures [[fig:statLearnFig9]] - [[fig:statLearnFig11]].  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.
+#+RESULTS: fig2_12plot
+[[file:figures/fig2_12.png]]
