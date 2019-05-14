@@ -1,4 +1,4 @@
-#+TITLE: Python Companion to ISLR
+#+TITLE: A Python Companion to ISLR
 #+LATEX_HEADER: \usepackage{placeins}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, allcolors=blue, linkbordercolor=white}
 
@@ -452,3 +452,35 @@ making boundary is very close to that of the Bayes classifier.
 #+CAPTION: A comparison of the KNN decision boundaries (solid curves) obtained using $K=1$ and $K=100$ on the data from figure [[fig:statLearnFig13]].  With $K=1$, the decision boundary is overly flexible, while with $K=100$ it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.
 #+RESULTS: fig2_16plot
 [[file:figures/fig2_16.png]]
+
+
+In figure [[fig:statLearnFig17]] we have plotted the KNN test and training errors as
+a function of $\frac{1}{K}$.  As $\frac{1}{K}$ increases, the method becomes
+more flexible.  As in the regression setting, the training error rate
+consistently declines as the flexibility increases.  However, the test error
+exhibits the characteristic U-shape, declining at first (with a minimum at
+approximately $K=10$) before increasing again when the method becomes
+excessively flexible and overfits. 
+
+#+NAME: fig2_17plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig2_17.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  import numpy as np
+  sys.path.append('./code/chap2/')
+  import knnBoundry
+
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  knnBoundry.plotErrorRate()
+  fig.tight_layout()
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:statLearnFig17
+#+CAPTION: The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure [[fig:statLearnFig13]] as the level of flexibility (assessed using $\frac{1}{K}$) increases, or equivalently as the number of neighbors $K$ decreases.  The black dashed line indicates the Bayes error rate.
+#+RESULTS: fig2_17plot
+[[file:figures/fig2_17.png]]
