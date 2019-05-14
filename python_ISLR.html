@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-05-12 Sun 19:47 -->
+<!-- 2019-05-14 Tue 07:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Python Companion to ISLR</title>
@@ -256,26 +256,26 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgddc384c">1. Introduction</a></li>
-<li><a href="#orga48f0fa">2. Statistical Learning</a>
+<li><a href="#orgcde83fb">1. Introduction</a></li>
+<li><a href="#orgedd72ba">2. Statistical Learning</a>
 <ul>
-<li><a href="#org0458dea">2.1. What is Statistical Learning?</a></li>
-<li><a href="#org57dcaed">2.2. Assessing Model Accuracy</a></li>
+<li><a href="#org05842c5">2.1. What is Statistical Learning?</a></li>
+<li><a href="#org2a649f5">2.2. Assessing Model Accuracy</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgddc384c" class="outline-2">
-<h2 id="orgddc384c"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-orgcde83fb" class="outline-2">
+<h2 id="orgcde83fb"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Figure <a href="#orga864cc0">1</a> shows graphs of Wage versus three variables. 
+Figure <a href="#org7f2d917">1</a> shows graphs of Wage versus three variables. 
 </p>
 
 
-<div id="orga864cc0" class="figure">
+<div id="org7f2d917" class="figure">
 <p><img src="figures/fig1_1.png" alt="fig1_1.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span><code>Wage</code> data, which contains income survey information for males from the central Atlantic region of the United States.  Left: <code>wage</code> as a function of <code>age</code>.  On average, <code>wage</code> increases with <code>age</code> until about 60 years of age, at which point it begins to decline.  Center: <code>wage</code> as a function of <code>year</code>.  There is a slow but steady increase of approximately $10,000 in the average <code>wage</code> between 2003 and 2009.  Right: Boxplots displaying <code>wage</code> as a function of <code>education</code>, with 1 indicating the lowest level (no highschool diploma) and 5 the highest level (an advanced graduate degree).  On average, <code>wage</code> increases with the level of <code>education</code>.</p>
@@ -283,12 +283,12 @@ Figure <a href="#orga864cc0">1</a> shows graphs of Wage versus three variables.
 
 
 <p>
-Figure <a href="#org1fe2a9b">2</a> shows boxplots of previous days' percentage changes in S&amp;P
+Figure <a href="#org2477ad5">2</a> shows boxplots of previous days' percentage changes in S&amp;P
 500 grouped according to today's change <code>Up</code> or <code>Down</code>. 
 </p>
 
 
-<div id="org1fe2a9b" class="figure">
+<div id="org2477ad5" class="figure">
 <p><img src="figures/fig1_2.png" alt="fig1_2.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Left: Boxplots of the previous day's percentage change in the S&amp;P 500 index for the days for which the market increased or decreased, obtained from the <code>Smarket</code> data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.</p>
@@ -296,21 +296,21 @@ Figure <a href="#org1fe2a9b">2</a> shows boxplots of previous days' percentage c
 </div>
 </div>
 
-<div id="outline-container-orga48f0fa" class="outline-2">
-<h2 id="orga48f0fa"><span class="section-number-2">2</span> Statistical Learning</h2>
+<div id="outline-container-orgedd72ba" class="outline-2">
+<h2 id="orgedd72ba"><span class="section-number-2">2</span> Statistical Learning</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org0458dea" class="outline-3">
-<h3 id="org0458dea"><span class="section-number-3">2.1</span> What is Statistical Learning?</h3>
+<div id="outline-container-org05842c5" class="outline-3">
+<h3 id="org05842c5"><span class="section-number-3">2.1</span> What is Statistical Learning?</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-Figure <a href="#orgb1feb47">3</a> shows scatter plots of <code>sales</code> versus <code>TV</code>, <code>radio</code>,
+Figure <a href="#org0ebd3d0">3</a> shows scatter plots of <code>sales</code> versus <code>TV</code>, <code>radio</code>,
 and <code>newspaper</code> advertising.  In each panel, the figure also includes an OLS
 regression line.  
 </p>
 
 
-<div id="orgb1feb47" class="figure">
+<div id="org0ebd3d0" class="figure">
 <p><img src="figures/fig2_1.png" alt="fig2_1.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>The <code>Advertising</code> data set. The plot displays <code>sales</code>, in thousands of units, as a function of <code>TV</code>, <code>radio</code>, and <code>newspaper</code> budgets, in thousands of dollars, for 200 different markets.  In each plot we show the simple least squares fit of <code>sales</code> to that variable.  In other words, each red line represents a simple model that can be used to predict <code>sales</code> using <code>TV</code>, <code>radio</code>, and <code>newspaper</code>, respectively.</p>
@@ -318,13 +318,13 @@ regression line.
 
 
 <p>
-Figure <a href="#orgbea9a9e">4</a> is a plot of <code>Income</code> versus <code>Years of Education</code> from the
+Figure <a href="#orgdae3ef1">4</a> is a plot of <code>Income</code> versus <code>Years of Education</code> from the
 Income data set.  In the left panel, the ``true'' function (given by blue line)
 is actually my guess.  
 </p>
 
 
-<div id="orgbea9a9e" class="figure">
+<div id="orgdae3ef1" class="figure">
 <p><img src="figures/fig2_2.png" alt="fig2_2.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>The <code>Income</code> data set.  Left: The red dots are the observed values of <code>income</code> (in tens of thousands of dollars) and <code>years of education</code> for 30 individuals.  Right: The blue curve represents the true underlying relationship between <code>income</code> and <code>years of education</code>, which is generally unknown (but is known in this case because the data are simulated).  The vertical lines represent the error associated with each observation.  Note that some of the errors are positive (when an observation lies above the blue curve) and some are negative (when an observation lies below the curve).  Overall, these errors have approximately mean zero.</p>
@@ -332,14 +332,14 @@ is actually my guess.
 
 
 <p>
-Figure <a href="#org2b34b5a">5</a> is a plot of <code>Income</code> versus <code>Years of Education</code> and
+Figure <a href="#orgbaa26c4">5</a> is a plot of <code>Income</code> versus <code>Years of Education</code> and
 <code>Seniority</code> from the <code>Income</code> data set.  Since the book does not provide the
 true values of <code>Income</code>, ``true'' values shown in the plot are actually third
 order polynomial fit.  
 </p>
 
 
-<div id="org2b34b5a" class="figure">
+<div id="orgbaa26c4" class="figure">
 <p><img src="figures/fig2_3.png" alt="fig2_3.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>The plot displays <code>income</code> as a function of <code>years of education</code> and <code>seniority</code> in the <code>Income</code> data set.  The blue surface represents the true underlying relationship between <code>income</code> and <code>years of education</code> and <code>seniority</code>, which is known since the data are simulated.  The red dots indicate the observed values of these quantities for 30 individuals.</p>
@@ -347,25 +347,25 @@ order polynomial fit.
 
 
 <p>
-Figure <a href="#orgf742708">6</a> shows an example of the parametric approach applied to
+Figure <a href="#orgd5f853e">6</a> shows an example of the parametric approach applied to
 the <code>Income</code> data from previous figure. 
 </p>
 
 
-<div id="orgf742708" class="figure">
+<div id="orgd5f853e" class="figure">
 <p><img src="figures/fig2_4.png" alt="fig2_4.png" />
 </p>
-<p><span class="figure-number">Figure 6: </span>A linear model fit by least squares to the <code>Income</code> data from figure <a href="#org2b34b5a">5</a>.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.</p>
+<p><span class="figure-number">Figure 6: </span>A linear model fit by least squares to the <code>Income</code> data from figure <a href="#orgbaa26c4">5</a>.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.</p>
 </div>
 
 
 <p>
-Figure <a href="#org9f0badd">7</a> provides an illustration of the trade-off between
+Figure <a href="#org33323a8">7</a> provides an illustration of the trade-off between
 flexibility and interpretability for some of the methods covered in this book.
 </p>
 
 
-<div id="org9f0badd" class="figure">
+<div id="org33323a8" class="figure">
 <p><img src="figures/figure2_7.png" alt="figure2_7.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>A representation of the tradeoff between flexibility and interpretability, using different statistical learning methods.  In general, as the flexibility of a method increases, its interpretability decreases.</p>
@@ -373,11 +373,11 @@ flexibility and interpretability for some of the methods covered in this book.
 
 
 <p>
-Figure <a href="#org1a583d7">8</a> provides a simple illustration of the clustering problem.
+Figure <a href="#orgcc3a03e">8</a> provides a simple illustration of the clustering problem.
 </p>
 
 
-<div id="org1a583d7" class="figure">
+<div id="orgcc3a03e" class="figure">
 <p><img src="figures/fig2_8.png" alt="fig2_8.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>A clustering data set involving three groups.  Each group is shown using a different colored symbol.  Left: The three groups are well-separated.  In this setting, a clustering approach should successfully identify the three groups.  Right: There is some overlap among the groups.  Now the clustering taks is more challenging.</p>
@@ -385,11 +385,11 @@ Figure <a href="#org1a583d7">8</a> provides a simple illustration of the cluster
 </div>
 </div>
 
-<div id="outline-container-org57dcaed" class="outline-3">
-<h3 id="org57dcaed"><span class="section-number-3">2.2</span> Assessing Model Accuracy</h3>
+<div id="outline-container-org2a649f5" class="outline-3">
+<h3 id="org2a649f5"><span class="section-number-3">2.2</span> Assessing Model Accuracy</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-Figure <a href="#org2493f16">9</a> illustrates the tradeoff between training MSE and test
+Figure <a href="#org9a78237">9</a> illustrates the tradeoff between training MSE and test
 MSE.  We select a ``true function'' whose shape is similar to that shown in the
 book.  In the left panel, the orange, blue, and green curves illustrate three possible estimates
 for \(f\) given by the black curve.  The orange line is the linear regression
@@ -406,13 +406,13 @@ represents the level of flexibility.  This is because the function
 </p>
 
 <p>
-When we repeat the simulations for figure <a href="#org2493f16">9</a>, we see considerable
+When we repeat the simulations for figure <a href="#org9a78237">9</a>, we see considerable
 variation in the right panel MSE plots.  But the overall conclusion remains the
 same.   
 </p>
 
 
-<div id="org2493f16" class="figure">
+<div id="org9a78237" class="figure">
 <p><img src="figures/fig2_9.png" alt="fig2_9.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>Left: Data simulated from \(f\), shown in black.  Three estimates of \(f\) are shown: the linear regression line (orange curve), and two smoothing spline fits (blue and green curves).  Right: Training MSE (grey curve), test MSE (red curve), and minimum possible test MSE over all methods (dashed grey line).</p>
@@ -420,44 +420,80 @@ same.
 
 
 <p>
-Figure <a href="#orgd34e12a">10</a> provides another example in which the true \(f\) is
+Figure <a href="#org30ab5ec">10</a> provides another example in which the true \(f\) is
 approximately linear. 
 </p>
 
 
-<div id="orgd34e12a" class="figure">
+<div id="org30ab5ec" class="figure">
 <p><img src="figures/fig2_10.png" alt="fig2_10.png" />
 </p>
-<p><span class="figure-number">Figure 10: </span>Details are as in figure <a href="#org2493f16">9</a> using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.</p>
+<p><span class="figure-number">Figure 10: </span>Details are as in figure <a href="#org9a78237">9</a> using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.</p>
 </div>
 
 
 <p>
-Figure <a href="#org8afedad">11</a> displays an example in which \(f\) is highly
+Figure <a href="#org0f6683a">11</a> displays an example in which \(f\) is highly
 non-linear. The training and test MSE curves still exhibit the same general
 patterns.
 </p>
 
 
-<div id="org8afedad" class="figure">
+<div id="org0f6683a" class="figure">
 <p><img src="figures/fig2_11.png" alt="fig2_11.png" />
 </p>
-<p><span class="figure-number">Figure 11: </span>Details are as in figure <a href="#org2493f16">9</a>, using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.</p>
+<p><span class="figure-number">Figure 11: </span>Details are as in figure <a href="#org9a78237">9</a>, using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.</p>
 </div>
 
 
 <p>
-Figure <a href="#org0a555d8">12</a> displays the relationship between bias, variance, and
+Figure <a href="#org25eeb59">12</a> displays the relationship between bias, variance, and
 test MSE.  This relationship is referred to as <i>bias-variance trade-off</i>.  When
 simulations are repeated, we see considerable variation in different graphs,
 especially for MSE lines.  But overall shape remains the same. 
 </p>
 
 
-<div id="org0a555d8" class="figure">
+<div id="org25eeb59" class="figure">
 <p><img src="figures/fig2_12.png" alt="fig2_12.png" />
 </p>
-<p><span class="figure-number">Figure 12: </span>Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures <a href="#org2493f16">9</a> - <a href="#org8afedad">11</a>.  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.</p>
+<p><span class="figure-number">Figure 12: </span>Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures <a href="#org9a78237">9</a> - <a href="#org0f6683a">11</a>.  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.</p>
+</div>
+
+
+<p>
+Figure <a href="#org1c82b4d">13</a> provides an example using a simulated data set in
+two-dimensional space consisting of predictors \(X_1\) and \(X_2\).  
+</p>
+
+
+<div id="org1c82b4d" class="figure">
+<p><img src="figures/fig2_13.png" alt="fig2_13.png" />
+</p>
+<p><span class="figure-number">Figure 13: </span>A simulated data set consisting of 200 observations in two groups, indicated in blue and orange.  The dashed line represents the Bayes decision boundary.  The orange background grid indicates the region in which a test observation will be assigned to the orange class, and blue background grid indicates the region in which a test observation will be assigned to the blue class.</p>
+</div>
+
+
+<p>
+Figure <a href="#org7c504d0">14</a> displays the KNN decision boundary, using \(K=10\), when
+applied to the simulated data set from figure <a href="#org1c82b4d">13</a>.  Even though
+the true distribution is not known by the KNN classifier, the KNN decision
+making boundary is very close to that of the Bayes classifier.  
+</p>
+
+
+<div id="org7c504d0" class="figure">
+<p><img src="figures/fig2_15.png" alt="fig2_15.png" />
+</p>
+<p><span class="figure-number">Figure 14: </span>The firm line indicates the KNN decision boundary on the data from figure <a href="#org1c82b4d">13</a>, using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.</p>
+</div>
+
+
+
+<div id="org9865be2" class="figure">
+<p><img src="figures/fig2_16.png" alt="fig2_16.png" />
+</p>
+<p><span class="figure-number">Figure 15: </span>A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure <a href="#org1c82b4d">13</a>.  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.</p>
 </div>
 </div>
 </div>
@@ -465,7 +501,7 @@ especially for MSE lines.  But overall shape remains the same.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Naresh Gurbuxani</p>
-<p class="date">Created: 2019-05-12 Sun 19:47</p>
+<p class="date">Created: 2019-05-14 Tue 07:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
