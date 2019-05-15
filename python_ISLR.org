@@ -484,3 +484,258 @@ excessively flexible and overfits.
 #+CAPTION: The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure [[fig:statLearnFig13]] as the level of flexibility (assessed using $\frac{1}{K}$) increases, or equivalently as the number of neighbors $K$ decreases.  The black dashed line indicates the Bayes error rate.
 #+RESULTS: fig2_17plot
 [[file:figures/fig2_17.png]]
+
+#+LATEX: \FloatBarrier
+
+** Lab: Introduction to Python
+*** Basic Commands
+In =Python= a list can be created by enclosing comma-separated elements by
+square brackets.  Length of a list can be obtained using =len= function.
+
+#+BEGIN_SRC python :exports both :results output
+  x = [1, 3, 2, 5]
+  print len(x)
+  y = 3
+  z = 5
+  print y + z
+#+END_SRC
+
+#+RESULTS:
+: 4
+: 8
+
+To create an array of numbers, use =array= function in =numpy= library.  =numpy=
+functions can be used to perform element-wise operations on arrays.
+
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  x = np.array([[1, 2], [3, 4]])
+  y = np.array([6, 7, 8, 9]).reshape((2, 2))
+  print x
+  print y
+  print x ** 2
+  print np.sqrt(y)
+#+END_SRC
+
+#+RESULTS:
+: [[1 2]
+:  [3 4]]
+: [[6 7]
+:  [8 9]]
+: [[ 1  4]
+:  [ 9 16]]
+: [[ 2.44948974  2.64575131]
+:  [ 2.82842712  3.        ]]
+
+
+=numpy.random= has a number of functions to generate random variables that
+follow a given distribution.  Here we create two correlated sets of numbers, =x=
+and =y=, and use =numpy.corrcoef= to calculate correlation between them. 
+
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  np.random.seed(911)
+  x = np.random.normal(size=50)
+  y = x + np.random.normal(loc=50, scale=0.1, size=50)
+  print np.corrcoef(x, y)
+  print np.corrcoef(x, y)[0, 1]
+  print np.mean(x)
+  print np.var(y)
+  print np.std(y) ** 2
+#+END_SRC
+
+#+RESULTS:
+: [[ 1.          0.99374931]
+:  [ 0.99374931  1.        ]]
+: 0.993749313458
+: -0.0202197243973
+: 0.933062175007
+: 0.933062175007
+
+*** Graphics
+=matplotlib= library has a number of functions to plot data in =Python=.  It is
+possible to view graphs on screen or save them in file for inclusion in a
+document. 
+
+#+BEGIN_SRC python :exports code :results none
+  import numpy as np
+  import matplotlib               # only if we need to save figure in file
+  matplotlib.use('Agg')           # only to save figure in file
+  import matplotlib.pyplot as plt
+
+  x = np.random.normal(size=100)
+  y = np.random.normal(size=100)
+  plt.plot(x, y)
+  plt.xlabel('This is x-axis')
+  plt.ylabel('This is y-axis')
+  plt.title('Plot of X vs Y')
+
+  plt.savefig('xyPlot.png')
+#+END_SRC
+
+=numpy= function =linspace= can be used to create a sequence between a start and
+an end of a given length.  
+
+#+BEGIN_SRC python :exports code :results none
+  import numpy as np
+  import matplotlib.pyplot as plt
+
+  x = np.linspace(-np.pi, np.pi, num=50)
+  y = x
+  xx, yy = np.meshgrid(x, y)
+  zz = np.cos(yy) / (1 + xx ** 2)
+
+  plt.contour(xx, yy, zz)
+
+  fig, ax = plt.subplots()
+  zza = (zz - zz.T) / 2.0
+  CS = ax.contour(xx, yy, zza)
+  ax.clabel(CS, inline=1)
+#+END_SRC
+
+*** Indexing Data
+To access elements of an array, specify indexes inside square brackets.  It is
+possible to access multiple rows and columns. =shape= method gives number of
+rows followed by number of columns. 
+
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+
+  A = np.array(np.arange(1, 17))
+  A = A.reshape(4, 4, order='F')
+  print A
+  print A[1, 2]
+  print A[(0, 2), (1, 3)]         # does not work
+  print A[range(0, 3), range(1, 4)]  # does not work
+  print A[range(0, 2), :]
+  print A[:, range(0, 2)]
+  print A.shape
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+[[ 1  5  9 13]
+ [ 2  6 10 14]
+ [ 3  7 11 15]
+ [ 4  8 12 16]]
+10
+[ 5 15]
+[ 5 10 15]
+[[ 1  5  9 13]
+ [ 2  6 10 14]]
+[[1 5]
+ [2 6]
+ [3 7]
+ [4 8]]
+(4, 4)
+#+end_example
+
+*** Loading Data
+=pandas= library provides =read_csv= function to read files with data in
+rectangular shape.  
+
+#+BEGIN_SRC python :exports both :results output
+  import pandas as pd
+  Auto = pd.read_csv('data/Auto.csv')
+  print Auto.head()
+  print Auto.shape
+  print Auto.columns
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+    mpg  cylinders  displacement horsepower  weight  acceleration  year  \
+0  18.0          8         307.0        130    3504          12.0    70   
+1  15.0          8         350.0        165    3693          11.5    70   
+2  18.0          8         318.0        150    3436          11.0    70   
+3  16.0          8         304.0        150    3433          12.0    70   
+4  17.0          8         302.0        140    3449          10.5    70   
+
+   origin                       name  
+0       1  chevrolet chevelle malibu  
+1       1          buick skylark 320  
+2       1         plymouth satellite  
+3       1              amc rebel sst  
+4       1                ford torino  
+(397, 9)
+Index([u'mpg', u'cylinders', u'displacement', u'horsepower', u'weight',
+       u'acceleration', u'year', u'origin', u'name'],
+      dtype='object')
+#+end_example
+
+To load data from an =R= library, use =get_rdataset= function from
+=statsmodels=.  This function seems to work only if the computer is connected to
+the internet. 
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  carseats = datasets.get_rdataset('Carseats', package='ISLR').data
+  print carseats.shape
+  print carseats.columns
+#+END_SRC
+
+#+RESULTS:
+: (400, 11)
+: Index([u'Sales', u'CompPrice', u'Income', u'Advertising', u'Population',
+:        u'Price', u'ShelveLoc', u'Age', u'Education', u'Urban', u'US'],
+:       dtype='object')
+
+*** Additional Graphical and Numerical Summaries
+=plot= method can be directly applied to a =pandas= dataframe.  
+
+#+BEGIN_SRC python :exports code :results none
+  import pandas as pd
+  Auto = pd.read_csv('data/Auto.csv')
+  Auto.boxplot(column='mpg', by='cylinders', grid=False)
+#+END_SRC
+
+=hist= method can be applied to plot a histogram. 
+
+#+BEGIN_SRC python :exports code :results none
+  import pandas as pd
+  Auto = pd.read_csv('data/Auto.csv')
+  Auto.hist(column='mpg')
+  Auto.hist(column='mpg', color='red')
+  Auto.hist(column='mpg', color='red', bins=15)
+#+END_SRC
+
+For pairs plot, use =scatter_matrix= method in =pandas.plotting=.  
+
+#+BEGIN_SRC python :exports code :results none
+  import pandas as pd
+  from pandas import plotting
+  Auto = pd.read_csv('data/Auto.csv')
+  plotting.scatter_matrix(Auto[['mpg', 'displacement', 'horsepower', 'weight',
+				'acceleration']])
+#+END_SRC
+
+On =pandas= dataframes, =describe= method produces a summary of each variable. 
+
+#+BEGIN_SRC python :exports both :results output
+  import pandas as pd
+  Auto = pd.read_csv('data/Auto.csv')
+  print Auto.describe()
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+              mpg   cylinders  displacement       weight  acceleration  \
+count  397.000000  397.000000    397.000000   397.000000    397.000000   
+mean    23.515869    5.458438    193.532746  2970.261965     15.555668   
+std      7.825804    1.701577    104.379583   847.904119      2.749995   
+min      9.000000    3.000000     68.000000  1613.000000      8.000000   
+25%     17.500000    4.000000    104.000000  2223.000000     13.800000   
+50%     23.000000    4.000000    146.000000  2800.000000     15.500000   
+75%     29.000000    8.000000    262.000000  3609.000000     17.100000   
+max     46.600000    8.000000    455.000000  5140.000000     24.800000   
+
+             year      origin  
+count  397.000000  397.000000  
+mean    75.994962    1.574307  
+std      3.690005    0.802549  
+min     70.000000    1.000000  
+25%     73.000000    1.000000  
+50%     76.000000    1.000000  
+75%     79.000000    2.000000  
+max     82.000000    3.000000  
+#+end_example
