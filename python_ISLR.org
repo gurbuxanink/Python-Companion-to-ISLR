@@ -570,7 +570,7 @@ document.
   plt.ylabel('This is y-axis')
   plt.title('Plot of X vs Y')
 
-  plt.savefig('xyPlot.png')
+  plt.savefig('xyPlot.png')       # only to save figure in a file
 #+END_SRC
 
 =numpy= function =linspace= can be used to create a sequence between a start and
@@ -739,3 +739,38 @@ min     70.000000    1.000000
 75%     79.000000    2.000000  
 max     82.000000    3.000000  
 #+end_example
+
+
+#+LATEX: \FloatBarrier
+
+* Linear Regression
+
+** Simple Linear Regression
+
+#+NAME: fig3_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('./code/chap3/')
+#+END_SRC
+Figure [[fig:linearRegFig1]] displays the simple linear regression fit to the =Advertising= data.  
+
+#+NAME: fig3_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('./code/chap3/')
+  import adverTVplot
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig1
+#+CAPTION: For the =Advertising= data, the least squares fit for the regression of =sales= onto =TV= is shown.  The fit is found by minimizing the sum of squared errors.  Each grey line represents an error, and the fit makes a compromise by averaging their squares.  In this case a linear fit captures the essence of the relationship, although it is somewhat deficient in the left of the plot.
+#+RESULTS: fig3_1plot
+[[file:figures/fig3_1.png]]
