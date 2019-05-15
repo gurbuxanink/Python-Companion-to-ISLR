@@ -774,3 +774,26 @@ Figure [[fig:linearRegFig1]] displays the simple linear regression fit to the =A
 #+CAPTION: For the =Advertising= data, the least squares fit for the regression of =sales= onto =TV= is shown.  The fit is found by minimizing the sum of squared errors.  Each grey line represents an error, and the fit makes a compromise by averaging their squares.  In this case a linear fit captures the essence of the relationship, although it is somewhat deficient in the left of the plot.
 #+RESULTS: fig3_1plot
 [[file:figures/fig3_1.png]]
+
+
+In figure [[fig:linearRegFig2]], we have computed RSS for a number of values of
+$\beta_0$ and $\beta_1$, using the advertising data with =sales= as the response
+and =TV= as the predictor. 
+
+#+NAME: fig3_2plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_2.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('./code/chap3/')
+  import rssPlot
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig2
+#+CAPTION: Contour and three-dimensional plots of the RSS on the =Advertising= data, using =sales= as the response and =TV= as the predictor.  The red dots correspond to the least squares estimates $\hat{\beta_0}$ and $\hat{\beta_1}$.
+#+RESULTS: fig3_2plot
+[[file:figures/fig3_2.png]]
