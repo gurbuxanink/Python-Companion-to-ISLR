@@ -747,15 +747,9 @@ max     82.000000    3.000000
 
 ** Simple Linear Regression
 
-#+NAME: fig3_1plot
-#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_1.png"
-  import matplotlib
-  matplotlib.use('Agg')
-  import matplotlib.pyplot as plt
-  import sys
-  sys.path.append('./code/chap3/')
-#+END_SRC
-Figure [[fig:linearRegFig1]] displays the simple linear regression fit to the =Advertising= data.  
+Figure [[fig:linearRegFig1]] displays the simple linear regression fit to the
+=Advertising= data, where $\hat{\beta_0} =$ {{{beta0_est}}}
+ and $\hat{\beta_1} =$ {{{beta1_est}}}.
 
 #+NAME: fig3_1plot
 #+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_1.png"
@@ -774,6 +768,26 @@ Figure [[fig:linearRegFig1]] displays the simple linear regression fit to the =A
 #+CAPTION: For the =Advertising= data, the least squares fit for the regression of =sales= onto =TV= is shown.  The fit is found by minimizing the sum of squared errors.  Each grey line represents an error, and the fit makes a compromise by averaging their squares.  In this case a linear fit captures the essence of the relationship, although it is somewhat deficient in the left of the plot.
 #+RESULTS: fig3_1plot
 [[file:figures/fig3_1.png]]
+
+#+NAME: getBetas
+#+BEGIN_SRC python :session calc :exports results :results values drawer
+  import pandas as pd
+  import statsmodels.formula.api as smf
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  advert_model = smf.ols(formula='sales ~ TV', data=advertising)
+  advert_fit = advert_model.fit()
+
+  beta0_est = '#+MACRO: beta1_est ' + str(round(advert_fit.params['Intercept'], 4))
+  beta1_est = '#+MACRO: beta0_est ' + str(round(advert_fit.params['TV'], 4))
+  beta0_est + '\n' + beta1_est
+#+END_SRC
+
+#+RESULTS: getBetas
+:RESULTS:
+#+MACRO: beta1_est 7.0326
+#+MACRO: beta0_est 0.0475
+:END:
 
 
 In figure [[fig:linearRegFig2]], we have computed RSS for a number of values of
