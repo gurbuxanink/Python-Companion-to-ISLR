@@ -811,3 +811,30 @@ and =TV= as the predictor.
 #+CAPTION: Contour and three-dimensional plots of the RSS on the =Advertising= data, using =sales= as the response and =TV= as the predictor.  The red dots correspond to the least squares estimates $\hat{\beta_0}$ and $\hat{\beta_1}$.
 #+RESULTS: fig3_2plot
 [[file:figures/fig3_2.png]]
+
+
+The left-hand panel of figure [[fig:linearRegFig3]] displays /population regression
+line/ and /least squares line/ for a simple simulated example.  The red line in
+the left-hand panel displays the /true/ relationship, $f(X) = 2 + 3X$, while the
+blue line is the least squares estimate based on observed data.  In the
+right-hand panel of figure [[fig:linearRegFig3]] we have generated five different
+data sets from the model $Y = 2 + 3X + \epsilon$ and plotted the corresponding
+five least squares lines.  
+
+#+NAME: fig3_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+
+  import plotRegLines
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig3
+#+CAPTION: A simulated data set.  Left: The red line represents the true relationship, $f(X) = 2 + 3X$, which is known as the population regression line.  The blue line is the least squares line; it is the least squares estimate for $f(X)$ based on the observed data, shown in grey circles.  Right: The population regression line is again shown in red, and the least squares line in blue.  In cyan, five least squares lines are shown, each computed on the basis of a separate random set of observations.  Each least squares line is different, but on average, the least squares lines are quite close to the population regression line.
+#+RESULTS: fig3_3plot
+[[file:figures/fig3_3.png]]
