@@ -494,10 +494,10 @@ square brackets.  Length of a list can be obtained using =len= function.
 
 #+BEGIN_SRC python :exports both :results output
   x = [1, 3, 2, 5]
-  print len(x)
+  print(len(x))
   y = 3
   z = 5
-  print y + z
+  print(y + z)
 #+END_SRC
 
 #+RESULTS:
@@ -511,10 +511,10 @@ functions can be used to perform element-wise operations on arrays.
   import numpy as np
   x = np.array([[1, 2], [3, 4]])
   y = np.array([6, 7, 8, 9]).reshape((2, 2))
-  print x
-  print y
-  print x ** 2
-  print np.sqrt(y)
+  print(x)
+  print(y)
+  print(x ** 2)
+  print(np.sqrt(y))
 #+END_SRC
 
 #+RESULTS:
@@ -524,8 +524,8 @@ functions can be used to perform element-wise operations on arrays.
 :  [8 9]]
 : [[ 1  4]
 :  [ 9 16]]
-: [[ 2.44948974  2.64575131]
-:  [ 2.82842712  3.        ]]
+: [[2.44948974 2.64575131]
+:  [2.82842712 3.        ]]
 
 
 =numpy.random= has a number of functions to generate random variables that
@@ -537,20 +537,20 @@ and =y=, and use =numpy.corrcoef= to calculate correlation between them.
   np.random.seed(911)
   x = np.random.normal(size=50)
   y = x + np.random.normal(loc=50, scale=0.1, size=50)
-  print np.corrcoef(x, y)
-  print np.corrcoef(x, y)[0, 1]
-  print np.mean(x)
-  print np.var(y)
-  print np.std(y) ** 2
+  print(np.corrcoef(x, y))
+  print(np.corrcoef(x, y)[0, 1])
+  print(np.mean(x))
+  print(np.var(y))
+  print(np.std(y) ** 2)
 #+END_SRC
 
 #+RESULTS:
-: [[ 1.          0.99374931]
-:  [ 0.99374931  1.        ]]
-: 0.993749313458
-: -0.0202197243973
-: 0.933062175007
-: 0.933062175007
+: [[1.         0.99374931]
+:  [0.99374931 1.        ]]
+: 0.9937493134584551
+: -0.020219724397254404
+: 0.9330621750073689
+: 0.9330621750073688
 
 *** Graphics
 =matplotlib= library has a number of functions to plot data in =Python=.  It is
@@ -603,13 +603,13 @@ rows followed by number of columns.
 
   A = np.array(np.arange(1, 17))
   A = A.reshape(4, 4, order='F')
-  print A
-  print A[1, 2]
-  print A[(0, 2), (1, 3)]         # does not work
-  print A[range(0, 3), range(1, 4)]  # does not work
-  print A[range(0, 2), :]
-  print A[:, range(0, 2)]
-  print A.shape
+  print(A)
+  print(A[1, 2])
+  print(A[(0, 2), (1, 3)])         # does not work
+  print(A[range(0, 3), range(1, 4)])  # does not work
+  print(A[range(0, 2), :])
+  print(A[:, range(0, 2)])
+  print(A.shape)
 #+END_SRC
 
 #+RESULTS:
@@ -637,29 +637,24 @@ rectangular shape.
 #+BEGIN_SRC python :exports both :results output
   import pandas as pd
   Auto = pd.read_csv('data/Auto.csv')
-  print Auto.head()
-  print Auto.shape
-  print Auto.columns
+  print(Auto.head())
+  print(Auto.shape)
+  print(Auto.columns)
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
-    mpg  cylinders  displacement horsepower  weight  acceleration  year  \
-0  18.0          8         307.0        130    3504          12.0    70   
-1  15.0          8         350.0        165    3693          11.5    70   
-2  18.0          8         318.0        150    3436          11.0    70   
-3  16.0          8         304.0        150    3433          12.0    70   
-4  17.0          8         302.0        140    3449          10.5    70   
+    mpg  cylinders  displacement  ... year  origin                       name
+0  18.0          8         307.0  ...   70       1  chevrolet chevelle malibu
+1  15.0          8         350.0  ...   70       1          buick skylark 320
+2  18.0          8         318.0  ...   70       1         plymouth satellite
+3  16.0          8         304.0  ...   70       1              amc rebel sst
+4  17.0          8         302.0  ...   70       1                ford torino
 
-   origin                       name  
-0       1  chevrolet chevelle malibu  
-1       1          buick skylark 320  
-2       1         plymouth satellite  
-3       1              amc rebel sst  
-4       1                ford torino  
+[5 rows x 9 columns]
 (397, 9)
-Index([u'mpg', u'cylinders', u'displacement', u'horsepower', u'weight',
-       u'acceleration', u'year', u'origin', u'name'],
+Index(['mpg', 'cylinders', 'displacement', 'horsepower', 'weight',
+       'acceleration', 'year', 'origin', 'name'],
       dtype='object')
 #+end_example
 
@@ -670,14 +665,14 @@ the internet.
 #+BEGIN_SRC python :exports both :results output
   from statsmodels import datasets
   carseats = datasets.get_rdataset('Carseats', package='ISLR').data
-  print carseats.shape
-  print carseats.columns
+  print(carseats.shape)
+  print(carseats.columns)
 #+END_SRC
 
 #+RESULTS:
 : (400, 11)
-: Index([u'Sales', u'CompPrice', u'Income', u'Advertising', u'Population',
-:        u'Price', u'ShelveLoc', u'Age', u'Education', u'Urban', u'US'],
+: Index(['Sales', 'CompPrice', 'Income', 'Advertising', 'Population', 'Price',
+:        'ShelveLoc', 'Age', 'Education', 'Urban', 'US'],
 :       dtype='object')
 
 *** Additional Graphical and Numerical Summaries
@@ -714,30 +709,22 @@ On =pandas= dataframes, =describe= method produces a summary of each variable.
 #+BEGIN_SRC python :exports both :results output
   import pandas as pd
   Auto = pd.read_csv('data/Auto.csv')
-  print Auto.describe()
+  print(Auto.describe())
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
-              mpg   cylinders  displacement       weight  acceleration  \
-count  397.000000  397.000000    397.000000   397.000000    397.000000   
-mean    23.515869    5.458438    193.532746  2970.261965     15.555668   
-std      7.825804    1.701577    104.379583   847.904119      2.749995   
-min      9.000000    3.000000     68.000000  1613.000000      8.000000   
-25%     17.500000    4.000000    104.000000  2223.000000     13.800000   
-50%     23.000000    4.000000    146.000000  2800.000000     15.500000   
-75%     29.000000    8.000000    262.000000  3609.000000     17.100000   
-max     46.600000    8.000000    455.000000  5140.000000     24.800000   
+              mpg   cylinders  ...        year      origin
+count  397.000000  397.000000  ...  397.000000  397.000000
+mean    23.515869    5.458438  ...   75.994962    1.574307
+std      7.825804    1.701577  ...    3.690005    0.802549
+min      9.000000    3.000000  ...   70.000000    1.000000
+25%     17.500000    4.000000  ...   73.000000    1.000000
+50%     23.000000    4.000000  ...   76.000000    1.000000
+75%     29.000000    8.000000  ...   79.000000    2.000000
+max     46.600000    8.000000  ...   82.000000    3.000000
 
-             year      origin  
-count  397.000000  397.000000  
-mean    75.994962    1.574307  
-std      3.690005    0.802549  
-min     70.000000    1.000000  
-25%     73.000000    1.000000  
-50%     76.000000    1.000000  
-75%     79.000000    2.000000  
-max     82.000000    3.000000  
+[8 rows x 7 columns]
 #+end_example
 
 
@@ -844,6 +831,8 @@ five least squares lines.
 For =Advertising= data, this table provides details of the least squares model for the
 regression of number of units sold on TV advertising budget. 
 
+#+LATEX: \bigskip
+
 #+NAME: sales_tv_reg
 #+BEGIN_SRC python :exports results :results value latex
     import pandas as pd
@@ -873,7 +862,7 @@ TV        &  0.0475 &    0.0027 &  17.6676 &    0.0 \\
 \end{tabular}
 #+END_EXPORT
 
-#+LATEX: \\
+#+LATEX: \bigskip
 
 In the next table [[tab:linearRegTab2]], we report more information about the least squares model.  
 
