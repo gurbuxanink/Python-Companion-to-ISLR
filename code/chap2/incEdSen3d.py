@@ -29,7 +29,8 @@ def plotIncomeEdSeniority(fit_formula):
     sen_array = np.reshape(sen, newshape=-1)
     income_fit = reg_fit.predict(exog=dict(Education=ed_array,
                                            Seniority=sen_array))
-    income_fit = np.reshape(income_fit, newshape=ed.shape)
+    income_fit = np.reshape(list(income_fit), newshape=ed.shape)
+    # income_fit = np.reshape(income_fit, newshape=ed.shape)
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -51,4 +52,4 @@ def plotIncomeEdSeniority(fit_formula):
         z2 = income_data.iloc[i]['Income']
         ax.plot([x, x], [y, y], [z1, z2], c='b', alpha=0.5)
 
-        fig.tight_layout()
+    fig.tight_layout()
