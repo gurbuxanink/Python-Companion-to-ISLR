@@ -1,4 +1,4 @@
-import pandas as pd
+# import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -23,7 +23,7 @@ ax1.set_ylabel('Wage')
 age_wage_reg = ols(formula='wage ~ age + age_2', data=wages)
 age_wage_fit = age_wage_reg.fit()
 ax1.scatter(x=np.array(wages['age']), y=age_wage_fit.predict(), marker='+',
-	    c='r')
+            c='r')
 
 ax2 = fig.add_subplot(132)
 wages.plot(x='year', y='wage', kind='scatter', ax=ax2, alpha=0.5)
@@ -32,7 +32,7 @@ ax2.set_ylabel('')
 year_wage_reg = ols(formula='wage ~ year', data=wages)
 year_wage_fit = year_wage_reg.fit()
 ax2.scatter(x=np.array(wages['year']), y=year_wage_fit.predict(), marker='+',
-	    c='r')
+            c='r')
 
 ax3 = fig.add_subplot(133)
 wages.boxplot(column='wage', by='ed_level', ax=ax3, grid=False)
