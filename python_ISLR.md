@@ -1,84 +1,84 @@
 
 # Table of Contents
 
-1.  [Introduction](#org6d52661)
-2.  [Statistical Learning](#orgf7fe937)
-    1.  [What is Statistical Learning?](#org6627a7f)
-    2.  [Assessing Model Accuracy](#org6a008aa)
-    3.  [Lab: Introduction to Python](#org91ad677)
-        1.  [Basic Commands](#orgf857a7b)
-        2.  [Graphics](#org94aeec7)
-        3.  [Indexing Data](#org9a75068)
-        4.  [Loading Data](#orgb21bfae)
-        5.  [Additional Graphical and Numerical Summaries](#org2b5739c)
-3.  [Linear Regression](#orgd69de73)
-    1.  [Simple Linear Regression](#org842ef5c)
-    2.  [Multiple Linear Regression](#org9a11c64)
+1.  [Introduction](#orgc7400c7)
+2.  [Statistical Learning](#org730c4c5)
+    1.  [What is Statistical Learning?](#org3ed8001)
+    2.  [Assessing Model Accuracy](#orga48f53e)
+    3.  [Lab: Introduction to Python](#org9ce5b6d)
+        1.  [Basic Commands](#orgb3f7157)
+        2.  [Graphics](#org3d840b3)
+        3.  [Indexing Data](#org70fd950)
+        4.  [Loading Data](#org6fa36a9)
+        5.  [Additional Graphical and Numerical Summaries](#orgf086549)
+3.  [Linear Regression](#orgd95ffe0)
+    1.  [Simple Linear Regression](#org3f0e0c2)
+    2.  [Multiple Linear Regression](#orgf5aafb8)
 
 
 
-<a id="org6d52661"></a>
+<a id="orgc7400c7"></a>
 
 # Introduction
 
-Figure [2](#orgb0100af) shows graphs of Wage versus three variables. 
+Figure [2](#org43738a0) shows graphs of Wage versus three variables. 
 
 ![img](figures/fig1_1.png "`Wage` data, which contains income survey information for males from the central Atlantic region of the United States.  Left: `wage` as a function of `age`.  On average, `wage` increases with `age` until about 60 years of age, at which point it begins to decline.  Center: `wage` as a function of `year`.  There is a slow but steady increase of approximately $10,000 in the average `wage` between 2003 and 2009.  Right: Boxplots displaying `wage` as a function of `education`, with 1 indicating the lowest level (no highschool diploma) and 5 the highest level (an advanced graduate degree).  On average, `wage` increases with the level of `education`.")
 
-Figure [4](#org75b6348) shows boxplots of previous days' percentage changes in S&P
+Figure [4](#org31d8af4) shows boxplots of previous days' percentage changes in S&P
 500 grouped according to today's change `Up` or `Down`. 
 
 ![img](figures/fig1_2.png "Left: Boxplots of the previous day's percentage change in the S&P 500 index for the days for which the market increased or decreased, obtained from the `Smarket` data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.")
 
 
-<a id="orgf7fe937"></a>
+<a id="org730c4c5"></a>
 
 # Statistical Learning
 
 
-<a id="org6627a7f"></a>
+<a id="org3ed8001"></a>
 
 ## What is Statistical Learning?
 
-Figure [6](#orgc68ac5c) shows scatter plots of `sales` versus `TV`, `radio`,
+Figure [6](#org98719f1) shows scatter plots of `sales` versus `TV`, `radio`,
 and `newspaper` advertising.  In each panel, the figure also includes an OLS
 regression line.  
 
 ![img](figures/fig2_1.png "The `Advertising` data set. The plot displays `sales`, in thousands of units, as a function of `TV`, `radio`, and `newspaper` budgets, in thousands of dollars, for 200 different markets.  In each plot we show the simple least squares fit of `sales` to that variable.  In other words, each red line represents a simple model that can be used to predict `sales` using `TV`, `radio`, and `newspaper`, respectively.")
 
-Figure [8](#orgf3f5bc2) is a plot of `Income` versus `Years of Education` from the
+Figure [8](#org88ed3ee) is a plot of `Income` versus `Years of Education` from the
 Income data set.  In the left panel, the \`\`true'' function (given by blue line)
 is actually my guess.  
 
 ![img](figures/fig2_2.png "The `Income` data set.  Left: The red dots are the observed values of `income` (in tens of thousands of dollars) and `years of education` for 30 individuals.  Right: The blue curve represents the true underlying relationship between `income` and `years of education`, which is generally unknown (but is known in this case because the data are simulated).  The vertical lines represent the error associated with each observation.  Note that some of the errors are positive (when an observation lies above the blue curve) and some are negative (when an observation lies below the curve).  Overall, these errors have approximately mean zero.")
 
-Figure [10](#orgb9f8108) is a plot of `Income` versus `Years of Education` and
+Figure [10](#orgbc67ff1) is a plot of `Income` versus `Years of Education` and
 `Seniority` from the `Income` data set.  Since the book does not provide the
 true values of `Income`, \`\`true'' values shown in the plot are actually third
 order polynomial fit.  
 
 ![img](figures/fig2_3.png "The plot displays `income` as a function of `years of education` and `seniority` in the `Income` data set.  The blue surface represents the true underlying relationship between `income` and `years of education` and `seniority`, which is known since the data are simulated.  The red dots indicate the observed values of these quantities for 30 individuals.")
 
-Figure [12](#orgc6a3858) shows an example of the parametric approach applied to
+Figure [12](#org9884cea) shows an example of the parametric approach applied to
 the `Income` data from previous figure. 
 
-![img](figures/fig2_4.png "A linear model fit by least squares to the `Income` data from figure [10](#orgb9f8108).  The observations are shown in red, and the blue plane indicates the least squares fit to the data.")
+![img](figures/fig2_4.png "A linear model fit by least squares to the `Income` data from figure [10](#orgbc67ff1).  The observations are shown in red, and the blue plane indicates the least squares fit to the data.")
 
-Figure [14](#org012ed4e) provides an illustration of the trade-off between
+Figure [14](#org167ffc4) provides an illustration of the trade-off between
 flexibility and interpretability for some of the methods covered in this book.
 
 ![img](figures/figure2_7.png "A representation of the tradeoff between flexibility and interpretability, using different statistical learning methods.  In general, as the flexibility of a method increases, its interpretability decreases.")
 
-Figure [16](#orgc70e122) provides a simple illustration of the clustering problem.
+Figure [16](#org16ba8ef) provides a simple illustration of the clustering problem.
 
 ![img](figures/fig2_8.png "A clustering data set involving three groups.  Each group is shown using a different colored symbol.  Left: The three groups are well-separated.  In this setting, a clustering approach should successfully identify the three groups.  Right: There is some overlap among the groups.  Now the clustering taks is more challenging.")
 
 
-<a id="org6a008aa"></a>
+<a id="orga48f53e"></a>
 
 ## Assessing Model Accuracy
 
-Figure [20](#orgc9b81dc) illustrates the tradeoff between training MSE and test
+Figure [20](#org023be29) illustrates the tradeoff between training MSE and test
 MSE.  We select a \`\`true function'' whose shape is similar to that shown in the
 book.  In the left panel, the orange, blue, and green curves illustrate three possible estimates
 for \(f\) given by the black curve.  The orange line is the linear regression
@@ -91,45 +91,45 @@ For the right panel, we have chosen polynomial fits.  The degree of polynomial
 represents the level of flexibility.  This is because the function
 `UnivariateSpline` does not more than five degrees of freedom.  
 
-When we repeat the simulations for figure [20](#orgc9b81dc), we see considerable
+When we repeat the simulations for figure [20](#org023be29), we see considerable
 variation in the right panel MSE plots.  But the overall conclusion remains the
 same.   
 
 ![img](figures/fig2_9.png "Left: Data simulated from \(f\), shown in black.  Three estimates of \(f\) are shown: the linear regression line (orange curve), and two smoothing spline fits (blue and green curves).  Right: Training MSE (grey curve), test MSE (red curve), and minimum possible test MSE over all methods (dashed grey line).")
 
-Figure [22](#org72b17d2) provides another example in which the true \(f\) is
+Figure [22](#org43026ec) provides another example in which the true \(f\) is
 approximately linear. 
 
-![img](figures/fig2_10.png "Details are as in figure [20](#orgc9b81dc) using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.")
+![img](figures/fig2_10.png "Details are as in figure [20](#org023be29) using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.")
 
-Figure [24](#org792fcb6) displays an example in which \(f\) is highly
+Figure [24](#org6888e04) displays an example in which \(f\) is highly
 non-linear. The training and test MSE curves still exhibit the same general
 patterns.
 
-![img](figures/fig2_11.png "Details are as in figure [20](#orgc9b81dc), using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.")
+![img](figures/fig2_11.png "Details are as in figure [20](#org023be29), using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.")
 
-Figure [26](#org219d5d3) displays the relationship between bias, variance, and
+Figure [26](#org7577c09) displays the relationship between bias, variance, and
 test MSE.  This relationship is referred to as *bias-variance trade-off*.  When
 simulations are repeated, we see considerable variation in different graphs,
 especially for MSE lines.  But overall shape remains the same. 
 
-![img](figures/fig2_12.png "Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures [20](#orgc9b81dc) - [24](#org792fcb6).  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.")
+![img](figures/fig2_12.png "Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures [20](#org023be29) - [24](#org6888e04).  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.")
 
-Figure [28](#orgc5cd725) provides an example using a simulated data set in
+Figure [28](#org3eed9b9) provides an example using a simulated data set in
 two-dimensional space consisting of predictors \(X_1\) and \(X_2\).  
 
 ![img](figures/fig2_13.png "A simulated data set consisting of 200 observations in two groups, indicated in blue and orange.  The dashed line represents the Bayes decision boundary.  The orange background grid indicates the region in which a test observation will be assigned to the orange class, and blue background grid indicates the region in which a test observation will be assigned to the blue class.")
 
-Figure [30](#org03cf7c8) displays the KNN decision boundary, using \(K=10\), when
-applied to the simulated data set from figure [28](#orgc5cd725).  Even though
+Figure [30](#org82eb349) displays the KNN decision boundary, using \(K=10\), when
+applied to the simulated data set from figure [28](#org3eed9b9).  Even though
 the true distribution is not known by the KNN classifier, the KNN decision
 making boundary is very close to that of the Bayes classifier.  
 
-![img](figures/fig2_15.png "The firm line indicates the KNN decision boundary on the data from figure [28](#orgc5cd725), using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.")
+![img](figures/fig2_15.png "The firm line indicates the KNN decision boundary on the data from figure [28](#org3eed9b9), using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.")
 
-![img](figures/fig2_16.png "A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure [28](#orgc5cd725).  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.")
+![img](figures/fig2_16.png "A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure [28](#org3eed9b9).  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.")
 
-In figure [33](#org4a5f745) we have plotted the KNN test and training errors as
+In figure [33](#org862b183) we have plotted the KNN test and training errors as
 a function of \(\frac{1}{K}\).  As \(\frac{1}{K}\) increases, the method becomes
 more flexible.  As in the regression setting, the training error rate
 consistently declines as the flexibility increases.  However, the test error
@@ -137,15 +137,15 @@ exhibits the characteristic U-shape, declining at first (with a minimum at
 approximately \(K=10\)) before increasing again when the method becomes
 excessively flexible and overfits. 
 
-![img](figures/fig2_17.png "The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure [28](#orgc5cd725) as the level of flexibility (assessed using \(\frac{1}{K}\)) increases, or equivalently as the number of neighbors \(K\) decreases.  The black dashed line indicates the Bayes error rate.")
+![img](figures/fig2_17.png "The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure [28](#org3eed9b9) as the level of flexibility (assessed using \(\frac{1}{K}\)) increases, or equivalently as the number of neighbors \(K\) decreases.  The black dashed line indicates the Bayes error rate.")
 
 
-<a id="org91ad677"></a>
+<a id="org9ce5b6d"></a>
 
 ## Lab: Introduction to Python
 
 
-<a id="orgf857a7b"></a>
+<a id="orgb3f7157"></a>
 
 ### Basic Commands
 
@@ -203,7 +203,7 @@ and `y`, and use `numpy.corrcoef` to calculate correlation between them.
     0.9330621750073688
 
 
-<a id="org94aeec7"></a>
+<a id="org3d840b3"></a>
 
 ### Graphics
 
@@ -244,7 +244,7 @@ an end of a given length.
     ax.clabel(CS, inline=1)
 
 
-<a id="org9a75068"></a>
+<a id="org70fd950"></a>
 
 ### Indexing Data
 
@@ -280,7 +280,7 @@ rows followed by number of columns.
     (4, 4)
 
 
-<a id="orgb21bfae"></a>
+<a id="org6fa36a9"></a>
 
 ### Loading Data
 
@@ -321,7 +321,7 @@ the internet.
           dtype='object')
 
 
-<a id="org2b5739c"></a>
+<a id="orgf086549"></a>
 
 ### Additional Graphical and Numerical Summaries
 
@@ -366,51 +366,112 @@ On `pandas` dataframes, `describe` method produces a summary of each variable.
     [8 rows x 7 columns]
 
 
-<a id="orgd69de73"></a>
+<a id="orgd95ffe0"></a>
 
 # Linear Regression
 
 
-<a id="org842ef5c"></a>
+<a id="org3f0e0c2"></a>
 
 ## Simple Linear Regression
 
-Figure [47](#org66e6159) displays the simple linear regression fit to the
+Figure [47](#orgf50a147) displays the simple linear regression fit to the
 `Advertising` data, where \(\hat{\beta_0} =\) 0.0475
  and \(\hat{\beta_1} =\) 7.0326.
 
 ![img](figures/fig3_1.png "For the `Advertising` data, the least squares fit for the regression of `sales` onto `TV` is shown.  The fit is found by minimizing the sum of squared errors.  Each grey line represents an error, and the fit makes a compromise by averaging their squares.  In this case a linear fit captures the essence of the relationship, although it is somewhat deficient in the left of the plot.")
 
 
-In figure [49](#orgff6973b), we have computed RSS for a number of values of
+In figure [49](#orgcb2d5ee), we have computed RSS for a number of values of
 \(\beta_0\) and \(\beta_1\), using the advertising data with `sales` as the response
 and `TV` as the predictor. 
 
 ![img](figures/fig3_2.png "Contour and three-dimensional plots of the RSS on the `Advertising` data, using `sales` as the response and `TV` as the predictor.  The red dots correspond to the least squares estimates \(\hat{\beta_0}\) and \(\hat{\beta_1}\).")
 
-The left-hand panel of figure [51](#orge9acfe1) displays *population regression
+The left-hand panel of figure [51](#org151b1a0) displays *population regression
 line* and *least squares line* for a simple simulated example.  The red line in
 the left-hand panel displays the *true* relationship, \(f(X) = 2 + 3X\), while the
 blue line is the least squares estimate based on observed data.  In the
-right-hand panel of figure [51](#orge9acfe1) we have generated five different
+right-hand panel of figure [51](#org151b1a0) we have generated five different
 data sets from the model \(Y = 2 + 3X + \epsilon\) and plotted the corresponding
 five least squares lines.  
 
 ![img](figures/fig3_3.png "A simulated data set.  Left: The red line represents the true relationship, \(f(X) = 2 + 3X\), which is known as the population regression line.  The blue line is the least squares line; it is the least squares estimate for \(f(X)\) based on the observed data, shown in grey circles.  Right: The population regression line is again shown in red, and the least squares line in blue.  In cyan, five least squares lines are shown, each computed on the basis of a separate random set of observations.  Each least squares line is different, but on average, the least squares lines are quite close to the population regression line.")
 
-For `Advertising` data, this table provides details of the least squares model for the
+For `Advertising` data, table [1](#org36e0b6a) provides details of the least squares model for the
 regression of number of units sold on TV advertising budget. 
 
-In the next table [1](#orge20309d), we report more information about the least squares model.  
+<table id="org36e0b6a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> For `Advertising` data, the coefficients of the least squares model</caption>
 
-<table id="orge20309d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 1:</span> For the `Advertising` data, more information about the least squares model for the regression of number of units sold on TV advertising budget.</caption>
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-right">Coef.</th>
+<th scope="col" class="org-right">Std.Err.</th>
+<th scope="col" class="org-right">t</th>
+<th scope="col" class="org-right">P></th>
+<th scope="col" class="org-left">t</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td class="org-left">Intercept</td>
+<td class="org-right">7.0326</td>
+<td class="org-right">0.4578</td>
+<td class="org-right">15.3603</td>
+<td class="org-right">0.0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+
+<tr>
+<td class="org-left">TV</td>
+<td class="org-right">0.0475</td>
+<td class="org-right">0.0027</td>
+<td class="org-right">17.6676</td>
+<td class="org-right">0.0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+Next, in table [2](#org5ceb3a2), we report more information about the least squares model.  
+
+<table id="org5ceb3a2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> For the `Advertising` data, more information about the least squares model for the regression of number of units sold on TV advertising budget.</caption>
 
 <colgroup>
 <col  class="org-left" />
 
 <col  class="org-right" />
 </colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Quantity</th>
+<th scope="col" class="org-right">Value</th>
+</tr>
+</thead>
+
 <tbody>
 <tr>
 <td class="org-left">Residual standard error</td>
@@ -432,7 +493,7 @@ In the next table [1](#orge20309d), we report more information about the least s
 </table>
 
 
-<a id="org9a11c64"></a>
+<a id="orgf5aafb8"></a>
 
 ## Multiple Linear Regression
 
