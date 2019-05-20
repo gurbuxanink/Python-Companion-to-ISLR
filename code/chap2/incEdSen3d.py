@@ -35,12 +35,19 @@ def plotIncomeEdSeniority(fit_formula):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_wireframe(ed, sen, income_fit, alpha=0.5, rstride=5, cstride=5)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_zticks([])
     ax.set_xticklabels('')
     ax.set_yticklabels('')
     ax.set_zticklabels('')
     ax.set_xlabel(r'$\overrightarrow{Years of Education}$')
     ax.set_ylabel(r'$\overrightarrow{Seniority}$')
     ax.set_zlabel(r'$\overrightarrow{Income}$')
+    ax.grid(False)
+    ax.xaxis.pane.fill = False
+    ax.yaxis.pane.fill = False
+    ax.zaxis.pane.fill = False
 
     ax.scatter(xs=income_data['Education'], ys=income_data['Seniority'],
                zs=income_data['Income'], c='r')
