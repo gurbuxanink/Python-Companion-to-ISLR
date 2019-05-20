@@ -44,11 +44,15 @@ ax2 = fig.add_subplot(122, projection='3d')
 ax2.plot_wireframe(beta0_grid, beta1_grid, rss_grid, rstride = 5,
                    cstride = 5, alpha=0.7)
 ax2.scatter(beta0, beta1, sales_tv_fit.ssr, marker='o', c='r', s=100)
-ax2.set_xticklabels([])
-ax2.set_yticklabels([])
-ax2.set_zticklabels([])
+ax2.set_xticks([])
+ax2.set_yticks([])
+ax2.set_zticks([])
 ax2.set_xlabel(r'$\beta_0$')
 ax2.set_ylabel(r'$\beta_1$')
 ax2.set_zlabel('RSS', rotation=90)
+ax2.grid(False)
+ax2.xaxis.pane.fill = False
+ax2.yaxis.pane.fill = False
+ax2.zaxis.pane.fill = False
 
 fig.tight_layout()
