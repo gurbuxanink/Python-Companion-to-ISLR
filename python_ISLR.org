@@ -1126,3 +1126,68 @@ versus =sales=.
 #+CAPTION: For the =Advertising= data, a linear regression fit to =sales= using =TV= and =radio= as predictors.  From the pattern of the residuals, we can see that there is a pronounced non-linear relationship in the data.  The positive residuals tend to lie along the 45-degree line, where TV and Radio budgets are split evenly.  The negative residuals tend to lie away from this line, where budgets are more lopsided. 
 #+RESULTS: fig3_5plot
 [[file:figures/fig3_5.png]]
+
+#+LATEX: \FloatBarrier
+
+** Other Considerations in the Regression Model
+
+=Credit= data set displayed in figure [[fig:linearRegFig3_6]] records =balance=
+(average credit card debt for a number of individuals) as well as several
+quantitative predictors: =age=, =cards= (number of credit cards), =education=
+and =rating= (credit rating).
+
+#+NAME: fig3_6plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_6.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+
+  import creditPairsPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig3_6
+#+CAPTION: The =Credit= dataset contains information about =balance=, =age=, =cards=, =education=, =income=, =limit=, and =rating= for a number of potential customers.
+#+RESULTS: fig3_6plot
+[[file:figures/fig3_6.png]]
+
+
+Table [[tab:linearRegTab7]] displays the coefficient estimates and other information
+associated with the model where =gender= is the only explanatory variable.
+
+#+NAME: credit_gender_reg
+#+BEGIN_SRC python :exports results :results table
+    import pandas as pd
+    import statsmodels.formula.api as smf
+    import statsmodels.datasets as datasets
+    import sys
+    sys.path.append('code/general/')
+    import myFuncs 
+
+    credit = datasets.get_rdataset('Credit', 'ISLR').data
+
+    gender_reg_model = smf.ols(formula='Balance ~ Gender', data=credit)
+    gender_reg_fit = gender_reg_model.fit()
+    gender_reg_res = gender_reg_fit.summary2().tables[1]
+    gender_reg_res = gender_reg_res[gender_reg_res.columns[:4]]
+
+    for col_name in gender_reg_res.columns:
+	gender_reg_res.loc[:, col_name] = round(gender_reg_res[col_name], 3)
+
+    gender_reg_res.rename(index=str,
+			  columns={'t': '$t$',
+				   'P>|t|': '$P > \mid t \mid$'}, 
+			  inplace=True)
+    return myFuncs.dfToList(gender_reg_res)
+#+END_SRC
+
+#+NAME: tab:linearRegTab7
+#+CAPTION: Least squares coefficient estimates associated with the regression of =balance= onto =gender= in the =Credit= data set.
+#+RESULTS: credit_gender_reg
+|                  |   Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|------------------+---------+----------+--------+-------------------|
+| Intercept        | 509.803 |   33.128 | 15.389 |               0.0 |
+| Gender[T.Female] |  19.733 |   46.051 |  0.429 |             0.669 |
