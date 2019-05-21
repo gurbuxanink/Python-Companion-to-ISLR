@@ -857,7 +857,7 @@ regression of number of units sold on TV advertising budget.
 #+END_SRC
 
 #+NAME: tab:linearRegTab1
-#+CAPTION: For =Advertising= data, the coefficients of the least squares model
+#+CAPTION: For =Advertising= data, the coefficients of the least squares model for the regression of number of units sold on TV advertising budget.  An increase of $1,000 on the TV advertising budget is associated with an increase in sales by around 50 units.
 #+RESULTS: sales_tv_reg
 |           |  Coef. | Std.Err. |     $t$ | $P > \mid t \mid$ |
 |-----------+--------+----------+---------+-------------------|
@@ -901,3 +901,228 @@ Next, in table [[tab:linearRegTab2]], we report more information about the least
 #+LATEX: \FloatBarrier
 
 ** Multiple Linear Regression
+
+Table [[tab:linearRegTab3]] and the next table show results of two simple linear
+regressions, each of which uses a different advertising medium as a predictor.
+We find that a $1,000 increase in spending on radio advertising is associated
+with an increase in sales by around {{{radio_beta_est}}} units.  A $1,000 increase in advertising
+spending on on newspapers increases sales by approximately {{{newsp_beta_est}}} units. 
+
+#+NAME: sales_radio_newp_reg
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  reg_model = smf.ols(formula='sales ~ radio', data=advertising)
+  reg_fit = reg_model.fit()
+  res_table = reg_fit.summary2().tables[1]
+  res_table = res_table[res_table.columns[:4]]
+  res_table.rename(index=str,
+		   columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
+		   inplace=True)
+  for col_name in res_table.columns:
+      res_table[col_name] = res_table[col_name].apply(lambda x: round(x, 3))
+  return myFuncs.dfToList(res_table)
+#+END_SRC
+
+#+NAME: tab:linearRegTab3
+#+CAPTION: More simple linear regression models for =Advertising= data.  Coefficients of the simple linear regression model for number of units sold on radio advertising budget.  a $1,000 increase in spending on radio advertising is associated with an average increase sales by around {{{radio_beta_est}}} units.
+#+RESULTS: sales_radio_newp_reg
+|           | Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|-----------+-------+----------+--------+-------------------|
+| Intercept | 9.312 |    0.563 | 16.542 |               0.0 |
+| radio     | 0.202 |     0.02 |  9.921 |               0.0 |
+
+#+NAME: sales_newsp_reg
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  reg_model = smf.ols(formula='sales ~ newspaper', data=advertising)
+  reg_fit = reg_model.fit()
+  res_table = reg_fit.summary2().tables[1]
+  res_table = res_table[res_table.columns[:4]]
+  res_table.rename(index=str,
+		   columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
+		   inplace=True)
+  for col_name in res_table.columns:
+      res_table[col_name] = res_table[col_name].apply(lambda x: round(x, 3))
+  return myFuncs.dfToList(res_table)
+#+END_SRC
+
+#+RESULTS: sales_newsp_reg
+|           |  Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|-----------+--------+----------+--------+-------------------|
+| Intercept | 12.351 |    0.621 | 19.876 |               0.0 |
+| newspaper |  0.055 |    0.017 |    3.3 |             0.001 |
+
+#+LATEX: \FloatBarrier
+
+#+NAME: get_radio_newsp_beta
+#+BEGIN_SRC python :exports results :results values drawer
+  import pandas as pd
+  import statsmodels.formula.api as smf
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  reg_radio_model = smf.ols(formula='sales ~ radio', data=advertising)
+  radio_model_fit = reg_radio_model.fit()
+  radio_beta = '#+MACRO: radio_beta_est ' + \
+      str(round(radio_model_fit.params['radio'] * 1000, 0))[:-2]
+
+  reg_newsp_model = smf.ols(formula='sales ~ newspaper', data=advertising)
+  newsp_model_fit = reg_newsp_model.fit()
+  newsp_beta = '#+MACRO: newsp_beta_est ' + \
+      str(round(newsp_model_fit.params['newspaper'] * 1000, 0))[:-2]
+
+  return radio_beta + '\n' + newsp_beta
+#+END_SRC
+
+#+RESULTS: get_radio_newsp_beta
+:RESULTS:
+#+MACRO: radio_beta_est 202
+#+MACRO: newsp_beta_est 55
+:END:
+
+Figure [[fig:linearRegFig4]] illustrates an example of the least squares fit to a
+toy data set with $p = 2$ predictors. 
+
+#+NAME: fig3_4plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_4.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+
+  import regTwoVarPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig4
+#+CAPTION: In a three-dimensional setting, with two predictors and one response, the least squares regression line becomes a plane.  The plane is chosen to minimize the sum of the squared vertical distances between each observation (shown in red) and the plane.
+#+RESULTS: fig3_4plot
+[[file:figures/fig3_4.png]]
+
+
+Table [[tab:linearRegTab4]] displays multiple regression coefficient estimates when
+TV, radio, and newspaper advertising budgets are used to predict product sales
+using =Advertising= data.
+
+#+NAME: tv_radio_newsp_reg
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  reg_model = smf.ols(formula='sales ~ TV + radio + newspaper',
+		      data=advertising)
+  reg_fit = reg_model.fit()
+  reg_res = reg_fit.summary2().tables[1]
+  reg_res = reg_res[reg_res.columns[:4]]
+  for col_name in reg_res.columns:
+      reg_res[col_name] = reg_res[col_name].apply(lambda x: round(x, 3))
+  reg_res.rename(index=str,
+		 columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
+		 inplace=True)
+  return myFuncs.dfToList(reg_res)
+#+END_SRC
+
+#+NAME: tab:linearRegTab4
+#+CAPTION: For the =Advertising= data, least squares coefficient estimates of the multiple linear regression of number of units sold on radio, TV, and newspaper advertising budgets.
+#+RESULTS: tv_radio_newsp_reg
+|           |  Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|-----------+--------+----------+--------+-------------------|
+| Intercept |  2.939 |    0.312 |  9.422 |               0.0 |
+| TV        |  0.046 |    0.001 | 32.809 |               0.0 |
+| radio     |  0.189 |    0.009 | 21.893 |               0.0 |
+| newspaper | -0.001 |    0.006 | -0.177 |              0.86 |
+
+Table [[tab:linearRegTab5]] shows the correlation matrix for the three predictor
+variables and response variable in table [[tab:linearRegTab4]]. 
+
+#+NAME: tv_radio_newsp_cor
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  my_cor = advertising.corr()
+  for col_name in my_cor.columns:
+      my_cor[col_name] = my_cor[col_name].apply(lambda x: round(x, 4))
+  return myFuncs.dfToList(my_cor)
+#+END_SRC
+
+#+NAME: tab:linearRegTab5
+#+CAPTION: Correlation matrix for =TV=, =radio=, and =sales= for the =Advertising= data.
+#+RESULTS: tv_radio_newsp_cor
+|           |     TV |  radio | newspaper |  sales |
+|-----------+--------+--------+-----------+--------|
+| TV        |    1.0 | 0.0548 |    0.0566 | 0.7822 |
+| radio     | 0.0548 |    1.0 |    0.3541 | 0.5762 |
+| newspaper | 0.0566 | 0.3541 |       1.0 | 0.2283 |
+| sales     | 0.7822 | 0.5762 |    0.2283 |    1.0 |
+
+#+NAME: tv_radio_newsp_more_res
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import numpy as np
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+  reg_model = smf.ols(formula='sales ~ TV + radio + newspaper',
+		      data=advertising)
+  reg_fit = reg_model.fit()
+  rss = round(np.sqrt(reg_fit.mse_resid), 2)
+  rsq = round(reg_fit.rsquared, 3)
+  fstat = round(reg_fit.fvalue)
+
+  rss_tup = ('Residual standard error', rss)
+  rsq_tup = ('$R^2$', rsq)
+  fstat_tup = ('F-statistic', fstat)
+  header = ('Quantity', 'Value')
+  return (header, None, rss_tup, rsq_tup, fstat_tup)
+#+END_SRC
+
+#+NAME: tab:linearRegTab6
+#+CAPTION: More information about the least squares model for the regression of number of units sold on TV, newspaper, and radio advertising budgets in the =Advertising= data.  Other information about this model was displayed in table [[tab:linearRegTab4]]. 
+#+RESULTS: tv_radio_newsp_more_res
+| Quantity                | Value |
+|-------------------------+-------|
+| Residual standard error |  1.69 |
+| $R^2$                   | 0.897 |
+| F-statistic             | 570.0 |
+
+Figure [[fig:linearRegFig5]] displays a three-dimensional plot of =TV= and =radio=
+versus =sales=.  
+
+#+NAME: fig3_5plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_5.png" 
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+  import tvRadioSalesPlot
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig5
+#+CAPTION: For the =Advertising= data, a linear regression fit to =sales= using =TV= and =radio= as predictors.  From the pattern of the residuals, we can see that there is a pronounced non-linear relationship in the data.  The positive residuals tend to lie along the 45-degree line, where TV and Radio budgets are split evenly.  The negative residuals tend to lie away from this line, where budgets are more lopsided. 
+#+RESULTS: fig3_5plot
+[[file:figures/fig3_5.png]]
