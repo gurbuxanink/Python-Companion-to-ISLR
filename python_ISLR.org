@@ -846,7 +846,7 @@ regression of number of units sold on TV advertising budget.
   advertising = pd.read_csv('data/Advertising.csv', index_col=0)
   reg_model = smf.ols(formula='sales ~ TV', data=advertising)
   reg_fit = reg_model.fit()
-  res_table = reg_fit.summary2().tables[1]
+  res_table = reg_fit.summary2().tables[1].copy()
   res_table = res_table[res_table.columns[:4]]
   res_table.rename(index=str,
 		   columns={'t': '$t$',  'P>|t|': '$P > \mid t \mid$'},
@@ -919,7 +919,7 @@ spending on on newspapers increases sales by approximately {{{newsp_beta_est}}} 
   advertising = pd.read_csv('data/Advertising.csv', index_col=0)
   reg_model = smf.ols(formula='sales ~ radio', data=advertising)
   reg_fit = reg_model.fit()
-  res_table = reg_fit.summary2().tables[1]
+  res_table = reg_fit.summary2().tables[1].copy()
   res_table = res_table[res_table.columns[:4]]
   res_table.rename(index=str,
 		   columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
@@ -948,7 +948,7 @@ spending on on newspapers increases sales by approximately {{{newsp_beta_est}}} 
   advertising = pd.read_csv('data/Advertising.csv', index_col=0)
   reg_model = smf.ols(formula='sales ~ newspaper', data=advertising)
   reg_fit = reg_model.fit()
-  res_table = reg_fit.summary2().tables[1]
+  res_table = reg_fit.summary2().tables[1].copy()
   res_table = res_table[res_table.columns[:4]]
   res_table.rename(index=str,
 		   columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
@@ -1029,7 +1029,7 @@ using =Advertising= data.
   reg_model = smf.ols(formula='sales ~ TV + radio + newspaper',
 		      data=advertising)
   reg_fit = reg_model.fit()
-  reg_res = reg_fit.summary2().tables[1]
+  reg_res = reg_fit.summary2().tables[1].copy()
   reg_res = reg_res[reg_res.columns[:4]]
   for col_name in reg_res.columns:
       reg_res[col_name] = reg_res[col_name].apply(lambda x: round(x, 3))
@@ -1171,7 +1171,7 @@ associated with the model where =gender= is the only explanatory variable.
 
     gender_reg_model = smf.ols(formula='Balance ~ Gender', data=credit)
     gender_reg_fit = gender_reg_model.fit()
-    gender_reg_res = gender_reg_fit.summary2().tables[1]
+    gender_reg_res = gender_reg_fit.summary2().tables[1].copy()
     gender_reg_res = gender_reg_res[gender_reg_res.columns[:4]]
 
     for col_name in gender_reg_res.columns:
@@ -1191,3 +1191,111 @@ associated with the model where =gender= is the only explanatory variable.
 |------------------+---------+----------+--------+-------------------|
 | Intercept        | 509.803 |   33.128 | 15.389 |               0.0 |
 | Gender[T.Female] |  19.733 |   46.051 |  0.429 |             0.669 |
+
+
+From table [[tab:linearRegTab8]] we see that the estimated =balance= for the
+baseline, African American, is ${{{afr_amr_est}}}. It is estimated that the
+Asian category will have an additional ${{{asian_incr}}} debt, and that the
+Caucasian category will have an additional ${{{cauc_incr}}} debt compared to
+Africna American category.
+
+#+NAME: balance_eth_reg
+#+BEGIN_SRC python :exports none :results output
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import statsmodels.datasets as datasets
+
+  credit = datasets.get_rdataset('Credit', 'ISLR').data
+  eth_model = smf.ols(formula='Balance ~ Ethnicity', data=credit)
+  eth_fit = eth_model.fit()
+#+END_SRC
+
+#+NAME: balance_eth_res
+#+BEGIN_SRC python :noweb yes :exports results :results table
+  <<balance_eth_reg>>
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  eth_res = eth_fit.summary2().tables[1].copy()
+  eth_res = eth_res[eth_res.columns[:4]]
+  for col_name in eth_res.columns:
+      eth_res.loc[:, col_name] = round(eth_res[col_name], 3)
+  eth_res.rename(index=str,
+		 columns={'t': '$t$',
+			  'P>|t|': '$P > \mid t \mid$'},
+		 inplace=True)
+
+  return myFuncs.dfToList(eth_res)
+#+END_SRC
+
+#+NAME: tab:linearRegTab8
+#+CAPTION: Least squares coefficient estimates associated with the regression of =balance= onto =ethnicity= in the =Credit= data set.  
+#+RESULTS: balance_eth_res
+|                        |   Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|------------------------+---------+----------+--------+-------------------|
+| Intercept              |   531.0 |   46.319 | 11.464 |               0.0 |
+| Ethnicity[T.Asian]     | -18.686 |   65.021 | -0.287 |             0.774 |
+| Ethnicity[T.Caucasian] | -12.503 |   56.681 | -0.221 |             0.826 |
+
+
+#+NAME: balance_eth_coef
+#+BEGIN_SRC python :noweb yes :exports results :results values drawer
+  <<balance_eth_reg>>
+
+  afr_amer = '#+MACRO: afr_amr_est ' + \
+      str(round(eth_fit.params['Intercept'], 1))
+  asian = '#+MACRO: asian_incr ' + \
+      str(round(eth_fit.params['Ethnicity[T.Asian]'], 1))
+  caucasian = '#+MACRO: cauc_incr ' + \
+      str(round(eth_fit.params['Ethnicity[T.Caucasian]'], 1))
+
+  return afr_amer + '\n' + asian + '\n' + caucasian
+#+END_SRC
+
+#+RESULTS: balance_eth_coef
+:RESULTS:
+#+MACRO: afr_amr_est 531.0
+#+MACRO:  asian_incr -18.7
+#+MACRO: cauc_incr -12.5
+:END:
+
+Table [[tab:linearRegTab9]] shows results of regressing =sales= and =TV= and =radio=
+when an interaction term is included.  Coefficient of interaction term
+=TV:radio= is highly significant.
+
+
+#+NAME: tv_radio_interact
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
+
+  reg_model = smf.ols(formula='sales ~ TV + radio + TV * radio',
+		      data=advertising)
+  reg_fit = reg_model.fit()
+  reg_res = reg_fit.summary2().tables[1].copy()
+  reg_res = reg_res[reg_res.columns[:4]]
+  for col_name in reg_res.columns:
+      reg_res.loc[:, col_name] = round(reg_res[col_name], 3)
+
+  reg_res.rename(index=str,
+		 columns={'t': '$t$',
+			  'P>|t|': '$P > \mid t \mid$'},
+		 inplace=True)
+  return myFuncs.dfToList(reg_res)
+#+END_SRC
+
+#+NAME: tab:linearRegTab9
+#+CAPTION: For =Advertising= data, least squares coefficient estimates associated with the regression of =sales= onto =TV= and =radio=, with an interaction term.
+#+RESULTS: tv_radio_interact
+|           | Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|-----------+-------+----------+--------+-------------------|
+| Intercept |  6.75 |    0.248 | 27.233 |               0.0 |
+| TV        | 0.019 |    0.002 | 12.699 |               0.0 |
+| radio     | 0.029 |    0.009 |  3.241 |             0.001 |
+| TV:radio  | 0.001 |      0.0 | 20.727 |               0.0 |
