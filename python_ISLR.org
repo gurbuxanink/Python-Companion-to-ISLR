@@ -1,5 +1,5 @@
 #+TITLE: A Python Companion to ISLR
-#+LATEX_HEADER: \usepackage{placeins,booktabs}
+#+LATEX_HEADER: \usepackage{amsmath,booktabs,placeins}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, allcolors=blue, linkbordercolor=white}
 
 * Introduction
@@ -1323,6 +1323,30 @@ right panel shows least squares lines when an interaction term is included.
 #+CAPTION: For the =Credit= data, the least squares lines are shown for prediction of =balance= from =income= for students and non-students.  Left: There is no interaction between =income= and =student=.  Right: There is an interaction term between =income= and =students=.
 #+RESULTS: fig3_7plot
 [[file:figures/fig3_7.png]]
+
+Figure [[fig:linearRegFig8]] shows a scatter plot of =mpg= (gas mileage in miles per
+gallon) versus =horsepower= in the =Auto= data set.  The figure also includes
+least squares fit line for linear, second degree, and fifth degree polynomials
+in =horsepower=. 
+
+#+NAME: fig3_8plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_8.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3')
+  import autoMgpHp
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig8
+#+CAPTION: The =Auto= data set.  For a number of cars, =mpg= and =horsepower= are shown.  The linear regression fit is shown in orange.  The linear regression fit for a model that includes first- and second-order terms of =horsepower= is shown as blue curve.  The linear regression fit for a model that includes all polynomials of =horsepower= up to fifth-degree is shown in green.
+#+RESULTS: fig3_8plot
+[[file:figures/fig3_8.png]]
+
 
 #+LATEX: \FloatBarrier
 
