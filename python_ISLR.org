@@ -1290,6 +1290,11 @@ when an interaction term is included.  Coefficient of interaction term
   return myFuncs.dfToList(reg_res)
 #+END_SRC
 
+In figure [[fig:linearRegFig7]], the left panel shows least squares lines when
+we predict =balance= using =income= (quantitative) and =student= (qualitative
+variables). There is no interaction term between =income= and =student=.  The
+right panel shows least squares lines when an interaction term is included. 
+
 #+NAME: tab:linearRegTab9
 #+CAPTION: For =Advertising= data, least squares coefficient estimates associated with the regression of =sales= onto =TV= and =radio=, with an interaction term.
 #+RESULTS: tv_radio_interact
@@ -1299,3 +1304,27 @@ when an interaction term is included.  Coefficient of interaction term
 | TV        | 0.019 |    0.002 | 12.699 |               0.0 |
 | radio     | 0.029 |    0.009 |  3.241 |             0.001 |
 | TV:radio  | 0.001 |      0.0 | 20.727 |               0.0 |
+
+
+#+NAME: fig3_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_7.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+  import creditIncomeStudent
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig7
+#+CAPTION: For the =Credit= data, the least squares lines are shown for prediction of =balance= from =income= for students and non-students.  Left: There is no interaction between =income= and =student=.  Right: There is an interaction term between =income= and =students=.
+#+RESULTS: fig3_7plot
+[[file:figures/fig3_7.png]]
+
+#+LATEX: \FloatBarrier
+
+** Lab: Linear Regression
+It is possible to call R from Python and /vice versa/.  
