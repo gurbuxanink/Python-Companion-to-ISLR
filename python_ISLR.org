@@ -1348,6 +1348,73 @@ in =horsepower=.
 [[file:figures/fig3_8.png]]
 
 
+Table [[tab:linearRegTab10]] shows regression results of a qudratic fit to explain
+=mpg= as a function of =horsepower= and $\mathttt{horsepower^2}$.  
+
+
+#+NAME: mpg_hp_reg
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  auto_full = pd.read_csv('data/Auto.csv', na_values='?')
+  auto = auto_full.dropna()
+
+  reg_model = smf.ols(formula='mpg ~ horsepower + I(horsepower ** 2)', data=auto)
+  reg_fit = reg_model.fit()
+  reg_res = reg_fit.summary2().tables[1].copy()
+  reg_res = reg_res[reg_res.columns[:4]]
+  for col_name in reg_res.columns:
+      reg_res[col_name] = round(reg_res[col_name], 4)
+
+  reg_res.rename(index=str,
+		 columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
+		 inplace=True)
+
+  reg_res.rename(index={'I(horsepower ** 2)': '$horsepower^2$'}, inplace=True)
+  return myFuncs.dfToList(reg_res)
+#+END_SRC
+
+#+NAME: tab:linearRegTab10
+#+CAPTION: For the =Auto= data set, least squares coefficient estimates associated with the regression of =mpg= onto =horsepower= and $\texttt{horsepower^2}$.
+#+RESULTS: mpg_hp_reg
+|                |   Coef. | Std.Err. |      $t$ | $P > \mid t \mid$ |
+|----------------+---------+----------+----------+-------------------|
+| Intercept      | 56.9001 |   1.8004 |  31.6037 |               0.0 |
+| horsepower     | -0.4662 |   0.0311 | -14.9782 |               0.0 |
+| $horsepower^2$ |  0.0012 |   0.0001 |  10.0801 |               0.0 |
+
+
+The left panel of figure [[fig:linearRegFig9]] displays a residual plot from the
+linear regression of =mpg= onto =horsepower= on the =Auto= data set.  The red
+line is a smooth fit to the residuals, which is displayed in order to make it
+easier to identify any trends.  The residuals exhibit a clear U-shape, which
+strongly suggests non-linearity in the data.  In contrast, the right hand panel
+of figure[[fig:linearRegFig9]] displays the residual plot results from the model
+which contains a quadratic term in =horsepower=.  Now there is little pattern in
+residuals, suggesting that the quadratic term improves the fit to the data.
+
+#+NAME: fig3_9plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_9.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+  import residPlot
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig9
+#+CAPTION: Plots of residuals versus predicted (or fitted) values for the =Auto= data set.  In each plot, the red line is a smooth fit to the residuals, intended to make it easier to identify a trend.  Left: A linear regression of =mpg= on =horsepower=.  A strong pattern in the residuals indicates non-linearity in the data.  Right: A linear regression of =mpg= on =horsepower= and square of =horsepower=.  Now there is little pattern in the residuals.
+#+RESULTS: linearRegFig9
+[[file:figures/fig3_9.png]]
+
 #+LATEX: \FloatBarrier
 
 ** Lab: Linear Regression

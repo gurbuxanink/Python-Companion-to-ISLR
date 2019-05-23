@@ -732,6 +732,39 @@ of `horsepower` is shown as blue curve. The linear regression fit for a
 model that includes all polynomials of `horsepower` up to fifth-degree
 is shown in green.](figures/fig3_8.png "linearRegFig8")
 
+Table [tab:linearRegTab10](tab:linearRegTab10) shows regression results
+of a qudratic fit to explain `mpg` as a function of `horsepower` and
+$\mathttt{horsepower^2}$.
+
+                   Coef.     Std.Err.   $t$        $P > \mid t \mid$
+  ---------------- --------- ---------- ---------- -------------------
+  Intercept        56.9001   1.8004     31.6037    0.0
+  horsepower       -0.4662   0.0311     -14.9782   0.0
+  $horsepower^2$   0.0012    0.0001     10.0801    0.0
+
+  : For the `Auto` data set, least squares coefficient estimates
+  associated with the regression of `mpg` onto `horsepower` and
+  $\texttt{horsepower^2}$.
+
+The left panel of figure [fig:linearRegFig9](fig:linearRegFig9) displays
+a residual plot from the linear regression of `mpg` onto `horsepower` on
+the `Auto` data set. The red line is a smooth fit to the residuals,
+which is displayed in order to make it easier to identify any trends.
+The residuals exhibit a clear U-shape, which strongly suggests
+non-linearity in the data. In contrast, the right hand panel of
+figure[fig:linearRegFig9](fig:linearRegFig9) displays the residual plot
+results from the model which contains a quadratic term in `horsepower`.
+Now there is little pattern in residuals, suggesting that the quadratic
+term improves the fit to the data.
+
+![Plots of residuals versus predicted (or fitted) values for the `Auto`
+data set. In each plot, the red line is a smooth fit to the residuals,
+intended to make it easier to identify a trend. Left: A linear
+regression of `mpg` on `horsepower`. A strong pattern in the residuals
+indicates non-linearity in the data. Right: A linear regression of `mpg`
+on `horsepower` and square of `horsepower`. Now there is little pattern
+in the residuals.](figures/fig3_9.png "linearRegFig9")
+
 \FloatBarrier
 
 Lab: Linear Regression
