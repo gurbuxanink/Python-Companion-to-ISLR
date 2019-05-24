@@ -765,6 +765,53 @@ indicates non-linearity in the data. Right: A linear regression of `mpg`
 on `horsepower` and square of `horsepower`. Now there is little pattern
 in the residuals.](figures/fig3_9.png "linearRegFig9")
 
+Figure [fig:linearRegFig10](fig:linearRegFig10) provides an illustration
+of correlations among residuals. In the top panel, we see the residuals
+from a linear regression fit to data generated with uncorrelated errors.
+There is no evidence of time-related trend in the residuals. In
+contrast, the residuals in the bottom panel are from a data set in which
+adjacent errors had a correlation of 0.9. Now there is a clear pattern
+in the residuals - adjacent residuals tend to take on similar values.
+Finally, the center panel illustrates a more moderate case in which the
+residuals had a correlation of 0.5. There is still evidence of tracking,
+but the pattern is less pronounced.
+
+![Plots of residuals from simulated time series data sets generated with
+differeing levels of correlation $\rho$ between error terms for adjacent
+time points.](figures/fig3_10.png "linearRegFig10")
+
+In the left-hand panel of figure
+[fig:linearRegFig11](fig:linearRegFig11), the magnitude of the residuals
+tends to increase with the fitted values. The right hand panel displays
+residual plot after tranforming the response using $\log(Y)$. The
+residuals now appear to have constant variance, although there is some
+evidence of a non-linear relationship in the data.
+
+![Residual plots. The red line, a smooth fit to the residuals, is
+intended to make it easier to identify a trend. The blue lines track
+$5^{th}$ and $95^{th}$ percentiles of the residuals, and emphasize
+patterns. Left: The funnel shape indicates heteroscedasticity. Right:
+the response has been log transformed, and now there is no evidence of
+heteroscedasticity.](figures/fig3_11.png "linearRegFig11")
+
+The red point (observation 20) in the left hand panel of figure
+[fig:linearRegFig12](fig:linearRegFig12) illustrates a typical outlier.
+The red solid line is the least squares regression fit, while the blue
+dashed line is the least squares fit after removal of the outlier. In
+this case, removal of outlier has little effect on the least squares
+line. In the center panel of figure
+[fig:linearRegFig12](fig:linearRegFig12), the outlier is clearly
+visible. In practice, to decide if the outlier is sufficiently big to be
+considered an outlier, we can plot *studentized residuals*, computed by
+dividing each residual $\epsilon_i$ by its estimated standard error.
+These are shown in the right hand panel.
+
+![Left: The least squares regression line is shown in red. The
+regression line after removing the outlier is is shown in blue. Center:
+The residual plot clearly identifies the outlier. Right: The outlier has
+a studentized residual of 6; typically we expect values between -3 and
+3.](figures/fig3_12.png "linearRegFig12")
+
 \FloatBarrier
 
 Lab: Linear Regression
