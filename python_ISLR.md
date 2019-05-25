@@ -812,9 +812,46 @@ The residual plot clearly identifies the outlier. Right: The outlier has
 a studentized residual of 6; typically we expect values between -3 and
 3.](figures/fig3_12.png "linearRegFig12")
 
+Observation 41 in the left-hand panel in figure
+[fig:linearRegFig13](fig:linearRegFig13) has high leverage, in that the
+predictor value for this observation is large relative to the other
+observations. The data displayed in figure
+[fig:linearRegFig13](fig:linearRegFig13) are the same as the data
+displayed in figure [fig:linearRegFig12](fig:linearRegFig12), except for
+the addition of a single high leverage observation[^1]. The red solid
+line is the least squares fit to the data, while the blue dashed line is
+the fit produced when observation 41 is removed. Comparing the left-hand
+panels of figures [fig:linearRegFig12](fig:linearRegFig12) and
+[fig:linearRegFig13](fig:linearRegFig13), we observe that removign the
+high leverage observation has a much more substantial impact on least
+squares line than removing the outlier. The center panel of figure
+[fig:linearRegFig13](fig:linearRegFig13), for a data set with two
+predictors $X_1$ and $X_2$. While most of the observations\' predictor
+values fall within the region of blue dashed lines, the red observation
+is well outside this range. But neither the value for $X_1$ nor the
+value for $X_2$ is unusual. So if we examine just $X_1$ or $X_2$, we
+will not notice this high leverage point. The right-panel of figure
+[fig:linearRegFig13](fig:linearRegFig13) provides a plot of studentized
+residuals versus $h_i$ for the data in the left hand panel. Observation
+41 stands out as having a very high leverage statistic as well as a high
+studentized residual.
+
+![Left: Observation 41 is a high leverage point, while 20 is not. The
+red line is the fit to all the data, and the blue line is the fit with
+observation 41 removed. Center: The red observation is not unusual in
+terms of its $X_1$ value or its $X_2$ value, but still falls outside the
+bulk of the data, and hence has high leverage. Right: Observation 41 has
+a high leverage and a high
+residual.](figures/fig3_13.png "linearRegFig13")
+
 \FloatBarrier
 
 Lab: Linear Regression
 ----------------------
 
 It is possible to call R from Python and *vice versa*.
+
+Footnotes
+=========
+
+[^1]: The middle panel is from a different data set.
