@@ -1603,10 +1603,63 @@ of values for the coefficient estimates that result in equal values for RSS.
 #+RESULTS: fig3_15plot
 [[file:figures/fig3_15.png]]
 
+Table [[tab:linearRegTab11]] compares the coefficient estimates obtained from two
+separate multiple regression models.  The first is a regression of =balance= on
+=age= and =limit=.  The second is a regression of =balance= on =rating= and
+=limit=.  In the first regression, both =age= and =limit= are highly significant
+with very small p-values.  In the second, the collinearity between =limit= and
+=rating= has caused the standard error for the =limit= coefficient to increase
+by a factor of 12 and the p-value to increase to 0.701. In other words, the
+importance of the =limit= variable has been masked due to the presence of
+collinearity.  
+
+#+NAME: tab3_11
+#+BEGIN_SRC python :exports results :results table
+  import pandas as pd
+  import statsmodels.formula.api as smf
+  import statsmodels.datasets as datasets
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  credit = datasets.get_rdataset('Credit', 'ISLR').data
+
+  age_limit_reg = smf.ols(formula='Balance ~ Age + Limit', data=credit)
+  age_limit_fit = age_limit_reg.fit()
+  age_limit_res = age_limit_fit.summary2().tables[1]
+  age_limit_res = age_limit_res[age_limit_res.columns[:4]]
+
+  rating_limit_reg = smf.ols(formula='Balance ~ Rating + Limit', data=credit)
+  rating_limit_fit = rating_limit_reg.fit()
+  rating_limit_res = rating_limit_fit.summary2().tables[1]
+  rating_limit_res = rating_limit_res[rating_limit_res.columns[:4]]
+
+  both_res = pd.concat((age_limit_res, rating_limit_res))
+  both_res.rename(index=str,
+		  columns={'t': '$t$',
+			   'P>|t|': '$P > \mid t \mid$'}, inplace=True)
+  return myFuncs.dfToList(round(both_res, 3), [0, 3])
+#+END_SRC
 
 
+#+NAME: tab:linearRegTab11
+#+CAPTION: The results for two multiple regression models involving the =Credit= data set.  The top panel is a regression of =balance= on =age= and =limit=.  The bottom panel is a regression of =balance= on =rating= and =limit=.  The standard error of $\hat{\beta}_{Limit}$ increases 12-fold in the second regression, due to collinearity.
+#+RESULTS: tab3_11
+|           |    Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|-----------+----------+----------+--------+-------------------|
+| Intercept | -173.411 |   43.828 | -3.957 |               0.0 |
+| Age       |   -2.291 |    0.672 | -3.407 |             0.001 |
+| Limit     |    0.173 |    0.005 | 34.496 |               0.0 |
+|-----------+----------+----------+--------+-------------------|
+| Intercept | -377.537 |   45.254 | -8.343 |               0.0 |
+| Rating    |    2.202 |    0.952 |  2.312 |             0.021 |
+| Limit     |    0.025 |    0.064 |  0.384 |             0.701 |
 
 #+LATEX: \FloatBarrier
+
+** The Marketing Plan
+
+** Comparison of Linear Regression with $K$-Nearest Neighbors
 
 ** Lab: Linear Regression
 It is possible to call R from Python and /vice versa/.  

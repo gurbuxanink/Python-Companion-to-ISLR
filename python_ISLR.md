@@ -883,7 +883,39 @@ Right: A contour plot of RSS for the regression of `balance` onto
 $(\beta_{Limit}, \beta_{Rating})$ with a similar value for
 RSS.](figures/fig3_15.png "linearRegFig15")
 
+Table [tab:linearRegTab11](tab:linearRegTab11) compares the coefficient
+estimates obtained from two separate multiple regression models. The
+first is a regression of `balance` on `age` and `limit`. The second is a
+regression of `balance` on `rating` and `limit`. In the first
+regression, both `age` and `limit` are highly significant with very
+small p-values. In the second, the collinearity between `limit` and
+`rating` has caused the standard error for the `limit` coefficient to
+increase by a factor of 12 and the p-value to increase to 0.701. In
+other words, the importance of the `limit` variable has been masked due
+to the presence of collinearity.
+
+              Coef.      Std.Err.   $t$      $P > \mid t \mid$
+  ----------- ---------- ---------- -------- -------------------
+  Intercept   -173.411   43.828     -3.957   0.0
+  Age         -2.291     0.672      -3.407   0.001
+  Limit       0.173      0.005      34.496   0.0
+  Intercept   -377.537   45.254     -8.343   0.0
+  Rating      2.202      0.952      2.312    0.021
+  Limit       0.025      0.064      0.384    0.701
+
+  : The results for two multiple regression models involving the
+  `Credit` data set. The top panel is a regression of `balance` on `age`
+  and `limit`. The bottom panel is a regression of `balance` on `rating`
+  and `limit`. The standard error of $\hat{\beta}_{Limit}$ increases
+  12-fold in the second regression, due to collinearity.
+
 \FloatBarrier
+
+The Marketing Plan
+------------------
+
+Comparison of Linear Regression with $K$-Nearest Neighbors
+----------------------------------------------------------
 
 Lab: Linear Regression
 ----------------------
