@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-05-25 Sat 08:31 -->
+<!-- 2019-05-26 Sun 07:53 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>A Python Companion to ISLR</title>
@@ -256,43 +256,43 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org646e378">1. Introduction</a></li>
-<li><a href="#org88cd6ff">2. Statistical Learning</a>
+<li><a href="#org638055a">1. Introduction</a></li>
+<li><a href="#orgef34930">2. Statistical Learning</a>
 <ul>
-<li><a href="#orgcc1b6f0">2.1. What is Statistical Learning?</a></li>
-<li><a href="#org77bfa98">2.2. Assessing Model Accuracy</a></li>
-<li><a href="#orga75f83d">2.3. Lab: Introduction to Python</a>
+<li><a href="#orgdadcaa5">2.1. What is Statistical Learning?</a></li>
+<li><a href="#org8445d5b">2.2. Assessing Model Accuracy</a></li>
+<li><a href="#org3ffedaa">2.3. Lab: Introduction to Python</a>
 <ul>
-<li><a href="#orga3963e1">2.3.1. Basic Commands</a></li>
-<li><a href="#org4aac740">2.3.2. Graphics</a></li>
-<li><a href="#org57ae60f">2.3.3. Indexing Data</a></li>
-<li><a href="#org77b69b4">2.3.4. Loading Data</a></li>
-<li><a href="#org9e59cfa">2.3.5. Additional Graphical and Numerical Summaries</a></li>
+<li><a href="#orgf418a78">2.3.1. Basic Commands</a></li>
+<li><a href="#org9c90ac5">2.3.2. Graphics</a></li>
+<li><a href="#org5ad7e87">2.3.3. Indexing Data</a></li>
+<li><a href="#org5323929">2.3.4. Loading Data</a></li>
+<li><a href="#org77cecd7">2.3.5. Additional Graphical and Numerical Summaries</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgfc51f60">3. Linear Regression</a>
+<li><a href="#org11e12b4">3. Linear Regression</a>
 <ul>
-<li><a href="#org84ce137">3.1. Simple Linear Regression</a></li>
-<li><a href="#org3eeaf60">3.2. Multiple Linear Regression</a></li>
-<li><a href="#orgf9cf6e9">3.3. Other Considerations in the Regression Model</a></li>
-<li><a href="#org97ca218">3.4. Lab: Linear Regression</a></li>
+<li><a href="#orgeb6201d">3.1. Simple Linear Regression</a></li>
+<li><a href="#orgd239370">3.2. Multiple Linear Regression</a></li>
+<li><a href="#org5b8d7fb">3.3. Other Considerations in the Regression Model</a></li>
+<li><a href="#org16cdc89">3.4. Lab: Linear Regression</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org646e378" class="outline-2">
-<h2 id="org646e378"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org638055a" class="outline-2">
+<h2 id="org638055a"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Figure <a href="#org3ed02c9">1</a> shows graphs of Wage versus three variables. 
+Figure <a href="#org6b5a60e">1</a> shows graphs of Wage versus three variables. 
 </p>
 
 
-<div id="org3ed02c9" class="figure">
+<div id="org6b5a60e" class="figure">
 <p><img src="figures/fig1_1.png" alt="fig1_1.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span><code>Wage</code> data, which contains income survey information for males from the central Atlantic region of the United States.  Left: <code>wage</code> as a function of <code>age</code>.  On average, <code>wage</code> increases with <code>age</code> until about 60 years of age, at which point it begins to decline.  Center: <code>wage</code> as a function of <code>year</code>.  There is a slow but steady increase of approximately $10,000 in the average <code>wage</code> between 2003 and 2009.  Right: Boxplots displaying <code>wage</code> as a function of <code>education</code>, with 1 indicating the lowest level (no highschool diploma) and 5 the highest level (an advanced graduate degree).  On average, <code>wage</code> increases with the level of <code>education</code>.</p>
@@ -300,12 +300,12 @@ Figure <a href="#org3ed02c9">1</a> shows graphs of Wage versus three variables.
 
 
 <p>
-Figure <a href="#org270e8f8">2</a> shows boxplots of previous days' percentage changes in S&amp;P
+Figure <a href="#org51c4ee3">2</a> shows boxplots of previous days' percentage changes in S&amp;P
 500 grouped according to today's change <code>Up</code> or <code>Down</code>. 
 </p>
 
 
-<div id="org270e8f8" class="figure">
+<div id="org51c4ee3" class="figure">
 <p><img src="figures/fig1_2.png" alt="fig1_2.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Left: Boxplots of the previous day's percentage change in the S&amp;P 500 index for the days for which the market increased or decreased, obtained from the <code>Smarket</code> data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.</p>
@@ -313,21 +313,21 @@ Figure <a href="#org270e8f8">2</a> shows boxplots of previous days' percentage c
 </div>
 </div>
 
-<div id="outline-container-org88cd6ff" class="outline-2">
-<h2 id="org88cd6ff"><span class="section-number-2">2</span> Statistical Learning</h2>
+<div id="outline-container-orgef34930" class="outline-2">
+<h2 id="orgef34930"><span class="section-number-2">2</span> Statistical Learning</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgcc1b6f0" class="outline-3">
-<h3 id="orgcc1b6f0"><span class="section-number-3">2.1</span> What is Statistical Learning?</h3>
+<div id="outline-container-orgdadcaa5" class="outline-3">
+<h3 id="orgdadcaa5"><span class="section-number-3">2.1</span> What is Statistical Learning?</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-Figure <a href="#org58fe5a8">3</a> shows scatter plots of <code>sales</code> versus <code>TV</code>, <code>radio</code>,
+Figure <a href="#org5dcee85">3</a> shows scatter plots of <code>sales</code> versus <code>TV</code>, <code>radio</code>,
 and <code>newspaper</code> advertising.  In each panel, the figure also includes an OLS
 regression line.  
 </p>
 
 
-<div id="org58fe5a8" class="figure">
+<div id="org5dcee85" class="figure">
 <p><img src="figures/fig2_1.png" alt="fig2_1.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>The <code>Advertising</code> data set. The plot displays <code>sales</code>, in thousands of units, as a function of <code>TV</code>, <code>radio</code>, and <code>newspaper</code> budgets, in thousands of dollars, for 200 different markets.  In each plot we show the simple least squares fit of <code>sales</code> to that variable.  In other words, each red line represents a simple model that can be used to predict <code>sales</code> using <code>TV</code>, <code>radio</code>, and <code>newspaper</code>, respectively.</p>
@@ -335,13 +335,13 @@ regression line.
 
 
 <p>
-Figure <a href="#org2a33d0b">4</a> is a plot of <code>Income</code> versus <code>Years of Education</code> from the
+Figure <a href="#orge1f3880">4</a> is a plot of <code>Income</code> versus <code>Years of Education</code> from the
 Income data set.  In the left panel, the ``true'' function (given by blue line)
 is actually my guess.  
 </p>
 
 
-<div id="org2a33d0b" class="figure">
+<div id="orge1f3880" class="figure">
 <p><img src="figures/fig2_2.png" alt="fig2_2.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>The <code>Income</code> data set.  Left: The red dots are the observed values of <code>income</code> (in tens of thousands of dollars) and <code>years of education</code> for 30 individuals.  Right: The blue curve represents the true underlying relationship between <code>income</code> and <code>years of education</code>, which is generally unknown (but is known in this case because the data are simulated).  The vertical lines represent the error associated with each observation.  Note that some of the errors are positive (when an observation lies above the blue curve) and some are negative (when an observation lies below the curve).  Overall, these errors have approximately mean zero.</p>
@@ -349,14 +349,14 @@ is actually my guess.
 
 
 <p>
-Figure <a href="#orga814acb">5</a> is a plot of <code>Income</code> versus <code>Years of Education</code> and
+Figure <a href="#org04a10b4">5</a> is a plot of <code>Income</code> versus <code>Years of Education</code> and
 <code>Seniority</code> from the <code>Income</code> data set.  Since the book does not provide the
 true values of <code>Income</code>, ``true'' values shown in the plot are actually third
 order polynomial fit.  
 </p>
 
 
-<div id="orga814acb" class="figure">
+<div id="org04a10b4" class="figure">
 <p><img src="figures/fig2_3.png" alt="fig2_3.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>The plot displays <code>income</code> as a function of <code>years of education</code> and <code>seniority</code> in the <code>Income</code> data set.  The blue surface represents the true underlying relationship between <code>income</code> and <code>years of education</code> and <code>seniority</code>, which is known since the data are simulated.  The red dots indicate the observed values of these quantities for 30 individuals.</p>
@@ -364,25 +364,25 @@ order polynomial fit.
 
 
 <p>
-Figure <a href="#org34a8e4f">6</a> shows an example of the parametric approach applied to
+Figure <a href="#org3cd4e1d">6</a> shows an example of the parametric approach applied to
 the <code>Income</code> data from previous figure. 
 </p>
 
 
-<div id="org34a8e4f" class="figure">
+<div id="org3cd4e1d" class="figure">
 <p><img src="figures/fig2_4.png" alt="fig2_4.png" />
 </p>
-<p><span class="figure-number">Figure 6: </span>A linear model fit by least squares to the <code>Income</code> data from figure <a href="#orga814acb">5</a>.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.</p>
+<p><span class="figure-number">Figure 6: </span>A linear model fit by least squares to the <code>Income</code> data from figure <a href="#org04a10b4">5</a>.  The observations are shown in red, and the blue plane indicates the least squares fit to the data.</p>
 </div>
 
 
 <p>
-Figure <a href="#orgcc07df7">7</a> provides an illustration of the trade-off between
+Figure <a href="#org4e204de">7</a> provides an illustration of the trade-off between
 flexibility and interpretability for some of the methods covered in this book.
 </p>
 
 
-<div id="orgcc07df7" class="figure">
+<div id="org4e204de" class="figure">
 <p><img src="figures/figure2_7.png" alt="figure2_7.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>A representation of the tradeoff between flexibility and interpretability, using different statistical learning methods.  In general, as the flexibility of a method increases, its interpretability decreases.</p>
@@ -390,11 +390,11 @@ flexibility and interpretability for some of the methods covered in this book.
 
 
 <p>
-Figure <a href="#orgefee356">8</a> provides a simple illustration of the clustering problem.
+Figure <a href="#orga5e0036">8</a> provides a simple illustration of the clustering problem.
 </p>
 
 
-<div id="orgefee356" class="figure">
+<div id="orga5e0036" class="figure">
 <p><img src="figures/fig2_8.png" alt="fig2_8.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>A clustering data set involving three groups.  Each group is shown using a different colored symbol.  Left: The three groups are well-separated.  In this setting, a clustering approach should successfully identify the three groups.  Right: There is some overlap among the groups.  Now the clustering taks is more challenging.</p>
@@ -402,11 +402,11 @@ Figure <a href="#orgefee356">8</a> provides a simple illustration of the cluster
 </div>
 </div>
 
-<div id="outline-container-org77bfa98" class="outline-3">
-<h3 id="org77bfa98"><span class="section-number-3">2.2</span> Assessing Model Accuracy</h3>
+<div id="outline-container-org8445d5b" class="outline-3">
+<h3 id="org8445d5b"><span class="section-number-3">2.2</span> Assessing Model Accuracy</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-Figure <a href="#org3079766">9</a> illustrates the tradeoff between training MSE and test
+Figure <a href="#org3242e83">9</a> illustrates the tradeoff between training MSE and test
 MSE.  We select a ``true function'' whose shape is similar to that shown in the
 book.  In the left panel, the orange, blue, and green curves illustrate three possible estimates
 for \(f\) given by the black curve.  The orange line is the linear regression
@@ -423,13 +423,13 @@ represents the level of flexibility.  This is because the function
 </p>
 
 <p>
-When we repeat the simulations for figure <a href="#org3079766">9</a>, we see considerable
+When we repeat the simulations for figure <a href="#org3242e83">9</a>, we see considerable
 variation in the right panel MSE plots.  But the overall conclusion remains the
 same.   
 </p>
 
 
-<div id="org3079766" class="figure">
+<div id="org3242e83" class="figure">
 <p><img src="figures/fig2_9.png" alt="fig2_9.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>Left: Data simulated from \(f\), shown in black.  Three estimates of \(f\) are shown: the linear regression line (orange curve), and two smoothing spline fits (blue and green curves).  Right: Training MSE (grey curve), test MSE (red curve), and minimum possible test MSE over all methods (dashed grey line).</p>
@@ -437,54 +437,54 @@ same.
 
 
 <p>
-Figure <a href="#orgc337d81">10</a> provides another example in which the true \(f\) is
+Figure <a href="#org78f4fbc">10</a> provides another example in which the true \(f\) is
 approximately linear. 
 </p>
 
 
-<div id="orgc337d81" class="figure">
+<div id="org78f4fbc" class="figure">
 <p><img src="figures/fig2_10.png" alt="fig2_10.png" />
 </p>
-<p><span class="figure-number">Figure 10: </span>Details are as in figure <a href="#org3079766">9</a> using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.</p>
+<p><span class="figure-number">Figure 10: </span>Details are as in figure <a href="#org3242e83">9</a> using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.</p>
 </div>
 
 
 <p>
-Figure <a href="#orgbd844df">11</a> displays an example in which \(f\) is highly
+Figure <a href="#orgb9ed8d7">11</a> displays an example in which \(f\) is highly
 non-linear. The training and test MSE curves still exhibit the same general
 patterns.
 </p>
 
 
-<div id="orgbd844df" class="figure">
+<div id="orgb9ed8d7" class="figure">
 <p><img src="figures/fig2_11.png" alt="fig2_11.png" />
 </p>
-<p><span class="figure-number">Figure 11: </span>Details are as in figure <a href="#org3079766">9</a>, using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.</p>
+<p><span class="figure-number">Figure 11: </span>Details are as in figure <a href="#org3242e83">9</a>, using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.</p>
 </div>
 
 
 <p>
-Figure <a href="#org44bec67">12</a> displays the relationship between bias, variance, and
+Figure <a href="#org5f5ab3e">12</a> displays the relationship between bias, variance, and
 test MSE.  This relationship is referred to as <i>bias-variance trade-off</i>.  When
 simulations are repeated, we see considerable variation in different graphs,
 especially for MSE lines.  But overall shape remains the same. 
 </p>
 
 
-<div id="org44bec67" class="figure">
+<div id="org5f5ab3e" class="figure">
 <p><img src="figures/fig2_12.png" alt="fig2_12.png" />
 </p>
-<p><span class="figure-number">Figure 12: </span>Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures <a href="#org3079766">9</a> - <a href="#orgbd844df">11</a>.  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.</p>
+<p><span class="figure-number">Figure 12: </span>Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures <a href="#org3242e83">9</a> - <a href="#orgb9ed8d7">11</a>.  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.</p>
 </div>
 
 
 <p>
-Figure <a href="#org9263833">13</a> provides an example using a simulated data set in
+Figure <a href="#orgce11453">13</a> provides an example using a simulated data set in
 two-dimensional space consisting of predictors \(X_1\) and \(X_2\).  
 </p>
 
 
-<div id="org9263833" class="figure">
+<div id="orgce11453" class="figure">
 <p><img src="figures/fig2_13.png" alt="fig2_13.png" />
 </p>
 <p><span class="figure-number">Figure 13: </span>A simulated data set consisting of 200 observations in two groups, indicated in blue and orange.  The dashed line represents the Bayes decision boundary.  The orange background grid indicates the region in which a test observation will be assigned to the orange class, and blue background grid indicates the region in which a test observation will be assigned to the blue class.</p>
@@ -492,30 +492,30 @@ two-dimensional space consisting of predictors \(X_1\) and \(X_2\).
 
 
 <p>
-Figure <a href="#orga1f658b">14</a> displays the KNN decision boundary, using \(K=10\), when
-applied to the simulated data set from figure <a href="#org9263833">13</a>.  Even though
+Figure <a href="#org949a3f4">14</a> displays the KNN decision boundary, using \(K=10\), when
+applied to the simulated data set from figure <a href="#orgce11453">13</a>.  Even though
 the true distribution is not known by the KNN classifier, the KNN decision
 making boundary is very close to that of the Bayes classifier.  
 </p>
 
 
-<div id="orga1f658b" class="figure">
+<div id="org949a3f4" class="figure">
 <p><img src="figures/fig2_15.png" alt="fig2_15.png" />
 </p>
-<p><span class="figure-number">Figure 14: </span>The firm line indicates the KNN decision boundary on the data from figure <a href="#org9263833">13</a>, using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.</p>
+<p><span class="figure-number">Figure 14: </span>The firm line indicates the KNN decision boundary on the data from figure <a href="#orgce11453">13</a>, using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.</p>
 </div>
 
 
 
-<div id="org4bbf1b1" class="figure">
+<div id="org149fa09" class="figure">
 <p><img src="figures/fig2_16.png" alt="fig2_16.png" />
 </p>
-<p><span class="figure-number">Figure 15: </span>A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure <a href="#org9263833">13</a>.  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.</p>
+<p><span class="figure-number">Figure 15: </span>A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure <a href="#orgce11453">13</a>.  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.</p>
 </div>
 
 
 <p>
-In figure <a href="#org57ef2c3">16</a> we have plotted the KNN test and training errors as
+In figure <a href="#org5ead5f6">16</a> we have plotted the KNN test and training errors as
 a function of \(\frac{1}{K}\).  As \(\frac{1}{K}\) increases, the method becomes
 more flexible.  As in the regression setting, the training error rate
 consistently declines as the flexibility increases.  However, the test error
@@ -525,20 +525,20 @@ excessively flexible and overfits.
 </p>
 
 
-<div id="org57ef2c3" class="figure">
+<div id="org5ead5f6" class="figure">
 <p><img src="figures/fig2_17.png" alt="fig2_17.png" />
 </p>
-<p><span class="figure-number">Figure 16: </span>The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure <a href="#org9263833">13</a> as the level of flexibility (assessed using \(\frac{1}{K}\)) increases, or equivalently as the number of neighbors \(K\) decreases.  The black dashed line indicates the Bayes error rate.</p>
+<p><span class="figure-number">Figure 16: </span>The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure <a href="#orgce11453">13</a> as the level of flexibility (assessed using \(\frac{1}{K}\)) increases, or equivalently as the number of neighbors \(K\) decreases.  The black dashed line indicates the Bayes error rate.</p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orga75f83d" class="outline-3">
-<h3 id="orga75f83d"><span class="section-number-3">2.3</span> Lab: Introduction to Python</h3>
+<div id="outline-container-org3ffedaa" class="outline-3">
+<h3 id="org3ffedaa"><span class="section-number-3">2.3</span> Lab: Introduction to Python</h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-orga3963e1" class="outline-4">
-<h4 id="orga3963e1"><span class="section-number-4">2.3.1</span> Basic Commands</h4>
+<div id="outline-container-orgf418a78" class="outline-4">
+<h4 id="orgf418a78"><span class="section-number-4">2.3.1</span> Basic Commands</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 In <code>Python</code> a list can be created by enclosing comma-separated elements by
@@ -620,8 +620,8 @@ np.random.seed(911)
 </div>
 </div>
 
-<div id="outline-container-org4aac740" class="outline-4">
-<h4 id="org4aac740"><span class="section-number-4">2.3.2</span> Graphics</h4>
+<div id="outline-container-org9c90ac5" class="outline-4">
+<h4 id="org9c90ac5"><span class="section-number-4">2.3.2</span> Graphics</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
 <code>matplotlib</code> library has a number of functions to plot data in <code>Python</code>.  It is
@@ -671,8 +671,8 @@ ax.clabel(CS, inline=1)
 </div>
 </div>
 
-<div id="outline-container-org57ae60f" class="outline-4">
-<h4 id="org57ae60f"><span class="section-number-4">2.3.3</span> Indexing Data</h4>
+<div id="outline-container-org5ad7e87" class="outline-4">
+<h4 id="org5ad7e87"><span class="section-number-4">2.3.3</span> Indexing Data</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <p>
 To access elements of an array, specify indexes inside square brackets.  It is
@@ -715,8 +715,8 @@ rows followed by number of columns.
 </div>
 </div>
 
-<div id="outline-container-org77b69b4" class="outline-4">
-<h4 id="org77b69b4"><span class="section-number-4">2.3.4</span> Loading Data</h4>
+<div id="outline-container-org5323929" class="outline-4">
+<h4 id="org5323929"><span class="section-number-4">2.3.4</span> Loading Data</h4>
 <div class="outline-text-4" id="text-2-3-4">
 <p>
 <code>pandas</code> library provides <code>read_csv</code> function to read files with data in
@@ -771,8 +771,8 @@ Index(['Sales', 'CompPrice', 'Income', 'Advertising', 'Population', 'Price',
 </div>
 </div>
 
-<div id="outline-container-org9e59cfa" class="outline-4">
-<h4 id="org9e59cfa"><span class="section-number-4">2.3.5</span> Additional Graphical and Numerical Summaries</h4>
+<div id="outline-container-org77cecd7" class="outline-4">
+<h4 id="org77cecd7"><span class="section-number-4">2.3.5</span> Additional Graphical and Numerical Summaries</h4>
 <div class="outline-text-4" id="text-2-3-5">
 <p>
 <code>plot</code> method can be directly applied to a <code>pandas</code> dataframe.  
@@ -840,21 +840,21 @@ max     46.600000    8.000000  ...   82.000000    3.000000
 </div>
 </div>
 
-<div id="outline-container-orgfc51f60" class="outline-2">
-<h2 id="orgfc51f60"><span class="section-number-2">3</span> Linear Regression</h2>
+<div id="outline-container-org11e12b4" class="outline-2">
+<h2 id="org11e12b4"><span class="section-number-2">3</span> Linear Regression</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org84ce137" class="outline-3">
-<h3 id="org84ce137"><span class="section-number-3">3.1</span> Simple Linear Regression</h3>
+<div id="outline-container-orgeb6201d" class="outline-3">
+<h3 id="orgeb6201d"><span class="section-number-3">3.1</span> Simple Linear Regression</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-Figure <a href="#orgaa5f5d5">17</a> displays the simple linear regression fit to the
+Figure <a href="#orgbada9b1">17</a> displays the simple linear regression fit to the
 <code>Advertising</code> data, where \(\hat{\beta_0} =\) 0.0475
  and \(\hat{\beta_1} =\) 7.0326.
 </p>
 
 
-<div id="orgaa5f5d5" class="figure">
+<div id="orgbada9b1" class="figure">
 <p><img src="figures/fig3_1.png" alt="fig3_1.png" />
 </p>
 <p><span class="figure-number">Figure 17: </span>For the <code>Advertising</code> data, the least squares fit for the regression of <code>sales</code> onto <code>TV</code> is shown.  The fit is found by minimizing the sum of squared errors.  Each grey line represents an error, and the fit makes a compromise by averaging their squares.  In this case a linear fit captures the essence of the relationship, although it is somewhat deficient in the left of the plot.</p>
@@ -864,13 +864,13 @@ Figure <a href="#orgaa5f5d5">17</a> displays the simple linear regression fit to
 
 
 <p>
-In figure <a href="#org1d809af">18</a>, we have computed RSS for a number of values of
+In figure <a href="#org912f855">18</a>, we have computed RSS for a number of values of
 \(\beta_0\) and \(\beta_1\), using the advertising data with <code>sales</code> as the response
 and <code>TV</code> as the predictor. 
 </p>
 
 
-<div id="org1d809af" class="figure">
+<div id="org912f855" class="figure">
 <p><img src="figures/fig3_2.png" alt="fig3_2.png" />
 </p>
 <p><span class="figure-number">Figure 18: </span>Contour and three-dimensional plots of the RSS on the <code>Advertising</code> data, using <code>sales</code> as the response and <code>TV</code> as the predictor.  The red dots correspond to the least squares estimates \(\hat{\beta_0}\) and \(\hat{\beta_1}\).</p>
@@ -878,28 +878,28 @@ and <code>TV</code> as the predictor.
 
 
 <p>
-The left-hand panel of figure <a href="#orgc3d7b7b">19</a> displays <i>population regression
+The left-hand panel of figure <a href="#org75d85fb">19</a> displays <i>population regression
 line</i> and <i>least squares line</i> for a simple simulated example.  The red line in
 the left-hand panel displays the <i>true</i> relationship, \(f(X) = 2 + 3X\), while the
 blue line is the least squares estimate based on observed data.  In the
-right-hand panel of figure <a href="#orgc3d7b7b">19</a> we have generated five different
+right-hand panel of figure <a href="#org75d85fb">19</a> we have generated five different
 data sets from the model \(Y = 2 + 3X + \epsilon\) and plotted the corresponding
 five least squares lines.  
 </p>
 
 
-<div id="orgc3d7b7b" class="figure">
+<div id="org75d85fb" class="figure">
 <p><img src="figures/fig3_3.png" alt="fig3_3.png" />
 </p>
 <p><span class="figure-number">Figure 19: </span>A simulated data set.  Left: The red line represents the true relationship, \(f(X) = 2 + 3X\), which is known as the population regression line.  The blue line is the least squares line; it is the least squares estimate for \(f(X)\) based on the observed data, shown in grey circles.  Right: The population regression line is again shown in red, and the least squares line in blue.  In cyan, five least squares lines are shown, each computed on the basis of a separate random set of observations.  Each least squares line is different, but on average, the least squares lines are quite close to the population regression line.</p>
 </div>
 
 <p>
-For <code>Advertising</code> data, table <a href="#org8d475c2">1</a> provides details of the least squares model for the
+For <code>Advertising</code> data, table <a href="#org7ce5bd4">1</a> provides details of the least squares model for the
 regression of number of units sold on TV advertising budget. 
 </p>
 
-<table id="org8d475c2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org7ce5bd4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> For <code>Advertising</code> data, the coefficients of the least squares model for the regression of number of units sold on TV advertising budget.  An increase of $1,000 on the TV advertising budget is associated with an increase in sales by around 50 units.</caption>
 
 <colgroup>
@@ -943,11 +943,11 @@ regression of number of units sold on TV advertising budget.
 
 
 <p>
-Next, in table <a href="#orged25d9b">2</a>, we report more information about the least squares model.  
+Next, in table <a href="#org81e4248">2</a>, we report more information about the least squares model.  
 </p>
 
 
-<table id="orged25d9b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org81e4248" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 2:</span> For the <code>Advertising</code> data, more information about the least squares model for the regression of number of units sold on TV advertising budget.</caption>
 
 <colgroup>
@@ -981,18 +981,18 @@ Next, in table <a href="#orged25d9b">2</a>, we report more information about the
 </div>
 </div>
 
-<div id="outline-container-org3eeaf60" class="outline-3">
-<h3 id="org3eeaf60"><span class="section-number-3">3.2</span> Multiple Linear Regression</h3>
+<div id="outline-container-orgd239370" class="outline-3">
+<h3 id="orgd239370"><span class="section-number-3">3.2</span> Multiple Linear Regression</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-Table <a href="#orgd6995ba">3</a> and the next table show results of two simple linear
+Table <a href="#org8d492d8">3</a> and the next table show results of two simple linear
 regressions, each of which uses a different advertising medium as a predictor.
 We find that a $1,000 increase in spending on radio advertising is associated
 with an increase in sales by around 202 units.  A $1,000 increase in advertising
 spending on on newspapers increases sales by approximately 55 units. 
 </p>
 
-<table id="orgd6995ba" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org8d492d8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 3:</span> More simple linear regression models for <code>Advertising</code> data.  Coefficients of the simple linear regression model for number of units sold on radio advertising budget.  a $1,000 increase in spending on radio advertising is associated with an average increase sales by around 202 units.</caption>
 
 <colgroup>
@@ -1078,12 +1078,12 @@ spending on on newspapers increases sales by approximately 55 units.
 
 
 <p>
-Figure <a href="#org08786ab">20</a> illustrates an example of the least squares fit to a
+Figure <a href="#org9e350fb">20</a> illustrates an example of the least squares fit to a
 toy data set with \(p = 2\) predictors. 
 </p>
 
 
-<div id="org08786ab" class="figure">
+<div id="org9e350fb" class="figure">
 <p><img src="figures/fig3_4.png" alt="fig3_4.png" />
 </p>
 <p><span class="figure-number">Figure 20: </span>In a three-dimensional setting, with two predictors and one response, the least squares regression line becomes a plane.  The plane is chosen to minimize the sum of the squared vertical distances between each observation (shown in red) and the plane.</p>
@@ -1091,12 +1091,12 @@ toy data set with \(p = 2\) predictors.
 
 
 <p>
-Table <a href="#orgc6e265a">4</a> displays multiple regression coefficient estimates when
+Table <a href="#orgb8e6385">4</a> displays multiple regression coefficient estimates when
 TV, radio, and newspaper advertising budgets are used to predict product sales
 using <code>Advertising</code> data.
 </p>
 
-<table id="orgc6e265a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgb8e6385" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 4:</span> For the <code>Advertising</code> data, least squares coefficient estimates of the multiple linear regression of number of units sold on radio, TV, and newspaper advertising budgets.</caption>
 
 <colgroup>
@@ -1155,11 +1155,11 @@ using <code>Advertising</code> data.
 </table>
 
 <p>
-Table <a href="#orgc24b76f">5</a> shows the correlation matrix for the three predictor
-variables and response variable in table <a href="#orgc6e265a">4</a>. 
+Table <a href="#org2196e3f">5</a> shows the correlation matrix for the three predictor
+variables and response variable in table <a href="#orgb8e6385">4</a>. 
 </p>
 
-<table id="orgc24b76f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org2196e3f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 5:</span> Correlation matrix for <code>TV</code>, <code>radio</code>, and <code>sales</code> for the <code>Advertising</code> data.</caption>
 
 <colgroup>
@@ -1217,8 +1217,8 @@ variables and response variable in table <a href="#orgc6e265a">4</a>.
 </tbody>
 </table>
 
-<table id="orgf05c646" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 6:</span> More information about the least squares model for the regression of number of units sold on TV, newspaper, and radio advertising budgets in the <code>Advertising</code> data.  Other information about this model was displayed in table <a href="#orgc6e265a">4</a>.</caption>
+<table id="org5608208" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 6:</span> More information about the least squares model for the regression of number of units sold on TV, newspaper, and radio advertising budgets in the <code>Advertising</code> data.  Other information about this model was displayed in table <a href="#orgb8e6385">4</a>.</caption>
 
 <colgroup>
 <col  class="org-left" />
@@ -1250,12 +1250,12 @@ variables and response variable in table <a href="#orgc6e265a">4</a>.
 </table>
 
 <p>
-Figure <a href="#orge89f044">21</a> displays a three-dimensional plot of <code>TV</code> and <code>radio</code>
+Figure <a href="#orga6036aa">21</a> displays a three-dimensional plot of <code>TV</code> and <code>radio</code>
 versus <code>sales</code>.  
 </p>
 
 
-<div id="orge89f044" class="figure">
+<div id="orga6036aa" class="figure">
 <p><img src="figures/fig3_5.png" alt="fig3_5.png" />
 </p>
 <p><span class="figure-number">Figure 21: </span>For the <code>Advertising</code> data, a linear regression fit to <code>sales</code> using <code>TV</code> and <code>radio</code> as predictors.  From the pattern of the residuals, we can see that there is a pronounced non-linear relationship in the data.  The positive residuals tend to lie along the 45-degree line, where TV and Radio budgets are split evenly.  The negative residuals tend to lie away from this line, where budgets are more lopsided.</p>
@@ -1263,18 +1263,18 @@ versus <code>sales</code>.
 </div>
 </div>
 
-<div id="outline-container-orgf9cf6e9" class="outline-3">
-<h3 id="orgf9cf6e9"><span class="section-number-3">3.3</span> Other Considerations in the Regression Model</h3>
+<div id="outline-container-org5b8d7fb" class="outline-3">
+<h3 id="org5b8d7fb"><span class="section-number-3">3.3</span> Other Considerations in the Regression Model</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
-<code>Credit</code> data set displayed in figure <a href="#org615fabd">22</a> records <code>balance</code>
+<code>Credit</code> data set displayed in figure <a href="#org86a9caa">22</a> records <code>balance</code>
 (average credit card debt for a number of individuals) as well as several
 quantitative predictors: <code>age</code>, <code>cards</code> (number of credit cards), <code>education</code>
 and <code>rating</code> (credit rating).
 </p>
 
 
-<div id="org615fabd" class="figure">
+<div id="org86a9caa" class="figure">
 <p><img src="figures/fig3_6.png" alt="fig3_6.png" />
 </p>
 <p><span class="figure-number">Figure 22: </span>The <code>Credit</code> dataset contains information about <code>balance</code>, <code>age</code>, <code>cards</code>, <code>education</code>, <code>income</code>, <code>limit</code>, and <code>rating</code> for a number of potential customers.</p>
@@ -1282,11 +1282,11 @@ and <code>rating</code> (credit rating).
 
 
 <p>
-Table <a href="#org2cea6fe">7</a> displays the coefficient estimates and other information
+Table <a href="#orgd33f8cd">7</a> displays the coefficient estimates and other information
 associated with the model where <code>gender</code> is the only explanatory variable.
 </p>
 
-<table id="org2cea6fe" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgd33f8cd" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 7:</span> Least squares coefficient estimates associated with the regression of <code>balance</code> onto <code>gender</code> in the <code>Credit</code> data set.</caption>
 
 <colgroup>
@@ -1330,14 +1330,14 @@ associated with the model where <code>gender</code> is the only explanatory vari
 
 
 <p>
-From table <a href="#org83399f6">8</a> we see that the estimated <code>balance</code> for the
+From table <a href="#org9594eab">8</a> we see that the estimated <code>balance</code> for the
 baseline, African American, is $531.0. It is estimated that the
 Asian category will have an additional $-18.7 debt, and that the
 Caucasian category will have an additional $-12.5 debt compared to
 Africna American category.
 </p>
 
-<table id="org83399f6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org9594eab" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 8:</span> Least squares coefficient estimates associated with the regression of <code>balance</code> onto <code>ethnicity</code> in the <code>Credit</code> data set.</caption>
 
 <colgroup>
@@ -1390,20 +1390,20 @@ Africna American category.
 
 
 <p>
-Table <a href="#org2a25d76">9</a> shows results of regressing <code>sales</code> and <code>TV</code> and <code>radio</code>
+Table <a href="#orgc9d7b0b">9</a> shows results of regressing <code>sales</code> and <code>TV</code> and <code>radio</code>
 when an interaction term is included.  Coefficient of interaction term
 <code>TV:radio</code> is highly significant.
 </p>
 
 
 <p>
-In figure <a href="#orgb95b095">23</a>, the left panel shows least squares lines when
+In figure <a href="#org195466b">23</a>, the left panel shows least squares lines when
 we predict <code>balance</code> using <code>income</code> (quantitative) and <code>student</code> (qualitative
 variables). There is no interaction term between <code>income</code> and <code>student</code>.  The
 right panel shows least squares lines when an interaction term is included. 
 </p>
 
-<table id="org2a25d76" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgc9d7b0b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 9:</span> For <code>Advertising</code> data, least squares coefficient estimates associated with the regression of <code>sales</code> onto <code>TV</code> and <code>radio</code>, with an interaction term.</caption>
 
 <colgroup>
@@ -1463,21 +1463,21 @@ right panel shows least squares lines when an interaction term is included.
 
 
 
-<div id="orgb95b095" class="figure">
+<div id="org195466b" class="figure">
 <p><img src="figures/fig3_7.png" alt="fig3_7.png" />
 </p>
 <p><span class="figure-number">Figure 23: </span>For the <code>Credit</code> data, the least squares lines are shown for prediction of <code>balance</code> from <code>income</code> for students and non-students.  Left: There is no interaction between <code>income</code> and <code>student</code>.  Right: There is an interaction term between <code>income</code> and <code>students</code>.</p>
 </div>
 
 <p>
-Figure <a href="#org518d882">24</a> shows a scatter plot of <code>mpg</code> (gas mileage in miles per
+Figure <a href="#org29ce0c4">24</a> shows a scatter plot of <code>mpg</code> (gas mileage in miles per
 gallon) versus <code>horsepower</code> in the <code>Auto</code> data set.  The figure also includes
 least squares fit line for linear, second degree, and fifth degree polynomials
 in <code>horsepower</code>. 
 </p>
 
 
-<div id="org518d882" class="figure">
+<div id="org29ce0c4" class="figure">
 <p><img src="figures/fig3_8.png" alt="fig3_8.png" />
 </p>
 <p><span class="figure-number">Figure 24: </span>The <code>Auto</code> data set.  For a number of cars, <code>mpg</code> and <code>horsepower</code> are shown.  The linear regression fit is shown in orange.  The linear regression fit for a model that includes first- and second-order terms of <code>horsepower</code> is shown as blue curve.  The linear regression fit for a model that includes all polynomials of <code>horsepower</code> up to fifth-degree is shown in green.</p>
@@ -1485,12 +1485,12 @@ in <code>horsepower</code>.
 
 
 <p>
-Table <a href="#orgb2f269e">10</a> shows regression results of a qudratic fit to explain
+Table <a href="#org126376b">10</a> shows regression results of a qudratic fit to explain
 <code>mpg</code> as a function of <code>horsepower</code> and \(\mathttt{horsepower^2}\).  
 </p>
 
 
-<table id="orgb2f269e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org126376b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 10:</span> For the <code>Auto</code> data set, least squares coefficient estimates associated with the regression of <code>mpg</code> onto <code>horsepower</code> and \(\texttt{horsepower^2}\).</caption>
 
 <colgroup>
@@ -1542,18 +1542,18 @@ Table <a href="#orgb2f269e">10</a> shows regression results of a qudratic fit to
 
 
 <p>
-The left panel of figure <a href="#orge3bb80a">25</a> displays a residual plot from the
+The left panel of figure <a href="#org2948cba">25</a> displays a residual plot from the
 linear regression of <code>mpg</code> onto <code>horsepower</code> on the <code>Auto</code> data set.  The red
 line is a smooth fit to the residuals, which is displayed in order to make it
 easier to identify any trends.  The residuals exhibit a clear U-shape, which
 strongly suggests non-linearity in the data.  In contrast, the right hand panel
-of figure<a href="#orge3bb80a">25</a> displays the residual plot results from the model
+of figure<a href="#org2948cba">25</a> displays the residual plot results from the model
 which contains a quadratic term in <code>horsepower</code>.  Now there is little pattern in
 residuals, suggesting that the quadratic term improves the fit to the data.
 </p>
 
 
-<div id="orge3bb80a" class="figure">
+<div id="org2948cba" class="figure">
 <p><img src="figures/fig3_9.png" alt="fig3_9.png" />
 </p>
 <p><span class="figure-number">Figure 25: </span>Plots of residuals versus predicted (or fitted) values for the <code>Auto</code> data set.  In each plot, the red line is a smooth fit to the residuals, intended to make it easier to identify a trend.  Left: A linear regression of <code>mpg</code> on <code>horsepower</code>.  A strong pattern in the residuals indicates non-linearity in the data.  Right: A linear regression of <code>mpg</code> on <code>horsepower</code> and square of <code>horsepower</code>.  Now there is little pattern in the residuals.</p>
@@ -1561,7 +1561,7 @@ residuals, suggesting that the quadratic term improves the fit to the data.
 
 
 <p>
-Figure <a href="#org7990e5a">26</a> provides an illustration of correlations among
+Figure <a href="#orgd56e13f">26</a> provides an illustration of correlations among
 residuals.  In the top panel, we see the residuals from a linear regression fit
 to data generated with uncorrelated errors.  There is no evidence of
 time-related trend in the residuals.  In contrast, the residuals in the bottom
@@ -1573,7 +1573,7 @@ tracking, but the pattern is less pronounced.
 </p>
 
 
-<div id="org7990e5a" class="figure">
+<div id="orgd56e13f" class="figure">
 <p><img src="figures/fig3_10.png" alt="fig3_10.png" />
 </p>
 <p><span class="figure-number">Figure 26: </span>Plots of residuals from simulated time series data sets generated with differeing levels of correlation \(\rho\) between error terms for adjacent time points.</p>
@@ -1581,7 +1581,7 @@ tracking, but the pattern is less pronounced.
 
 
 <p>
-In the left-hand panel of figure <a href="#org2f09799">27</a>, the magnitude of the
+In the left-hand panel of figure <a href="#orgd985f86">27</a>, the magnitude of the
 residuals tends to increase with the fitted values.  The right hand panel
 displays residual plot after tranforming the response using \(\log(Y)\).  The
 residuals now appear to have constant variance, although there is some evidence
@@ -1589,7 +1589,7 @@ of a non-linear relationship in the data.
 </p>
 
 
-<div id="org2f09799" class="figure">
+<div id="orgd985f86" class="figure">
 <p><img src="figures/fig3_11.png" alt="fig3_11.png" />
 </p>
 <p><span class="figure-number">Figure 27: </span>Residual plots.  The red line, a smooth fit to the residuals, is intended to make it easier to identify a trend.  The blue lines track \(5^{th}\) and \(95^{th}\) percentiles of the residuals, and emphasize patterns.  Left: The funnel shape indicates heteroscedasticity.  Right: the response has been log transformed, and now there is no evidence of heteroscedasticity.</p>
@@ -1597,40 +1597,40 @@ of a non-linear relationship in the data.
 
 <p>
 The red point (observation 20) in the left hand panel of figure
-<a href="#org1150622">28</a> illustrates a typical outlier.  The red solid line is the
+<a href="#org300fa1e">28</a> illustrates a typical outlier.  The red solid line is the
 least squares regression fit, while the blue dashed line is the least squares
 fit after removal of the outlier.  In this case, removal of outlier has little
 effect on the least squares line.  In the center panel of figure
-<a href="#org1150622">28</a>, the outlier is clearly visible.  In practice, to decide if
+<a href="#org300fa1e">28</a>, the outlier is clearly visible.  In practice, to decide if
 the outlier is sufficiently big to be considered an outlier, we can plot
 <i>studentized residuals</i>, computed by dividing each residual \(\epsilon_i\) by its
 estimated standard error.  These are shown in the right hand panel. 
 </p>
 
 
-<div id="org1150622" class="figure">
+<div id="org300fa1e" class="figure">
 <p><img src="figures/fig3_12.png" alt="fig3_12.png" />
 </p>
 <p><span class="figure-number">Figure 28: </span>Left: The least squares regression line is shown in red.  The regression line after removing the outlier is is shown in blue.  Center: The residual plot clearly identifies the outlier.  Right: The outlier has a studentized residual of 6; typically we expect values between -3 and 3.</p>
 </div>
 
 <p>
-Observation 41 in the left-hand panel in figure <a href="#org3867ce5">29</a> has
+Observation 41 in the left-hand panel in figure <a href="#orgb790527">29</a> has
 high leverage, in that the predictor value for this observation is large
 relative to the other observations.  The data displayed in figure
-<a href="#org3867ce5">29</a> are the same as the data displayed in figure
-<a href="#org1150622">28</a>, except for the addition of a single high leverage
+<a href="#orgb790527">29</a> are the same as the data displayed in figure
+<a href="#org300fa1e">28</a>, except for the addition of a single high leverage
 observation<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.  The red solid line is the least squares fit to the data,
 while the blue dashed line is the fit produced when observation 41 is
-removed. Comparing the left-hand panels of figures <a href="#org1150622">28</a> and
-<a href="#org3867ce5">29</a>, we observe that removign the high leverage observation has a
+removed. Comparing the left-hand panels of figures <a href="#org300fa1e">28</a> and
+<a href="#orgb790527">29</a>, we observe that removign the high leverage observation has a
 much more substantial impact on least squares line than removing the outlier.
-The center panel of figure <a href="#org3867ce5">29</a>, for a data set with two
+The center panel of figure <a href="#orgb790527">29</a>, for a data set with two
 predictors \(X_1\) and \(X_2\). While most of the observations' predictor values
 fall within the region of blue dashed lines, the red observation is well outside this
 range. But neither the value for \(X_1\) nor the value for \(X_2\) is unusual.  So
 if we examine just \(X_1\) or \(X_2\), we will not notice this high leverage
-point. The right-panel of figure <a href="#org3867ce5">29</a> provides a plot of
+point. The right-panel of figure <a href="#orgb790527">29</a> provides a plot of
 studentized residuals versus \(h_i\) for the data in the left hand panel.
 Observation 41 stands out as having a very high leverage statistic as well as a
 high studentized residual.
@@ -1638,16 +1638,57 @@ high studentized residual.
 
 
 
-<div id="org3867ce5" class="figure">
+<div id="orgb790527" class="figure">
 <p><img src="figures/fig3_13.png" alt="fig3_13.png" />
 </p>
 <p><span class="figure-number">Figure 29: </span>Left: Observation 41 is a high leverage point, while 20 is not.  The red line is the fit to all the data, and the blue line is the fit with observation 41 removed.  Center: The red observation is not unusual in terms of its \(X_1\) value or its \(X_2\) value, but still falls outside the bulk of the data, and hence has high leverage.  Right: Observation 41 has a high leverage and a high residual.</p>
 </div>
+
+<p>
+Figure <a href="#org2c9360d">30</a> illustrates the concept of collinearity.
+</p>
+
+
+<div id="org2c9360d" class="figure">
+<p><img src="figures/fig3_14.png" alt="fig3_14.png" />
+</p>
+<p><span class="figure-number">Figure 30: </span>Scatterplots of the observations from the <code>Credit</code> data set.  Left: A plot of <code>age</code> versus <code>limit</code>.  These two variables not collinear.  Right: A plot of <code>rating</code> versus <code>limit</code>.  There is high collinearity.</p>
+</div>
+
+
+<p>
+Figure <a href="#orgea7a87e">31</a> illustrates some of the difficulties that can result
+from collinearity.  The left panel is a contour plot of the RSS associated with
+different possible coefficient estimates for the regression of <code>balance</code> on
+<code>limit</code> and <code>age</code>.  Each ellipse represents a set of coefficients that
+correspond to the same RSS, with ellipses nearest to the center taking on the
+lowest values of RSS.  The black dot and the associated dashed lines represent
+the coefficient estimates that result in the smallest possible RSS.  The axes
+for <code>limit</code> and <code>age</code> have been scaled so that the plot includes possible
+coefficients that are upto four standard errors on either side of the least
+squares estimates.  We see that the true <code>limit</code> coefficient is almost certainly
+between 0.15 and 0.20.
+</p>
+
+<p>
+In contrast, the right hand panel of figure <a href="#orgea7a87e">31</a> displays contour
+plots of the RSS associated with possible coefficient estimates for the
+regression of <code>balance</code> onto <code>limit</code> and <code>rating</code>, which we know to be highly
+collinear.  Now the contours run along a narrow valley; there is a broad range
+of values for the coefficient estimates that result in equal values for RSS.  
+</p>
+
+
+<div id="orgea7a87e" class="figure">
+<p><img src="figures/fig3_15.png" alt="fig3_15.png" />
+</p>
+<p><span class="figure-number">Figure 31: </span>Contour plots for the RSS values as a function of the parameters \(\beta\) for various regressions involving the <code>Credit</code> data set.  In each plot, the black dots represent the coefficient values corresponding to the minimum RSS.  Left: A contour plot of RSS for the regression of <code>balance</code> onto <code>age</code> and <code>limit</code>.  The minimum value is well defined.  Right: A contour plot of RSS for the regression of <code>balance</code> onto <code>rating</code> and <code>limit</code>.  Because of the collinearity, there are many pairs \((\beta_{Limit}, \beta_{Rating})\) with a similar value for RSS.</p>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org97ca218" class="outline-3">
-<h3 id="org97ca218"><span class="section-number-3">3.4</span> Lab: Linear Regression</h3>
+<div id="outline-container-org16cdc89" class="outline-3">
+<h3 id="org16cdc89"><span class="section-number-3">3.4</span> Lab: Linear Regression</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 It is possible to call R from Python and <i>vice versa</i>.  
@@ -1668,7 +1709,7 @@ The middle panel is from a different data set.
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Naresh Gurbuxani</p>
-<p class="date">Created: 2019-05-25 Sat 08:31</p>
+<p class="date">Created: 2019-05-26 Sun 07:53</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

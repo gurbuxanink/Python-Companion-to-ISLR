@@ -844,6 +844,45 @@ bulk of the data, and hence has high leverage. Right: Observation 41 has
 a high leverage and a high
 residual.](figures/fig3_13.png "linearRegFig13")
 
+Figure [fig:linearRegFig14](fig:linearRegFig14) illustrates the concept
+of collinearity.
+
+![Scatterplots of the observations from the `Credit` data set. Left: A
+plot of `age` versus `limit`. These two variables not collinear. Right:
+A plot of `rating` versus `limit`. There is high
+collinearity.](figures/fig3_14.png "linearRegFig14")
+
+Figure [fig:linearRegFig15](fig:linearRegFig15) illustrates some of the
+difficulties that can result from collinearity. The left panel is a
+contour plot of the RSS associated with different possible coefficient
+estimates for the regression of `balance` on `limit` and `age`. Each
+ellipse represents a set of coefficients that correspond to the same
+RSS, with ellipses nearest to the center taking on the lowest values of
+RSS. The black dot and the associated dashed lines represent the
+coefficient estimates that result in the smallest possible RSS. The axes
+for `limit` and `age` have been scaled so that the plot includes
+possible coefficients that are upto four standard errors on either side
+of the least squares estimates. We see that the true `limit` coefficient
+is almost certainly between 0.15 and 0.20.
+
+In contrast, the right hand panel of figure
+[fig:linearRegFig15](fig:linearRegFig15) displays contour plots of the
+RSS associated with possible coefficient estimates for the regression of
+`balance` onto `limit` and `rating`, which we know to be highly
+collinear. Now the contours run along a narrow valley; there is a broad
+range of values for the coefficient estimates that result in equal
+values for RSS.
+
+![Contour plots for the RSS values as a function of the parameters
+$\beta$ for various regressions involving the `Credit` data set. In each
+plot, the black dots represent the coefficient values corresponding to
+the minimum RSS. Left: A contour plot of RSS for the regression of
+`balance` onto `age` and `limit`. The minimum value is well defined.
+Right: A contour plot of RSS for the regression of `balance` onto
+`rating` and `limit`. Because of the collinearity, there are many pairs
+$(\beta_{Limit}, \beta_{Rating})$ with a similar value for
+RSS.](figures/fig3_15.png "linearRegFig15")
+
 \FloatBarrier
 
 Lab: Linear Regression

@@ -1536,6 +1536,76 @@ high studentized residual.
 #+RESULTS: fig3_13plot
 [[file:figures/fig3_13.png]]
 
+Figure [[fig:linearRegFig14]] illustrates the concept of collinearity.
+
+#+NAME: fig3_14plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_14.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import pandas as pd
+  import statsmodels.datasets as datasets
+
+  credit = datasets.get_rdataset('Credit', 'ISLR').data
+
+  fig = plt.figure(figsize=(8, 4))
+  ax1 = fig.add_subplot(121)
+  credit.plot(x='Limit', y='Age', kind='scatter', alpha=0.4, c='r', ax=ax1)
+
+  ax2 = fig.add_subplot(122)
+  credit.plot(x='Limit', y='Rating', kind='scatter', alpha=0.2, c='r', ax=ax2)
+
+  fig.tight_layout()
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig14
+#+CAPTION: Scatterplots of the observations from the =Credit= data set.  Left: A plot of =age= versus =limit=.  These two variables not collinear.  Right: A plot of =rating= versus =limit=.  There is high collinearity.
+#+RESULTS: fig3_14plot
+[[file:figures/fig3_14.png]]
+
+
+Figure [[fig:linearRegFig15]] illustrates some of the difficulties that can result
+from collinearity.  The left panel is a contour plot of the RSS associated with
+different possible coefficient estimates for the regression of =balance= on
+=limit= and =age=.  Each ellipse represents a set of coefficients that
+correspond to the same RSS, with ellipses nearest to the center taking on the
+lowest values of RSS.  The black dot and the associated dashed lines represent
+the coefficient estimates that result in the smallest possible RSS.  The axes
+for =limit= and =age= have been scaled so that the plot includes possible
+coefficients that are upto four standard errors on either side of the least
+squares estimates.  We see that the true =limit= coefficient is almost certainly
+between 0.15 and 0.20.
+
+In contrast, the right hand panel of figure [[fig:linearRegFig15]] displays contour
+plots of the RSS associated with possible coefficient estimates for the
+regression of =balance= onto =limit= and =rating=, which we know to be highly
+collinear.  Now the contours run along a narrow valley; there is a broad range
+of values for the coefficient estimates that result in equal values for RSS.  
+
+#+NAME: fig3_15plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_15.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+  import ageLimitRating
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig15
+#+CAPTION: Contour plots for the RSS values as a function of the parameters $\beta$ for various regressions involving the =Credit= data set.  In each plot, the black dots represent the coefficient values corresponding to the minimum RSS.  Left: A contour plot of RSS for the regression of =balance= onto =age= and =limit=.  The minimum value is well defined.  Right: A contour plot of RSS for the regression of =balance= onto =rating= and =limit=.  Because of the collinearity, there are many pairs $(\beta_{Limit}, \beta_{Rating})$ with a similar value for RSS.
+#+RESULTS: fig3_15plot
+[[file:figures/fig3_15.png]]
+
+
+
+
 #+LATEX: \FloatBarrier
 
 ** Lab: Linear Regression
