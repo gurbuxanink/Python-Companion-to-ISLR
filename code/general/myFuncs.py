@@ -1,7 +1,7 @@
 # Functions used in various parts of code
 import pandas as pd
 
-def dfToList(my_df):
+def dfToList(my_df, hline_after=[0]):
     '''Assumes my_df is a pandas dataframe
     Outputs a list of lists suitable for printing as org-mode table'''
 
@@ -15,5 +15,10 @@ def dfToList(my_df):
         res_list[i].insert(0, my_df.index.tolist()[i])
 
     res_list.insert(0, res_headers)
-    res_list.insert(1, None)
+    hline_count = 0
+    for loc in hline_after:
+        hline_count += 1
+        res_list.insert(hline_count + loc, None)
+
+    # res_list.insert(1, None)
     return res_list
