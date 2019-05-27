@@ -902,11 +902,22 @@ Next, in table [[tab:linearRegTab2]], we report more information about the least
 
 ** Multiple Linear Regression
 
-Table [[tab:linearRegTab3]] and the next table show results of two simple linear
+Table [[tab:linearRegTab3]]  shows results of two simple linear
 regressions, each of which uses a different advertising medium as a predictor.
 We find that a $1,000 increase in spending on radio advertising is associated
 with an increase in sales by around {{{radio_beta_est}}} units.  A $1,000 increase in advertising
 spending on on newspapers increases sales by approximately {{{newsp_beta_est}}} units. 
+
+#+NAME: tab:linearRegTab3
+#+CAPTION: More simple linear regression models for =Advertising= data.  Coefficients of the simple linear regression model for number of units sold on Top: radio advertising budget and Bottom: newspaper advertising budget. A $1,000 increase in spending on radio advertising is associated with an average increase sales by around {{{radio_beta_est}}} units, while the same increase in spending on newspaper advertising is associated with an average increase of around {{{newsp_beta_est}}} units.  =Sales= variable is in thousands of units, and the =radio= and =newspaper= variables are in thousands of dollars..
+#+RESULTS: sales_radio_newp_reg
+|           |  Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
+|-----------+--------+----------+--------+-------------------|
+| Intercept |  9.312 |    0.563 | 16.542 |               0.0 |
+| radio     |  0.202 |     0.02 |  9.921 |               0.0 |
+|-----------+--------+----------+--------+-------------------|
+| Intercept | 12.351 |    0.621 | 19.876 |               0.0 |
+| newspaper |  0.055 |    0.017 |    3.3 |             0.001 |
 
 #+NAME: sales_radio_newp_reg
 #+BEGIN_SRC python :exports results :results table
@@ -921,48 +932,20 @@ spending on on newspapers increases sales by approximately {{{newsp_beta_est}}} 
   reg_fit = reg_model.fit()
   res_table = reg_fit.summary2().tables[1].copy()
   res_table = res_table[res_table.columns[:4]]
-  res_table.rename(index=str,
-		   columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
-		   inplace=True)
-  for col_name in res_table.columns:
-      res_table[col_name] = res_table[col_name].apply(lambda x: round(x, 3))
-  return myFuncs.dfToList(res_table)
+
+  reg_model2 = smf.ols(formula='sales ~ newspaper', data=advertising)
+  reg_fit2 = reg_model2.fit()
+  res_table2 = reg_fit2.summary2().tables[1].copy()
+  res_table2 = res_table2[res_table2.columns[:4]]
+
+  res_all = pd.concat((res_table, res_table2))
+
+  res_all.rename(index=str,
+		 columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
+		 inplace=True)
+  return myFuncs.dfToList(round(res_all, 3), [0, 2])
 #+END_SRC
 
-#+NAME: tab:linearRegTab3
-#+CAPTION: More simple linear regression models for =Advertising= data.  Coefficients of the simple linear regression model for number of units sold on radio advertising budget.  a $1,000 increase in spending on radio advertising is associated with an average increase sales by around {{{radio_beta_est}}} units.
-#+RESULTS: sales_radio_newp_reg
-|           | Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
-|-----------+-------+----------+--------+-------------------|
-| Intercept | 9.312 |    0.563 | 16.542 |               0.0 |
-| radio     | 0.202 |     0.02 |  9.921 |               0.0 |
-
-#+NAME: sales_newsp_reg
-#+BEGIN_SRC python :exports results :results table
-  import pandas as pd
-  import statsmodels.formula.api as smf
-  import sys
-  sys.path.append('code/general/')
-  import myFuncs
-
-  advertising = pd.read_csv('data/Advertising.csv', index_col=0)
-  reg_model = smf.ols(formula='sales ~ newspaper', data=advertising)
-  reg_fit = reg_model.fit()
-  res_table = reg_fit.summary2().tables[1].copy()
-  res_table = res_table[res_table.columns[:4]]
-  res_table.rename(index=str,
-		   columns={'t': '$t$', 'P>|t|': '$P > \mid t \mid$'},
-		   inplace=True)
-  for col_name in res_table.columns:
-      res_table[col_name] = res_table[col_name].apply(lambda x: round(x, 3))
-  return myFuncs.dfToList(res_table)
-#+END_SRC
-
-#+RESULTS: sales_newsp_reg
-|           |  Coef. | Std.Err. |    $t$ | $P > \mid t \mid$ |
-|-----------+--------+----------+--------+-------------------|
-| Intercept | 12.351 |    0.621 | 19.876 |               0.0 |
-| newspaper |  0.055 |    0.017 |    3.3 |             0.001 |
 
 #+LATEX: \FloatBarrier
 
@@ -1659,7 +1642,59 @@ collinearity.
 
 ** The Marketing Plan
 
-** Comparison of Linear Regression with $K$-Nearest Neighbors
+** Comparison of Linear Regression with K-Nearest Neighbors
+
+Figure [[fig:linearRegFig16]] illustrates two KNN fits on a data set with $p = 2$
+predictors. The fit with $K = 1$ is shown in the left-hand panel, while the
+right-hand panel displays the fit with $K = 9$.  When $K = 1$, the KNN fit
+perfectly interpolates the training observations, and consequently takes the
+form of a step function. When $K = 9$, the KNN fit is still a step function, but
+averaging over nine observations results in much smaller regions of constant
+prediction, and consequently a smoother fit.  
+
+#+NAME: fig3_16plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_16.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+
+  import knnRegression
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig16
+#+CAPTION: Plots of $\hat{f}(X)$ using KNN regression on two-dimensional data set with 64 observations (brown dots).  Left: $K = 1$ results in a rough step function fit.  Right: $K = 9$ produces a much smoother fit.
+#+RESULTS: fig3_16plot
+[[file:figures/fig3_16.png]]
+
+Figure [[fig:linearRegFig17]] provides an example of KNN regression with data
+generated from a one-dimensional regression model.  the black dashed lines
+represent $f(X)$, while the blue curves correspond to the KNN fits using $K = 1$
+and $K = 9$.  In this case, the $K = 1$ predictions are far too variable, while
+the smoother $K = 9$ fit is much closer to $f(X)$.  
+
+#+NAME: fig3_17plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_17.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+
+  import knnFits
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig17
+#+CAPTION: Plots of $\hat{f}(X)$ using KNN regression on a one-dimensional data set with 50 observations.  The true relationship is given by the black dashed line.  Left: The blue curve corresponds to $K = 1$ and interpolates (i.e., passes directly through) training data.  Right: The blue curve corresponds to $K = 9$, and represents a smoother fit.
+#+RESULTS: fig3_17plot
+[[file:figures/fig3_17.png]]
+
+#+LATEX: \FloatBarrier
 
 ** Lab: Linear Regression
 It is possible to call R from Python and /vice versa/.  

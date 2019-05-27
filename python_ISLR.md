@@ -557,29 +557,31 @@ information about the least squares model.
 Multiple Linear Regression
 --------------------------
 
-Table [tab:linearRegTab3](tab:linearRegTab3) and the next table show
-results of two simple linear regressions, each of which uses a different
-advertising medium as a predictor. We find that a \$1,000 increase in
-spending on radio advertising is associated with an increase in sales by
-around {{{radio~betaest~}}} units. A \$1,000 increase in advertising
-spending on on newspapers increases sales by approximately
-{{{newsp~betaest~}}} units.
-
-              Coef.   Std.Err.   $t$      $P > \mid t \mid$
-  ----------- ------- ---------- -------- -------------------
-  Intercept   9.312   0.563      16.542   0.0
-  radio       0.202   0.02       9.921    0.0
-
-  : More simple linear regression models for `Advertising` data.
-  Coefficients of the simple linear regression model for number of units
-  sold on radio advertising budget. a \$1,000 increase in spending on
-  radio advertising is associated with an average increase sales by
-  around {{{radio~betaest~}}} units.
+Table [tab:linearRegTab3](tab:linearRegTab3) shows results of two simple
+linear regressions, each of which uses a different advertising medium as
+a predictor. We find that a \$1,000 increase in spending on radio
+advertising is associated with an increase in sales by around
+{{{radio~betaest~}}} units. A \$1,000 increase in advertising spending
+on on newspapers increases sales by approximately {{{newsp~betaest~}}}
+units.
 
               Coef.    Std.Err.   $t$      $P > \mid t \mid$
   ----------- -------- ---------- -------- -------------------
+  Intercept   9.312    0.563      16.542   0.0
+  radio       0.202    0.02       9.921    0.0
   Intercept   12.351   0.621      19.876   0.0
   newspaper   0.055    0.017      3.3      0.001
+
+  : More simple linear regression models for `Advertising` data.
+  Coefficients of the simple linear regression model for number of units
+  sold on Top: radio advertising budget and Bottom: newspaper
+  advertising budget. A \$1,000 increase in spending on radio
+  advertising is associated with an average increase sales by around
+  {{{radio~betaest~}}} units, while the same increase in spending on
+  newspaper advertising is associated with an average increase of around
+  {{{newsp~betaest~}}} units. `Sales` variable is in thousands of units,
+  and the `radio` and `newspaper` variables are in thousands of
+  dollars..
 
 \FloatBarrier
 
@@ -914,8 +916,38 @@ to the presence of collinearity.
 The Marketing Plan
 ------------------
 
-Comparison of Linear Regression with $K$-Nearest Neighbors
-----------------------------------------------------------
+Comparison of Linear Regression with K-Nearest Neighbors
+--------------------------------------------------------
+
+Figure [fig:linearRegFig16](fig:linearRegFig16) illustrates two KNN fits
+on a data set with $p = 2$ predictors. The fit with $K = 1$ is shown in
+the left-hand panel, while the right-hand panel displays the fit with
+$K = 9$. When $K = 1$, the KNN fit perfectly interpolates the training
+observations, and consequently takes the form of a step function. When
+$K = 9$, the KNN fit is still a step function, but averaging over nine
+observations results in much smaller regions of constant prediction, and
+consequently a smoother fit.
+
+![Plots of $\hat{f}(X)$ using KNN regression on two-dimensional data set
+with 64 observations (brown dots). Left: $K = 1$ results in a rough step
+function fit. Right: $K = 9$ produces a much smoother
+fit.](figures/fig3_16.png "linearRegFig16")
+
+Figure [fig:linearRegFig17](fig:linearRegFig17) provides an example of
+KNN regression with data generated from a one-dimensional regression
+model. the black dashed lines represent $f(X)$, while the blue curves
+correspond to the KNN fits using $K = 1$ and $K = 9$. In this case, the
+$K = 1$ predictions are far too variable, while the smoother $K = 9$ fit
+is much closer to $f(X)$.
+
+![Plots of $\hat{f}(X)$ using KNN regression on a one-dimensional data
+set with 50 observations. The true relationship is given by the black
+dashed line. Left: The blue curve corresponds to $K = 1$ and
+interpolates (i.e., passes directly through) training data. Right: The
+blue curve corresponds to $K = 9$, and represents a smoother
+fit.](figures/fig3_17.png "linearRegFig17")
+
+\FloatBarrier
 
 Lab: Linear Regression
 ----------------------
