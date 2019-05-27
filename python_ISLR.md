@@ -947,6 +947,25 @@ interpolates (i.e., passes directly through) training data. Right: The
 blue curve corresponds to $K = 9$, and represents a smoother
 fit.](figures/fig3_17.png "linearRegFig17")
 
+Figure [fig:linearRegFig18](fig:linearRegFig18) represents the linear
+regression fit to the same data. It is almost perfect. The right hand
+panel of figure [fig:linearRegFig18](fig:linearRegFig18) reveals that
+linear regression outperforms KNN for this data. The green line, plotted
+as a function of $\frac{1}{K}$, represents the test set mean squared
+error (MSE) for KNN. The KNN errors are well above the horizontal dashed
+line, which is the test MSE for linear regression.
+
+![The same data set shown in figure
+[fig:linearRegFig17](fig:linearRegFig17) is investigated further. Left:
+The blue dashed line is the least squares fit to the data. Since $f(X)$
+is in fact linear (displayed in black line), the least squares
+regression line provides a very good estimate of $f(X)$. Right: The
+dashed horizontal line represents the least squares test set MSE, while
+the green line corresponds to the MSE for KNN as a function of
+$\frac{1}{K}$. Linear regression achieves a lower test MSE than does KNN
+regression, since $f(X)$ is in fact
+linear.](figures/fig3_18.png "linearRegFig18")
+
 \FloatBarrier
 
 Lab: Linear Regression

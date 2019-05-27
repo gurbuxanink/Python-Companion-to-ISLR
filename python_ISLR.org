@@ -1694,6 +1694,32 @@ the smoother $K = 9$ fit is much closer to $f(X)$.
 #+RESULTS: fig3_17plot
 [[file:figures/fig3_17.png]]
 
+Figure [[fig:linearRegFig18]] represents the linear regression fit to the same
+data.  It is almost perfect.  The right hand panel of figure [[fig:linearRegFig18]]
+reveals that linear regression outperforms KNN for this data.  The green line,
+plotted as a function of $\frac{1}{K}$, represents the test set mean squared
+error (MSE) for KNN.  The KNN errors are well above the horizontal dashed line,
+which is the test MSE for linear regression.
+
+#+NAME: fig3_18plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_18.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+  import knnMSE
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig18
+#+CAPTION: The same data set shown in figure [[fig:linearRegFig17]] is investigated further.  Left: The blue dashed line is the least squares fit to the data.  Since $f(X)$ is in fact linear (displayed in black line), the least squares regression line provides a very good estimate of $f(X)$.  Right: The dashed horizontal line represents the least squares test set MSE, while the green line corresponds to the MSE for KNN as a function of $\frac{1}{K}$.  Linear regression achieves a lower test MSE than does KNN regression, since $f(X)$ is in fact linear. 
+#+RESULTS: fig3_18plot
+[[file:figures/fig3_18.png]]
+
+
 #+LATEX: \FloatBarrier
 
 ** Lab: Linear Regression
