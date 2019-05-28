@@ -984,6 +984,25 @@ with various values of $\frac{1}{K}$ (green) are displayed. Bottom Left
 and Bottom Right: As in the top panel, but with a strongly non-linear
 relationship between $X$ and $Y$.](figures/fig3_19.png "linearRegFig19")
 
+Figure [fig:linearReg20](fig:linearReg20) considers the same strongly
+non-linear situation as in the lower panel of figure
+[fig:linearRegFig19](fig:linearRegFig19), except that we have added
+additional *noise* predictors that are not associated with the response.
+When $p = 1$ or $p = 2$, KNN outperforms linear regression. But as we
+increase $p$, linear regression becomes superior to KNN. In fact,
+increase in dimensionality has only caused a small increase in linear
+regression test set MSE, but it has caused a much bigger increase in the
+MSE for KNN.
+
+![Test MSE for linear regressions (black horizontal lines) and KNN
+(green curves) as the number of variables $p$ increases. The true
+function is non-linear in the first variable, as in the lower panel in
+figure [fig:linearRegFig19](fig:linearRegFig19), and does not depend
+upon the additional variables. The performance of linear regression
+deteriorates slowly in the presense of these additional variables,
+whereas KNN\'s performance degrades more quickly as $p$
+increases.](figures/fig3_20.png "linearReg20")
+
 \FloatBarrier
 
 Lab: Linear Regression
