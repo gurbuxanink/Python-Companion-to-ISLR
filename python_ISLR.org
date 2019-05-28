@@ -1720,6 +1720,33 @@ which is the test MSE for linear regression.
 [[file:figures/fig3_18.png]]
 
 
+Figure [[fig:linearRegFig19]] examines the relative performances of least squares
+regression and KNN under increasing levels of non-linearity in the relationship
+between $X$ and $Y$.  In the top row, the true relationship is nearly linear.
+In this case, we see that the test MSE for linear regression is still superior
+to that of KNN for low values of $K$ (far right).  However, as $K$ increases,
+KNN outperforms linear regression.  The second row illustrates a more
+substantial deviation from linearity.  In this situation, KNN substantially
+outperforms linear regression for all values of $K$.  
+
+#+NAME: fig3_19plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig3_19.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap3/')
+
+  import knnVarious
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:linearRegFig19
+#+CAPTION: Top Left: In a setting with a slightly non-linear relationship between $X$ and $Y$ (solid black line), the KNN fits with $K = 1$ (blue) and $K = 9$ (red) are displayed.  Top Right: For the slightly non-linear data,the test set MSE for least squares regression (horizontal) and KNN with various values of $\frac{1}{K}$ (green) are displayed.  Bottom Left and Bottom Right: As in the top panel, but with a strongly non-linear relationship between $X$ and $Y$.
+#+RESULTS: fig3_19plot
+[[file:figures/fig3_19.png]]
+
 #+LATEX: \FloatBarrier
 
 ** Lab: Linear Regression

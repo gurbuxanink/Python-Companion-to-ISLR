@@ -966,6 +966,24 @@ $\frac{1}{K}$. Linear regression achieves a lower test MSE than does KNN
 regression, since $f(X)$ is in fact
 linear.](figures/fig3_18.png "linearRegFig18")
 
+Figure [fig:linearRegFig19](fig:linearRegFig19) examines the relative
+performances of least squares regression and KNN under increasing levels
+of non-linearity in the relationship between $X$ and $Y$. In the top
+row, the true relationship is nearly linear. In this case, we see that
+the test MSE for linear regression is still superior to that of KNN for
+low values of $K$ (far right). However, as $K$ increases, KNN
+outperforms linear regression. The second row illustrates a more
+substantial deviation from linearity. In this situation, KNN
+substantially outperforms linear regression for all values of $K$.
+
+![Top Left: In a setting with a slightly non-linear relationship between
+$X$ and $Y$ (solid black line), the KNN fits with $K = 1$ (blue) and
+$K = 9$ (red) are displayed. Top Right: For the slightly non-linear
+data,the test set MSE for least squares regression (horizontal) and KNN
+with various values of $\frac{1}{K}$ (green) are displayed. Bottom Left
+and Bottom Right: As in the top panel, but with a strongly non-linear
+relationship between $X$ and $Y$.](figures/fig3_19.png "linearRegFig19")
+
 \FloatBarrier
 
 Lab: Linear Regression
