@@ -1008,7 +1008,474 @@ increases.](figures/fig3_20.png "linearReg20")
 Lab: Linear Regression
 ----------------------
 
-It is possible to call R from Python and *vice versa*.
+### Libraries
+
+The `import` function, along with an optional `as`, is used to load
+*libraries*. Before a library can be loaded, it must be installed on the
+system.
+
+``` {.python exports="both" results="output"}
+import numpy as np
+import statsmodels.formula.api as smf
+```
+
+### Simple Linear Regression
+
+We load `Boston` data set from `R` library `MASS`. Then we use `ols`
+function from `statsmodels.formula.api` to fit simple linear regression
+model, with `medv` as response and `lstat` as the predictor.
+
+Function `summary2()` gives some basic information about the model. We
+can use `dir()` to find out what other pieces of information are stored
+in `lm_fit`. The `predict()` function can be used to produce prediction
+of `medv` for a given value of `lstat`.
+
+``` {#boston_reg .python exports="both" results="output"}
+import statsmodels.formula.api as smf
+from statsmodels import datasets
+
+boston = datasets.get_rdataset('Boston', 'MASS').data
+print(boston.columns)
+print('--------')
+
+lm_reg = smf.ols(formula='medv ~ lstat', data=boston)
+lm_fit = lm_reg.fit()
+print(lm_fit.summary2())
+print('------')
+
+print(dir(lm_fit))
+print('------')
+
+print(lm_fit.predict(exog=dict(lstat=[5, 10, 15])))
+```
+
+``` {.example}
+Index(['crim', 'zn', 'indus', 'chas', 'nox', 'rm', 'age', 'dis', 'rad', 'tax',
+       'ptratio', 'black', 'lstat', 'medv'],
+      dtype='object')
+--------
+                 Results: Ordinary least squares
+==================================================================
+Model:              OLS              Adj. R-squared:     0.543    
+Dependent Variable: medv             AIC:                3286.9750
+Date:               2019-05-28 14:10 BIC:                3295.4280
+No. Observations:   506              Log-Likelihood:     -1641.5  
+Df Model:           1                F-statistic:        601.6    
+Df Residuals:       504              Prob (F-statistic): 5.08e-88 
+R-squared:          0.544            Scale:              38.636   
+-------------------------------------------------------------------
+               Coef.   Std.Err.     t      P>|t|    [0.025   0.975]
+-------------------------------------------------------------------
+Intercept     34.5538    0.5626   61.4151  0.0000  33.4485  35.6592
+lstat         -0.9500    0.0387  -24.5279  0.0000  -1.0261  -0.8740
+------------------------------------------------------------------
+Omnibus:             137.043       Durbin-Watson:          0.892  
+Prob(Omnibus):       0.000         Jarque-Bera (JB):       291.373
+Skew:                1.453         Prob(JB):               0.000  
+Kurtosis:            5.319         Condition No.:          30     
+==================================================================
+
+------
+['HC0_se', 'HC1_se', 'HC2_se', 'HC3_se', '_HCCM', '__class__', '__delattr__', 
+'__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', 
+'__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', 
+'__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', 
+'__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', 
+'__subclasshook__', '__weakref__', '_cache', '_data_attr', 
+'_get_robustcov_results', '_is_nested', '_wexog_singular_values', 'aic', 
+'bic', 'bse', 'centered_tss', 'compare_f_test', 'compare_lm_test', 
+'compare_lr_test', 'condition_number', 'conf_int', 'conf_int_el', 'cov_HC0', 
+'cov_HC1', 'cov_HC2', 'cov_HC3', 'cov_kwds', 'cov_params', 'cov_type', 
+'df_model', 'df_resid', 'eigenvals', 'el_test', 'ess', 'f_pvalue', 'f_test', 
+'fittedvalues', 'fvalue', 'get_influence', 'get_prediction', 
+'get_robustcov_results', 'initialize', 'k_constant', 'llf', 'load', 'model', 
+'mse_model', 'mse_resid', 'mse_total', 'nobs', 'normalized_cov_params', 
+'outlier_test', 'params', 'predict', 'pvalues', 'remove_data', 'resid', 
+'resid_pearson', 'rsquared', 'rsquared_adj', 'save', 'scale', 'ssr', 
+'summary', 'summary2', 't_test', 't_test_pairwise', 'tvalues', 
+'uncentered_tss', 'use_t', 'wald_test', 'wald_test_terms', 'wresid']
+------
+0    29.803594
+1    25.053347
+2    20.303101
+dtype: float64
+```
+
+We will now plot `medv` and `lstat` along with least squares regression
+line.
+
+``` {.python exports="code" results="none" noweb="yes"}
+<<boston_reg>>
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+boston.plot(x='lstat', y='medv', alpha=0.7, ax=ax)
+sm.graphics.abline_plot(model_results=lm_fit, ax=ax, c='r')
+
+```
+
+Next we examine some diagnostic plots.
+
+``` {.python exports="code" results="none" noweb="yes"}
+<<boston_reg>>
+import statsmodels.api as sm
+from statsmodels.nonparametric.smoothers_lowess import lowess
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig = plt.figure()
+ax1 = fig.add_subplot(221)
+ax1.scatter(lm_fit.fittedvalues, lm_fit.resid, s=5, c='b', alpha=0.6)
+ax1.axhline(y=0, linestyle='--', c='r')
+# resid_lowess_fit = lowess(endog=lm_fit.resid, exog=lm_fit.fittedvalues,
+#                           is_sorted=True)
+# ax1.plot(resid_lowess_fit[:,0], resid_lowess_fit[:,1]) 
+ax1.set_xlabel('Fitted values')
+ax1.set_ylabel('Residuals')
+ax1.set_title('Residuals vs Fitted')
+
+ax2=fig.add_subplot(222)
+sm.graphics.qqplot(lm_fit.resid, ax=ax2, markersize=3, line='s',
+           linestyle='--', fit=True, alpha=0.4)
+ax2.set_ylabel('Standardized residuals')
+ax2.set_title('Normal Q-Q')
+
+influence = lm_fit.get_influence()
+standardized_resid = influence.resid_studentized_internal
+ax3 = fig.add_subplot(223)
+ax3.scatter(lm_fit.fittedvalues, np.sqrt(np.abs(standardized_resid)), s=5,
+        alpha=0.4, c='b')
+ax3.set_xlabel('Fitted values')
+ax3.set_ylabel(r'$\sqrt{\mid Standardized\; residuals \mid}$')
+ax3.set_title('Scale-Location')
+
+ax4 = fig.add_subplot(224)
+sm.graphics.influence_plot(lm_fit, size=2, alpha=0.4, c='b',  ax=ax4)
+ax4.xaxis.label.set_size(10)
+ax4.yaxis.label.set_size(10)
+ax4.title.set_size(12)
+ax4.set_xlim(0, 0.03)
+for txt in ax4.texts:
+    txt.set_visible(False)
+ax4.axhline(y=0, linestyle='--', color='grey')
+
+fig.tight_layout()
+```
+
+### Multiple Linear Regression
+
+In order to fit a multiple regression model using least squares, we
+again use the `ols` and `fit` functions. The syntax `ols(formula`\'y \~
+x1 + x2 + x3\') is used to fit a model with three predictors, `x1`,
+`x2`, and `x3`. The `summary2()` now outputs the regression coefficients
+for all three predictors.
+
+`statsmodels` does not seem to have `R` like facility to include all
+variables using the formula `y ~ .`. To include all variables, we either
+write them individually, or use code to create a formula.
+
+``` {.python exports="both" results="output"}
+import statsmodels.formula.api as smf
+from statsmodels import datasets
+
+boston = datasets.get_rdataset('Boston', 'MASS').data
+
+lm_reg = smf.ols(formula='medv ~ lstat + age', data=boston)
+lm_fit = lm_reg.fit()
+
+print(lm_fit.summary2())
+print('--------')
+
+# Create formula to include all variables
+all_columns = list(boston.columns)
+all_columns.remove('medv')
+my_formula = 'medv ~ ' + ' + '.join(all_columns)
+print(my_formula)
+print('--------')
+
+all_reg = smf.ols(formula=my_formula, data=boston)
+all_fit = all_reg.fit()
+print(all_fit.summary2())
+print('--------')
+```
+
+``` {.example}
+                 Results: Ordinary least squares
+==================================================================
+Model:              OLS              Adj. R-squared:     0.549    
+Dependent Variable: medv             AIC:                3281.0064
+Date:               2019-05-29 10:07 BIC:                3293.6860
+No. Observations:   506              Log-Likelihood:     -1637.5  
+Df Model:           2                F-statistic:        309.0    
+Df Residuals:       503              Prob (F-statistic): 2.98e-88 
+R-squared:          0.551            Scale:              38.108   
+-------------------------------------------------------------------
+               Coef.   Std.Err.     t      P>|t|    [0.025   0.975]
+-------------------------------------------------------------------
+Intercept     33.2228    0.7308   45.4579  0.0000  31.7869  34.6586
+lstat         -1.0321    0.0482  -21.4163  0.0000  -1.1267  -0.9374
+age            0.0345    0.0122    2.8256  0.0049   0.0105   0.0586
+------------------------------------------------------------------
+Omnibus:             124.288       Durbin-Watson:          0.945  
+Prob(Omnibus):       0.000         Jarque-Bera (JB):       244.026
+Skew:                1.362         Prob(JB):               0.000  
+Kurtosis:            5.038         Condition No.:          201    
+==================================================================
+
+--------
+medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+ptratio + black + lstat
+--------
+                 Results: Ordinary least squares
+==================================================================
+Model:              OLS              Adj. R-squared:     0.734    
+Dependent Variable: medv             AIC:                3025.6086
+Date:               2019-05-29 10:07 BIC:                3084.7801
+No. Observations:   506              Log-Likelihood:     -1498.8  
+Df Model:           13               F-statistic:        108.1    
+Df Residuals:       492              Prob (F-statistic): 6.72e-135
+R-squared:          0.741            Scale:              22.518   
+-------------------------------------------------------------------
+            Coef.    Std.Err.     t      P>|t|    [0.025    0.975] 
+-------------------------------------------------------------------
+Intercept   36.4595    5.1035    7.1441  0.0000   26.4322   46.4868
+crim        -0.1080    0.0329   -3.2865  0.0011   -0.1726   -0.0434
+zn           0.0464    0.0137    3.3816  0.0008    0.0194    0.0734
+indus        0.0206    0.0615    0.3343  0.7383   -0.1003    0.1414
+chas         2.6867    0.8616    3.1184  0.0019    0.9939    4.3796
+nox        -17.7666    3.8197   -4.6513  0.0000  -25.2716  -10.2616
+rm           3.8099    0.4179    9.1161  0.0000    2.9887    4.6310
+age          0.0007    0.0132    0.0524  0.9582   -0.0253    0.0266
+dis         -1.4756    0.1995   -7.3980  0.0000   -1.8675   -1.0837
+rad          0.3060    0.0663    4.6129  0.0000    0.1757    0.4364
+tax         -0.0123    0.0038   -3.2800  0.0011   -0.0197   -0.0049
+ptratio     -0.9527    0.1308   -7.2825  0.0000   -1.2098   -0.6957
+black        0.0093    0.0027    3.4668  0.0006    0.0040    0.0146
+lstat       -0.5248    0.0507  -10.3471  0.0000   -0.6244   -0.4251
+------------------------------------------------------------------
+Omnibus:             178.041       Durbin-Watson:          1.078  
+Prob(Omnibus):       0.000         Jarque-Bera (JB):       783.126
+Skew:                1.521         Prob(JB):               0.000  
+Kurtosis:            8.281         Condition No.:          15114  
+==================================================================
+* The condition number is large (2e+04). This might indicate
+strong multicollinearity or other numerical problems.
+--------
+```
+
+### Interaction Terms
+
+The syntax `lstat:black` tells `ols` to include an interaction term
+between `lstat` and `black`. The syntax `lstat*age` simultaneously
+includes `lstat,
+age,` and the intraction term $\text{lstat} \times \text{age]$ as
+predictors. It is a shorthand for `lstat + age + lstat:age`.
+
+``` {.python exports="both" results="output"}
+import statsmodels.formula.api as smf
+from statsmodels import datasets
+
+boston = datasets.get_rdataset('Boston', 'MASS').data
+
+my_reg = smf.ols(formula='medv ~ lstat * age', data=boston)
+my_fit = my_reg.fit()
+print(my_fit.summary2())
+```
+
+``` {.example}
+                 Results: Ordinary least squares
+==================================================================
+Model:              OLS              Adj. R-squared:     0.553    
+Dependent Variable: medv             AIC:                3277.9547
+Date:               2019-05-29 11:48 BIC:                3294.8609
+No. Observations:   506              Log-Likelihood:     -1635.0  
+Df Model:           3                F-statistic:        209.3    
+Df Residuals:       502              Prob (F-statistic): 4.86e-88 
+R-squared:          0.556            Scale:              37.804   
+-------------------------------------------------------------------
+                Coef.   Std.Err.     t     P>|t|    [0.025   0.975]
+-------------------------------------------------------------------
+Intercept      36.0885    1.4698  24.5528  0.0000  33.2007  38.9763
+lstat          -1.3921    0.1675  -8.3134  0.0000  -1.7211  -1.0631
+age            -0.0007    0.0199  -0.0363  0.9711  -0.0398   0.0383
+lstat:age       0.0042    0.0019   2.2443  0.0252   0.0005   0.0078
+------------------------------------------------------------------
+Omnibus:             135.601       Durbin-Watson:          0.965  
+Prob(Omnibus):       0.000         Jarque-Bera (JB):       296.955
+Skew:                1.417         Prob(JB):               0.000  
+Kurtosis:            5.461         Condition No.:          6878   
+==================================================================
+* The condition number is large (7e+03). This might indicate
+strong multicollinearity or other numerical problems.
+```
+
+### Non-linear Transformations of the Predictors
+
+The `ols` function can also accomodate non-linear transformations of the
+predictors. For example, given a predictor $X$, we can create predictor
+$X^2$ using `I(X ** 2)`. We now perform a regression of `medv` onto
+`lstat` and $\texttt{lstat}^2$.
+
+The near-zero p-value associated with the quadratic term suggests that
+it leads to an improve model. We use `anova_lm()` function to further
+quantify the extent to which the quadratic fit is superior to the linear
+fit. The null hypothesis is that the two models fit the data equally
+well. The alternative hypothesis is that the full model is superior.
+Given the large F-statistic and zero p-value, this provides very clear
+evidence that the model with quadratic term is superior. A plot of
+residuals versus fitted values shows that, with quadratic term included,
+there is no discernible pattern in residuals.
+
+``` {.python exports="both" results="output"}
+import statsmodels.formula.api as smf
+from statsmodels import datasets
+import statsmodels.api as sm
+lowess = sm.nonparametric.lowess
+import matplotlib.pyplot as plt
+
+boston = datasets.get_rdataset('Boston', 'MASS').data
+
+my_reg = smf.ols(formula='medv ~ lstat', data=boston)
+my_fit = my_reg.fit()
+
+my_reg2 = smf.ols(formula='medv ~ lstat + I(lstat ** 2)', data=boston)
+my_fit2 = my_reg2.fit()
+print(my_fit.summary2())
+print('--------')
+
+print(sm.stats.anova_lm(my_fit2))
+print('--------')
+
+print(sm.stats.anova_lm(my_fit, my_fit2))
+
+my_regs = (my_reg, my_reg2)
+
+fig = plt.figure(figsize=(8,4))
+i_reg = 1
+for reg in my_regs:
+    ax = fig.add_subplot(1, 2, i_reg)
+    fit = reg.fit()
+    ax.scatter(fit.fittedvalues, fit.resid, s=7, alpha=0.6)
+    lowess_fit = lowess(fit.resid, fit.fittedvalues)
+    ax.plot(lowess_fit[:,0], lowess_fit[:,1], c='r')
+    ax.axhline(y=0, linestyle='--', color='grey')
+    ax.set_xlabel('Fitted values')
+    ax.set_ylabel('Residuals')
+    ax.set_title(reg.formula)
+    i_reg += 1
+
+fig.tight_layout()
+```
+
+``` {.example}
+                 Results: Ordinary least squares
+==================================================================
+Model:              OLS              Adj. R-squared:     0.543    
+Dependent Variable: medv             AIC:                3286.9750
+Date:               2019-05-29 12:41 BIC:                3295.4280
+No. Observations:   506              Log-Likelihood:     -1641.5  
+Df Model:           1                F-statistic:        601.6    
+Df Residuals:       504              Prob (F-statistic): 5.08e-88 
+R-squared:          0.544            Scale:              38.636   
+-------------------------------------------------------------------
+               Coef.   Std.Err.     t      P>|t|    [0.025   0.975]
+-------------------------------------------------------------------
+Intercept     34.5538    0.5626   61.4151  0.0000  33.4485  35.6592
+lstat         -0.9500    0.0387  -24.5279  0.0000  -1.0261  -0.8740
+------------------------------------------------------------------
+Omnibus:             137.043       Durbin-Watson:          0.892  
+Prob(Omnibus):       0.000         Jarque-Bera (JB):       291.373
+Skew:                1.453         Prob(JB):               0.000  
+Kurtosis:            5.319         Condition No.:          30     
+==================================================================
+
+--------
+                  df        sum_sq       mean_sq           F         PR(>F)
+lstat            1.0  23243.913997  23243.913997  761.810354  8.819026e-103
+I(lstat ** 2)    1.0   4125.138260   4125.138260  135.199822   7.630116e-28
+Residual       503.0  15347.243158     30.511418         NaN            NaN
+--------
+   df_resid           ssr  df_diff     ss_diff           F        Pr(>F)
+0     504.0  19472.381418      0.0         NaN         NaN           NaN
+1     503.0  15347.243158      1.0  4125.13826  135.199822  7.630116e-28
+```
+
+### Qualitative Predictors
+
+We will now examine `Carseats` data, which is part of the `ISLR`
+library. We will attempt to predict `Sales` (child car seat sales) based
+on a number of predictors. `statsmodels` automatically converts string
+variables into categorical variables. If we want `statsmodels` to treat
+a numerical variable `x` as qualitative predictor, the formula should be
+`y ~ C(x)`. Here `C()` stands for categorical.
+
+``` {.python exports="both" results="output"}
+import statsmodels.formula.api as smf
+from statsmodels import datasets
+
+carseats = datasets.get_rdataset('Carseats', 'ISLR').data
+print(carseats.columns)
+print('--------')
+
+all_columns = list(carseats.columns)
+all_columns.remove('Sales')
+my_formula = 'Sales ~ ' + ' + '.join(all_columns)
+my_formula +=  ' + Income:Advertising + Price:Age'
+
+print(my_formula)
+print('--------')
+
+my_reg = smf.ols(formula=my_formula, data=carseats)
+my_fit = my_reg.fit()
+print(my_fit.summary2())
+```
+
+``` {.example}
+Index(['Sales', 'CompPrice', 'Income', 'Advertising', 'Population', 'Price',
+       'ShelveLoc', 'Age', 'Education', 'Urban', 'US'],
+      dtype='object')
+--------
+Sales ~ CompPrice + Income + Advertising + Population + Price + ShelveLoc + Age + Education + Urban + US + Income:Advertising + Price:Age
+--------
+                  Results: Ordinary least squares
+====================================================================
+Model:                OLS              Adj. R-squared:     0.872    
+Dependent Variable:   Sales            AIC:                1157.3378
+Date:                 2019-05-29 12:53 BIC:                1213.2183
+No. Observations:     400              Log-Likelihood:     -564.67  
+Df Model:             13               F-statistic:        210.0    
+Df Residuals:         386              Prob (F-statistic): 6.14e-166
+R-squared:            0.876            Scale:              1.0213   
+--------------------------------------------------------------------
+                     Coef.  Std.Err.    t     P>|t|   [0.025  0.975]
+--------------------------------------------------------------------
+Intercept            6.5756   1.0087   6.5185 0.0000  4.5922  8.5589
+ShelveLoc[T.Good]    4.8487   0.1528  31.7243 0.0000  4.5482  5.1492
+ShelveLoc[T.Medium]  1.9533   0.1258  15.5307 0.0000  1.7060  2.2005
+Urban[T.Yes]         0.1402   0.1124   1.2470 0.2132 -0.0808  0.3612
+US[T.Yes]           -0.1576   0.1489  -1.0580 0.2907 -0.4504  0.1352
+CompPrice            0.0929   0.0041  22.5668 0.0000  0.0848  0.1010
+Income               0.0109   0.0026   4.1828 0.0000  0.0058  0.0160
+Advertising          0.0702   0.0226   3.1070 0.0020  0.0258  0.1147
+Population           0.0002   0.0004   0.4329 0.6653 -0.0006  0.0009
+Price               -0.1008   0.0074 -13.5494 0.0000 -0.1154 -0.0862
+Age                 -0.0579   0.0160  -3.6329 0.0003 -0.0893 -0.0266
+Education           -0.0209   0.0196  -1.0632 0.2884 -0.0594  0.0177
+Income:Advertising   0.0008   0.0003   2.6976 0.0073  0.0002  0.0013
+Price:Age            0.0001   0.0001   0.8007 0.4238 -0.0002  0.0004
+--------------------------------------------------------------------
+Omnibus:                1.281        Durbin-Watson:           2.047 
+Prob(Omnibus):          0.527        Jarque-Bera (JB):        1.147 
+Skew:                   0.129        Prob(JB):                0.564 
+Kurtosis:               3.050        Condition No.:           130576
+====================================================================
+* The condition number is large (1e+05). This might indicate
+strong multicollinearity or other numerical problems.
+```
+
+### Calling `R` from `Python`
 
 Footnotes
 =========
