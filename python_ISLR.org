@@ -2244,6 +2244,39 @@ strong multicollinearity or other numerical problems.
 
 *** Calling =R= from =Python=
 
+
+* Classification
+
+** An Overview of Classification
+
+In figure [[fig:classificationFig1]], we have plotted annual =income= and monthly
+credit card =balance= for a subset of individuals in =Credit= data set.  The
+left hand panel displays individuals who defaulted in brown, and those who did
+not in blue.  We have plotted only a fraction of individuals who did not
+default.  It appears that individuals who defaulted tended to have higher credit
+card balances than those who did not.  In the right hand panel, we show two
+pairs of boxplots.  The first shows the distribution of =balance= split by the
+binary =default= variable; the second is a similar plot for =income=.  
+
+#+NAME: fig4_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig4_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap4/')
+
+  import defPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:classificationFig1
+#+CAPTION: The =Default= data set.  Left: The annual income and monthly credit card balances of a number of individuals.  The individuals who defaulted on their credit card debt are shown in brown, and those who did not default are shown in blue.  Center: Boxplots of =balance= as a function of =default= status.  Right: Boxplots of =income= as a function of =default= status.
+#+RESULTS: fig4_1plot
+[[file:figures/fig4_1.png]]
+
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
