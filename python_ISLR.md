@@ -1167,10 +1167,10 @@ fig.tight_layout()
 ### Multiple Linear Regression
 
 In order to fit a multiple regression model using least squares, we
-again use the `ols` and `fit` functions. The syntax `ols(formula`\'y \~
-x1 + x2 + x3\') is used to fit a model with three predictors, `x1`,
-`x2`, and `x3`. The `summary2()` now outputs the regression coefficients
-for all three predictors.
+again use the `ols` and `fit` functions. The syntax
+`ols(formula='y ~ x1 + x2 + x3')` is used to fit a model with three
+predictors, `x1`, `x2`, and `x3`. The `summary2()` now outputs the
+regression coefficients for all three predictors.
 
 `statsmodels` does not seem to have `R` like facility to include all
 variables using the formula `y ~ .`. To include all variables, we either
@@ -1477,6 +1477,8 @@ strong multicollinearity or other numerical problems.
 
 ### Calling `R` from `Python`
 
+\FloatBarrier
+
 Classification
 ==============
 
@@ -1500,6 +1502,67 @@ on their credit card debt are shown in brown, and those who did not
 default are shown in blue. Center: Boxplots of `balance` as a function
 of `default` status. Right: Boxplots of `income` as a function of
 `default` status.](figures/fig4_1.png "classificationFig1")
+
+Using `Default` data set, in figure
+[fig:classificationFig2](fig:classificationFig2) we show probability of
+default as a function of `balance`. The left panel shows a model fitted
+using linear regression. Some of the probabilities estimates (for low
+balance) are outside the $[0, 1]$ interval. The right panel shows a
+model fitted using logistic regresison, which models the probability of
+default as a function of `balance`. Now all probability estimates are in
+the $[0, 1]$ interval.
+
+![Classification using `Default` data. Left: Estimated probability of
+`default` using linear regression. Some estimated probabilities are
+negative! The brown ticks indicate the 0/1 values coded for `default`
+(`No` or `Yes`). Right: Predicted probabilities of `default` using
+logistic regression. All probabilities lie between 0 and
+1.](figures/fig4_2.png "classificationFig2")
+
+Table [tab:classificationTab1](tab:classificationTab1) shows the
+coefficient estimates and related information that result from fitting a
+logistic regression model on the `Default` data in order to predict the
+probability of `default = Yes` using `balance`.
+
+              Coef.      Std.Err.   $z$        $P > \mid z \mid$
+  ----------- ---------- ---------- ---------- -------------------
+  Intercept   -10.6513   0.3612     -29.4913   0.0
+  balance     0.0055     0.0002     24.9524    0.0
+
+  : For the `Default` data, estimated coefficients of the logistic
+  regression model that predicts the probability of `default` using
+  `balance`. A one-unit increase in `balance` is associated with an
+  increase in the log odds of `default` by 0.0055 units.
+
+Table [tab:classificationTab2](tab:classificationTab2) shows the results
+of logistic model where `default` is a function of the qualitative
+variable `student`.
+
+Table [tab:classificationTab3](tab:classificationTab3) shows the
+coefficient estimates for a logistic regression model that uses
+`balance`, `income` (in thousands of dollars), and `student` status to
+predict probability of `default`.
+
+                     Coef.     Std.Err.   $z$        $P > \mid z \mid$
+  ------------------ --------- ---------- ---------- -------------------
+  Intercept          -3.5041   0.0707     -49.5541   0.0
+  student\[T.Yes\]   0.4049    0.115      3.5202     0.0004
+
+  : For the `Default` data, estimated coefficients of the logistic
+  regression model that predicts the probability of `default` using
+  student status.
+
+                     Coef.     Std.Err.   $z$        $P > \mid z \mid$
+  ------------------ --------- ---------- ---------- -------------------
+  Intercept          -10.869   0.4923     -22.0793   0.0
+  student\[T.Yes\]   -0.6468   0.2363     -2.7376    0.0062
+  balance            0.0057    0.0002     24.7365    0.0
+  income             0.003     0.0082     0.3698     0.7115
+
+  : For the `Default` data, estimated coefficients of the logistic
+  regression model that predicts the probability of `default` using
+  `balance`, `income`, and `student` status. In fitting this model,
+  `income` was measured in thousands of dollars.
 
 Footnotes
 =========

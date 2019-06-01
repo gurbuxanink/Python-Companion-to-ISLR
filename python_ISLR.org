@@ -1936,7 +1936,7 @@ Next we examine some diagnostic plots.
 
 *** Multiple Linear Regression
 In order to fit a multiple regression model using least squares, we again use
-the =ols= and =fit= functions.  The syntax =ols(formula='y ~ x1 + x2 + x3') is
+the =ols= and =fit= functions.  The syntax ~ols(formula='y ~ x1 + x2 + x3')~ is
 used to fit a model with three predictors, =x1=, =x2=, and =x3=.  The
 =summary2()= now outputs the regression coefficients for all three predictors. 
 
@@ -2244,6 +2244,7 @@ strong multicollinearity or other numerical problems.
 
 *** Calling =R= from =Python=
 
+#+LATEX: \FloatBarrier
 
 * Classification
 
@@ -2276,6 +2277,140 @@ binary =default= variable; the second is a similar plot for =income=.
 #+RESULTS: fig4_1plot
 [[file:figures/fig4_1.png]]
 
+
+Using =Default= data set, in figure [[fig:classificationFig2]] we show probability of default as a function of
+=balance=.  The left panel shows a model fitted using linear regression.  Some
+of the probabilities estimates (for low balance) are outside the $[0, 1]$
+interval.  The right panel shows a model fitted using logistic regresison, which
+models the probability of default as a function of =balance=.  Now all
+probability estimates are in the $[0, 1]$ interval.
+
+#+NAME: fig4_2plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig4_2.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap4/')
+
+  import probDef
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:classificationFig2
+#+CAPTION: Classification using =Default= data.  Left: Estimated probability of =default= using linear regression.  Some estimated probabilities are negative!  The brown ticks indicate the 0/1 values coded for =default= (=No= or =Yes=).  Right: Predicted probabilities of =default= using logistic regression.  All probabilities lie between 0 and 1.
+#+RESULTS: fig4_2plot
+[[file:figures/fig4_2.png]]
+
+Table [[tab:classificationTab1]] shows the coefficient estimates and related
+information that result from fitting a logistic regression model on the
+=Default= data in order to predict the probability of ~default = Yes~ using =balance=.
+
+#+NAME: tab4_1
+#+BEGIN_SRC python :exports results :results table
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  import pandas as pd
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  default = datasets.get_rdataset('Default', 'ISLR').data
+  default['default_cat'] = default.apply(lambda x: int(x['default'] == 'Yes'),
+					 axis=1)
+  logit_fit = smf.logit('default_cat ~ balance', data=default).fit()
+  logit_res = logit_fit.summary2().tables[1]
+  logit_res.rename(index=str,
+		   columns={'z': '$z$',
+			    'P>|z|': '$P > \mid z \mid$'}, inplace=True)
+  logit_res = logit_res.iloc[:,:4]
+  return myFuncs.dfToList(round(logit_res, 4))
+#+END_SRC
+
+#+NAME: tab:classificationTab1
+#+CAPTION: For the =Default= data, estimated coefficients of the logistic regression model that predicts the probability of =default= using =balance=.  A one-unit increase in =balance= is associated with an increase in the log odds of =default= by 0.0055 units.
+#+RESULTS: tab4_1
+|           |    Coef. | Std.Err. |      $z$ | $P > \mid z \mid$ |
+|-----------+----------+----------+----------+-------------------|
+| Intercept | -10.6513 |   0.3612 | -29.4913 |               0.0 |
+| balance   |   0.0055 |   0.0002 |  24.9524 |               0.0 |
+
+Table [[tab:classificationTab2]] shows the results of logistic model where =default=
+is a function of the qualitative variable =student=.  
+
+#+NAME: tab4_2
+#+BEGIN_SRC python :exports results :results table
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  import pandas as pd
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  default = datasets.get_rdataset('Default', 'ISLR').data
+  default['default_cat'] = default.apply(lambda x: int(x['default'] == 'Yes'),
+					 axis=1)
+  logit_model = smf.logit(formula='default_cat ~ student', data=default)
+  logit_fit = logit_model.fit()
+
+  logit_res = logit_fit.summary2().tables[1]
+  logit_res = logit_res.iloc[:,:4]
+  logit_res.rename(index=str,
+		   columns={'z': '$z$',
+			    'P>|z|': '$P > \mid z \mid$'}, inplace=True)
+
+  return myFuncs.dfToList(round(logit_res, 4))
+#+END_SRC
+
+Table [[tab:classificationTab3]] shows the coefficient estimates for a logistic
+regression model that uses =balance=, =income= (in thousands of dollars), and
+=student= status to predict probability of =default=.
+
+#+NAME: tab:classificationTab2
+#+CAPTION: For the =Default= data, estimated coefficients of the logistic regression model that predicts the probability of =default= using student status. 
+#+RESULTS: tab4_2
+|                |   Coef. | Std.Err. |      $z$ | $P > \mid z \mid$ |
+|----------------+---------+----------+----------+-------------------|
+| Intercept      | -3.5041 |   0.0707 | -49.5541 |               0.0 |
+| student[T.Yes] |  0.4049 |    0.115 |   3.5202 |            0.0004 |
+
+#+NAME: tab4_3
+#+BEGIN_SRC python :exports results :results table
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  import pandas as pd
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  default = datasets.get_rdataset('Default', 'ISLR').data
+  default['income'] = default['income'] / 1000
+  default['default_cat'] = default.apply(lambda x: int(x['default'] == 'Yes'),
+					 axis=1)
+
+  logit_model = smf.logit('default_cat ~ balance + income + student',
+			  data=default)
+  logit_fit = logit_model.fit()
+
+  logit_res = logit_fit.summary2().tables[1]
+  logit_res = logit_res.iloc[:, :4]
+  logit_res.rename(index=str,
+		   columns={'z': '$z$',
+			    'P>|z|': '$P > \mid z \mid$'}, inplace=True)
+
+  return myFuncs.dfToList(round(logit_res, 4))
+#+END_SRC
+
+#+NAME: tab:classificationTab3
+#+CAPTION: For the =Default= data, estimated coefficients of the logistic regression model that predicts the probability of =default= using =balance=, =income=, and =student= status.  In fitting this model, =income= was measured in thousands of dollars. 
+#+RESULTS: tab4_3
+|                |   Coef. | Std.Err. |      $z$ | $P > \mid z \mid$ |
+|----------------+---------+----------+----------+-------------------|
+| Intercept      | -10.869 |   0.4923 | -22.0793 |               0.0 |
+| student[T.Yes] | -0.6468 |   0.2363 |  -2.7376 |            0.0062 |
+| balance        |  0.0057 |   0.0002 |  24.7365 |               0.0 |
+| income         |   0.003 |   0.0082 |   0.3698 |            0.7115 |
 
 * Footnotes
 
