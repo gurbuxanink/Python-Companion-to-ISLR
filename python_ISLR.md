@@ -1564,6 +1564,28 @@ predict probability of `default`.
   `balance`, `income`, and `student` status. In fitting this model,
   `income` was measured in thousands of dollars.
 
+The left hand panel of figure
+[fig:classificationFig3](fig:classificationFig3) shows average default
+rates for students and non-students, respectively, as a function of
+credit card balance. *For a fixed value* of `balance` and `income`, a
+student is less likely to default than a non-student. This is true for
+all values of balance. This is consistent with negative coefficient of
+student in table [tab:classificationTab3](tab:classificationTab3). But
+the horizontal lines near the base of the plot, which show the default
+rates for students and non-students averaged over all values of
+`balance` and `income`, suggest the opposite effect: the overall student
+default rate is higher than non-student default rate. Consequently,
+there is a positive coefficient for `student` in the single variable
+logistic regression output shown in table
+[tab:classificationTab2](tab:classificationTab2).
+
+![Confounding in the `Default` data. Left: Default rates are shown for
+students (brown) and non-students (blue). The solid lines display
+default rate as a function of `balance`, while the horizontal lines
+display the overall default rates. Right: Boxplots of `balance` for
+students and non-students are
+shown.](figures/fig4_3.png "classificationFig3")
+
 Footnotes
 =========
 

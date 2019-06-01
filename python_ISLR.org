@@ -2278,6 +2278,10 @@ binary =default= variable; the second is a similar plot for =income=.
 [[file:figures/fig4_1.png]]
 
 
+** Why Not Linear Regression?
+
+** Logistic Regression
+
 Using =Default= data set, in figure [[fig:classificationFig2]] we show probability of default as a function of
 =balance=.  The left panel shows a model fitted using linear regression.  Some
 of the probabilities estimates (for low balance) are outside the $[0, 1]$
@@ -2411,6 +2415,39 @@ regression model that uses =balance=, =income= (in thousands of dollars), and
 | student[T.Yes] | -0.6468 |   0.2363 |  -2.7376 |            0.0062 |
 | balance        |  0.0057 |   0.0002 |  24.7365 |               0.0 |
 | income         |   0.003 |   0.0082 |   0.3698 |            0.7115 |
+
+The left hand panel of figure [[fig:classificationFig3]] shows average default rates
+for students and non-students, respectively, as a function of credit card
+balance.  /For a fixed value/ of =balance= and =income=, a student is less
+likely to default than a non-student.  This is true for all values of balance.
+This is consistent with negative coefficient of student in table
+[[tab:classificationTab3]].  But the horizontal lines near the base of the plot, which show the default rates
+for students and non-students averaged over all values of =balance= and
+=income=, suggest the opposite effect: the overall student default rate is
+higher than non-student default rate.  Consequently, there is a positive
+coefficient for =student= in the single variable logistic regression output
+shown in table [[tab:classificationTab2]]. 
+
+
+#+NAME: fig4_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig4_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap4/')
+
+  import balanceStud
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:classificationFig3
+#+CAPTION: Confounding in the =Default= data.  Left: Default rates are shown for students (brown) and non-students (blue).  The solid lines display default rate as a function of =balance=, while the horizontal lines display the overall default rates.  Right: Boxplots of =balance= for students and non-students are shown.
+#+RESULTS: fig4_3plot
+[[file:figures/fig4_3.png]]
+
+** Linear Discriminant Analysis
 
 * Footnotes
 
