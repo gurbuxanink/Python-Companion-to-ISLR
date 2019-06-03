@@ -1503,6 +1503,12 @@ default are shown in blue. Center: Boxplots of `balance` as a function
 of `default` status. Right: Boxplots of `income` as a function of
 `default` status.](figures/fig4_1.png "classificationFig1")
 
+Why Not Linear Regression?
+--------------------------
+
+Logistic Regression
+-------------------
+
 Using `Default` data set, in figure
 [fig:classificationFig2](fig:classificationFig2) we show probability of
 default as a function of `balance`. The left panel shows a model fitted
@@ -1585,6 +1591,26 @@ default rate as a function of `balance`, while the horizontal lines
 display the overall default rates. Right: Boxplots of `balance` for
 students and non-students are
 shown.](figures/fig4_3.png "classificationFig3")
+
+Linear Discriminant Analysis
+----------------------------
+
+In the left panel of figure
+[fig:classificationFig4](fig:classificationFig4), two normal density
+functions that are displayed, $f_1(x)$ and $f_2(x)$, represent two
+distinct classes. The Bayes classifier boundary, shown as vertical
+dashed line, is estimated using the function `GaussianNB()`. The right
+hand panel displays a histogram of a random sample of 20 observations
+from each class. The LDA decision boundary is shown as firm vertical
+line.
+
+![Left: Two one-dimensional normal density functions are shown. The
+dashed vertical line represents the Bayes decision boundary. Right: 50
+observations were drawn from each of the two classes, and are shown as
+histograms. The Bayes decision boundary is again shown as a dashed
+vertical line. The solid vertical line represents the LDA decision
+boundary estimated from the training
+data.](figures/fig4_4.png "classificationFig4")
 
 Footnotes
 =========

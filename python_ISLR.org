@@ -2449,6 +2449,31 @@ shown in table [[tab:classificationTab2]].
 
 ** Linear Discriminant Analysis
 
+In the left panel of figure [[fig:classificationFig4]], two normal density functions
+that are displayed, $f_1(x)$ and $f_2(x)$, represent two distinct classes.  The
+Bayes classifier boundary, shown as vertical dashed line, is estimated using the
+function =GaussianNB()=.  The right hand panel displays a histogram of a random
+sample of 20 observations from each class.  The LDA decision boundary is shown
+as firm vertical line.
+
+#+NAME: fig4_4plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig4_4.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap4/')
+
+  import oneVarBoundary
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:classificationFig4
+#+CAPTION: Left: Two one-dimensional normal density functions are shown.  The dashed vertical line represents the Bayes decision boundary.  Right: 50 observations were drawn from each of the two classes, and are shown as histograms.  The Bayes decision boundary is again shown as a dashed vertical line.  The solid vertical line represents the LDA decision boundary estimated from the training data.
+#+RESULTS: fig4_4plot
+[[file:figures/fig4_4.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
