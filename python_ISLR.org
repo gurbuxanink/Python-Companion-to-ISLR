@@ -2622,6 +2622,63 @@ above 20% to the /default/ class.
 | Total       |    9667 |      333 | 10000 |
 
 
+Figure [[fig:classificationFig7]] illustrates the trade-off that results from
+modifying the threshold value for the posterior probability of default.  Various
+error rates are shown as a function of the threshold value.  Using a threshold
+of 0.5 minimizes the overall error rate, shown as a black line.  But when a
+threshold of 0.5 is used, the error rate among the individuals who default is
+quite high (blue dashed line).  As the threshold is reduced, the error rate
+among individuals who default decreases steadily, but the error rate amond
+individuals who do not default increases. 
+
+#+NAME: fig4_7plot
+#+BEGIN_SRC python :exports results :results file :noweb yes :var fname="figures/fig4_7.png"
+  <<default_lda>>
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import pandas as pd
+
+  def_threshold = np.linspace(0.01, 0.5, 21)
+  total_error_rate = []
+  default_error_rate = []
+  nodefault_error_rate = []
+
+  for prob in def_threshold:
+      default['default_predict_new'] = default['default_prob'].apply(
+	  lambda x: 'Yes' if x > prob else 'No')
+      confusion_df = pd.pivot_table(default[['default', 'default_predict_new']],
+				    columns='default', index='default_predict_new',
+				    aggfunc=len, margins=True)
+      total_error = (confusion_df.loc['No', 'Yes'] +
+		     confusion_df.loc['Yes', 'No']) / confusion_df.loc['All', 'All']
+      def_error = confusion_df.loc['No', 'Yes'] / confusion_df.loc['All', 'Yes']
+      nodef_error = confusion_df.loc['Yes', 'No'] / confusion_df.loc['All', 'No']
+      total_error_rate.append(total_error)
+      default_error_rate.append(def_error)
+      nodefault_error_rate.append(nodef_error)
+
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  ax.plot(def_threshold, total_error_rate, label='Overall error rate', c='k')
+  ax.plot(def_threshold, default_error_rate, label='Default error rate', c='b',
+	  linestyle='--')
+  ax.plot(def_threshold, nodefault_error_rate, label='No default error rate',
+	  color='brown', linestyle=':')
+  ax.set_xlabel('Threshold')
+  ax.set_ylabel('Error Rate')
+  ax.legend()
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:classificationFig7
+#+CAPTION: For the =Default= data set, error rates are shown as a function of the threshold value for the posterior probability that is used to perform the assignment of default.  The black sold line displays the overall error rate.  The blue dashed line represents the fraction of defaulting customers that are incorrectly classified, and the orange dotted line indicates the fraction of errors among the non-defaulting customers. 
+#+RESULTS: fig4_7plot
+[[file:figures/fig4_7.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.

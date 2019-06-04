@@ -1678,6 +1678,24 @@ default above 20% to the *default* class.
   using a modified threshold value that predicts default for any
   individuals whose posterior default probability exceeds 20%.
 
+Figure [fig:classificationFig7](fig:classificationFig7) illustrates the
+trade-off that results from modifying the threshold value for the
+posterior probability of default. Various error rates are shown as a
+function of the threshold value. Using a threshold of 0.5 minimizes the
+overall error rate, shown as a black line. But when a threshold of 0.5
+is used, the error rate among the individuals who default is quite high
+(blue dashed line). As the threshold is reduced, the error rate among
+individuals who default decreases steadily, but the error rate amond
+individuals who do not default increases.
+
+![For the `Default` data set, error rates are shown as a function of the
+threshold value for the posterior probability that is used to perform
+the assignment of default. The black sold line displays the overall
+error rate. The blue dashed line represents the fraction of defaulting
+customers that are incorrectly classified, and the orange dotted line
+indicates the fraction of errors among the non-defaulting
+customers.](figures/fig4_7.png "classificationFig7")
+
 Footnotes
 =========
 
