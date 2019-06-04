@@ -1648,6 +1648,36 @@ boundaries are indicated using solid black lines. The Bayes decision
 boundaries are once again shown as dashed
 lines.](figures/fig4_6.png "classificationFig6")
 
+A *confusion matrix*, shown for the `Default` data in table
+[tab:classificationTab4](tab:classificationTab4), is a convenient way to
+display prediction of default in comparison to true default. Table
+[tab:classificationTab5](tab:classificationTab5) shows the error rates
+that result when we label any customer with a posterior probability of
+default above 20% to the *default* class.
+
+                true No   true Yes   Total
+  ------------- --------- ---------- -------
+  predict No    9645      254        9899
+  predict Yes   22        79         101
+  Total         9667      333        10000
+
+  : A confusion matrix compares the LDA predictions to the true default
+  statuses for the training observations in the `Default` data set.
+  Elements of the diagonal matrix represent individuals whose default
+  statuses were correctly predicted, while off-diagonal elements
+  represent individuals that were missclassified.
+
+                true No   true Yes   Total
+  ------------- --------- ---------- -------
+  predict No    9435      140        9575
+  predict Yes   232       193        425
+  Total         9667      333        10000
+
+  : A confusion matrix compares LDA predictions to the true default
+  statuses for the training observations in the `Default` data set,
+  using a modified threshold value that predicts default for any
+  individuals whose posterior default probability exceeds 20%.
+
 Footnotes
 =========
 

@@ -2528,6 +2528,99 @@ dashed lines are the Bayes decision boundaries.
 #+RESULTS: fig4_6plot
 [[file:figures/fig4_6.png]]
 
+#+NAME: default_lda
+#+BEGIN_SRC python :exports none
+  import statsmodels.formula.api as smf
+  from statsmodels import datasets
+  from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+  import numpy as np
+
+  default = datasets.get_rdataset('Default', 'ISLR').data
+  default['default_cat'] = default['default'].apply(
+      lambda x: int(x == 'Yes'))
+  default['student_cat'] = default['student'].apply(
+      lambda x: int(x == 'Yes'))
+
+  clf = LDA()
+  clf.fit(default[['student_cat', 'balance', 'income']], default['default_cat'])
+
+  def_predict = clf.predict(default[['student_cat', 'balance', 'income']])
+  def_prob_predict = clf.predict_proba(default[['student_cat',
+						'balance', 'income']])
+  default['default_predict'] = np.vectorize(lambda x: 'Yes' if x==1 else 'No')(
+      def_predict)
+  default['default_prob'] = def_prob_predict[:,1]
+#+END_SRC
+
+A /confusion matrix/, shown for the =Default= data in table
+[[tab:classificationTab4]], is a convenient way to display prediction of default in
+comparison to true default.  Table [[tab:classificationTab5]] shows the error rates
+that result when we label any customer with a posterior probability of default
+above 20% to the /default/ class.
+
+#+NAME: tab4_4
+#+BEGIN_SRC python :exports results :results table :noweb yes
+  <<default_lda>>
+  import pandas as pd
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  confusion_df = pd.pivot_table(default[['default', 'default_predict']],
+				index='default_predict', columns='default',
+				aggfunc=len, margins=True, margins_name='Total')
+  confusion_df.rename(columns={'No': 'true No', 'Yes': 'true Yes'},
+		      inplace=True)
+  confusion_df.rename(index={'No': 'predict No', 'Yes': 'predict Yes'},
+		      inplace=True)
+
+  return myFuncs.dfToList(confusion_df, [0,2])
+
+#+END_SRC
+
+#+NAME: tab:classificationTab4
+#+CAPTION: A confusion matrix compares the LDA predictions to the true default statuses for the training observations in the =Default= data set.  Elements of the diagonal matrix represent individuals whose default statuses were correctly predicted, while off-diagonal elements represent individuals that were missclassified.
+#+RESULTS: tab4_4
+|             | true No | true Yes | Total |
+|-------------+---------+----------+-------|
+| predict No  |    9645 |      254 |  9899 |
+| predict Yes |      22 |       79 |   101 |
+|-------------+---------+----------+-------|
+| Total       |    9667 |      333 | 10000 |
+
+
+#+NAME: tab4_5
+#+BEGIN_SRC python :exports results :results table :noweb yes :var def_prob_threshold=0.2
+  <<default_lda>>
+  import pandas as pd
+  import sys
+  sys.path.append('code/general/')
+  import myFuncs
+
+  default['default_predict_new'] = default['default_prob'].apply(
+      lambda x: 'Yes' if x > def_prob_threshold else 'No')
+  confusion_df = pd.pivot_table(default[['default', 'default_predict_new']],
+				columns='default', index='default_predict_new',
+				aggfunc=len, margins=True, margins_name='Total')
+
+  confusion_df.rename(columns={'No': 'true No', 'Yes': 'true Yes'},
+		      inplace=True)
+  confusion_df.rename(index={'No': 'predict No', 'Yes': 'predict Yes'},
+		      inplace=True)
+
+  return myFuncs.dfToList(confusion_df, [0,2])
+#+END_SRC
+
+#+NAME: tab:classificationTab5
+#+CAPTION: A confusion matrix compares LDA predictions to the true default statuses for the training observations in the =Default= data set, using a modified threshold value that predicts default for any individuals whose posterior default probability exceeds 20%.
+#+RESULTS: tab4_5
+|             | true No | true Yes | Total |
+|-------------+---------+----------+-------|
+| predict No  |    9435 |      140 |  9575 |
+| predict Yes |     232 |      193 |   425 |
+|-------------+---------+----------+-------|
+| Total       |    9667 |      333 | 10000 |
+
 
 * Footnotes
 
