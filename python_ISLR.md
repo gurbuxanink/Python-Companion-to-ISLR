@@ -680,7 +680,7 @@ From table [tab:linearRegTab8](tab:linearRegTab8) we see that the
 estimated `balance` for the baseline, African American, is
 \${{{afr~amrest~}}}. It is estimated that the Asian category will have
 an additional \${{{asian~incr~}}} debt, and that the Caucasian category
-will have an additional \${{{cauc~incr~}}} debt compared to Africna
+will have an additional \${{{cauc~incr~}}} debt compared to African
 American category.
 
                              Coef.     Std.Err.   $t$      $P > \mid t \mid$
@@ -735,7 +735,7 @@ model that includes all polynomials of `horsepower` up to fifth-degree
 is shown in green.](figures/fig3_8.png "linearRegFig8")
 
 Table [tab:linearRegTab10](tab:linearRegTab10) shows regression results
-of a qudratic fit to explain `mpg` as a function of `horsepower` and
+of a quadratic fit to explain `mpg` as a function of `horsepower` and
 $\mathttt{horsepower^2}$.
 
                    Coef.     Std.Err.   $t$        $P > \mid t \mid$
@@ -785,7 +785,7 @@ time points.](figures/fig3_10.png "linearRegFig10")
 In the left-hand panel of figure
 [fig:linearRegFig11](fig:linearRegFig11), the magnitude of the residuals
 tends to increase with the fitted values. The right hand panel displays
-residual plot after tranforming the response using $\log(Y)$. The
+residual plot after transforming the response using $\log(Y)$. The
 residuals now appear to have constant variance, although there is some
 evidence of a non-linear relationship in the data.
 
@@ -824,7 +824,7 @@ the addition of a single high leverage observation[^1]. The red solid
 line is the least squares fit to the data, while the blue dashed line is
 the fit produced when observation 41 is removed. Comparing the left-hand
 panels of figures [fig:linearRegFig12](fig:linearRegFig12) and
-[fig:linearRegFig13](fig:linearRegFig13), we observe that removign the
+[fig:linearRegFig13](fig:linearRegFig13), we observe that removing the
 high leverage observation has a much more substantial impact on least
 squares line than removing the outlier. The center panel of figure
 [fig:linearRegFig13](fig:linearRegFig13), for a data set with two
@@ -849,7 +849,7 @@ residual.](figures/fig3_13.png "linearRegFig13")
 Figure [fig:linearRegFig14](fig:linearRegFig14) illustrates the concept
 of collinearity.
 
-![Scatterplots of the observations from the `Credit` data set. Left: A
+![Scatter plots of the observations from the `Credit` data set. Left: A
 plot of `age` versus `limit`. These two variables not collinear. Right:
 A plot of `rating` versus `limit`. There is high
 collinearity.](figures/fig3_14.png "linearRegFig14")
@@ -863,7 +863,7 @@ RSS, with ellipses nearest to the center taking on the lowest values of
 RSS. The black dot and the associated dashed lines represent the
 coefficient estimates that result in the smallest possible RSS. The axes
 for `limit` and `age` have been scaled so that the plot includes
-possible coefficients that are upto four standard errors on either side
+possible coefficients that are up to four standard errors on either side
 of the least squares estimates. We see that the true `limit` coefficient
 is almost certainly between 0.15 and 0.20.
 
@@ -1270,7 +1270,7 @@ strong multicollinearity or other numerical problems.
 The syntax `lstat:black` tells `ols` to include an interaction term
 between `lstat` and `black`. The syntax `lstat*age` simultaneously
 includes `lstat,
-age,` and the intraction term $\text{lstat} \times \text{age]$ as
+age,` and the interaction term $\text{lstat} \times \text{age]$ as
 predictors. It is a shorthand for `lstat + age + lstat:age`.
 
 ``` {.python exports="both" results="output"}
@@ -1313,10 +1313,10 @@ strong multicollinearity or other numerical problems.
 
 ### Non-linear Transformations of the Predictors
 
-The `ols` function can also accomodate non-linear transformations of the
-predictors. For example, given a predictor $X$, we can create predictor
-$X^2$ using `I(X ** 2)`. We now perform a regression of `medv` onto
-`lstat` and $\texttt{lstat}^2$.
+The `ols` function can also accommodate non-linear transformations of
+the predictors. For example, given a predictor $X$, we can create
+predictor $X^2$ using `I(X ** 2)`. We now perform a regression of `medv`
+onto `lstat` and $\texttt{lstat}^2$.
 
 The near-zero p-value associated with the quadratic term suggests that
 it leads to an improve model. We use `anova_lm()` function to further
@@ -1514,7 +1514,7 @@ Using `Default` data set, in figure
 default as a function of `balance`. The left panel shows a model fitted
 using linear regression. Some of the probabilities estimates (for low
 balance) are outside the $[0, 1]$ interval. The right panel shows a
-model fitted using logistic regresison, which models the probability of
+model fitted using logistic regression, which models the probability of
 default as a function of `balance`. Now all probability estimates are in
 the $[0, 1]$ interval.
 
@@ -1605,12 +1605,48 @@ from each class. The LDA decision boundary is shown as firm vertical
 line.
 
 ![Left: Two one-dimensional normal density functions are shown. The
-dashed vertical line represents the Bayes decision boundary. Right: 50
+dashed vertical line represents the Bayes decision boundary. Right: 20
 observations were drawn from each of the two classes, and are shown as
 histograms. The Bayes decision boundary is again shown as a dashed
 vertical line. The solid vertical line represents the LDA decision
 boundary estimated from the training
 data.](figures/fig4_4.png "classificationFig4")
+
+Two examples of multivariate Gaussian distributions with $p = 2$ are
+shown in figure [fig:classificationFig5](fig:classificationFig5). In the
+upper panel, the height of the surface at any particular point
+represents the probability that both $X_1$ and $X_2$ fall in the small
+region around that point. If the surface is cut along the $X_1$ axis or
+along the $X_2$ axis, the resulting cross-section will have the shape of
+a one-dimensional normal distribution. The left-hand panel illustrates
+an example in which $\text{var}(X_1) = \text{var}(X_2)$ and
+$\text{cor}(X_1, X_2) = 0$; this surface has a characteristic *bell
+shape*. However, the bell shape will be distorted if the predictors are
+correlated or have unequal variances, as is illustrated in the
+right-hand panel of figure
+[fig:classificationFig5](fig:classificationFig5). In this situation, the
+base of the bell will have an elliptical, rather than circular, shape.
+The contour plots in the lower panel are not in the book.
+
+![Two multivariate Gaussian density functions are shown, with $p = 2$.
+Left: The two predictors are uncorrelated. Right: The two predictors
+have a correlation of 0.7. The lower panel shows contour plots of the
+surfaces drawn in the upper panel. Here the correlations can be easily
+seen.](figures/fig4_5.png "classificationFig5")
+
+Figure [fig:classificationFig6](fig:classificationFig6) shows an example
+of three equally sized Gaussian classes with class-specific mean vectors
+and a common covariance matrix. The dashed lines are the Bayes decision
+boundaries.
+
+![An example with three classes. The observation from each class are
+drawn from a multivariate Gaussian distribution with $p = 2$, with a
+class-specific mean vector and a common covariance matrix. Left: The
+dashed lines are the Bayes decision boundaries. Right: 20 observations
+were generated from each class, and the corresponding LDA decision
+boundaries are indicated using solid black lines. The Bayes decision
+boundaries are once again shown as dashed
+lines.](figures/fig4_6.png "classificationFig6")
 
 Footnotes
 =========
