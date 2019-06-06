@@ -1,7 +1,13 @@
 ---
+attr_latex: ':align cc\|cc\|c'
+caption: |
+    Possible results when applying a classifier or diagnostic test to a
+    population.
 header-includes:
 - '\usepackage{amsmath,booktabs,placeins}'
 - '\hypersetup{colorlinks=true, allcolors=blue, linkbordercolor=white}'
+name: 'tab:classificationTab6'
+tblspan: 'A3..A5::C1..C3'
 title: A Python Companion to ISLR
 ---
 
@@ -1695,6 +1701,75 @@ error rate. The blue dashed line represents the fraction of defaulting
 customers that are incorrectly classified, and the orange dotted line
 indicates the fraction of errors among the non-defaulting
 customers.](figures/fig4_7.png "classificationFig7")
+
+Figure [fig:classificationFig8](fig:classificationFig8) displays the ROC
+curve for the LDA classifier on the `Default` data set.
+
+![A ROC curve for the LDA classifier on the `Default` data. It traces
+two types of error as we vary the threshold value for the posterior
+probability of default. The actual thresholds are not shown. The true
+positive rate is the sensitivity: the fraction of defaulters that are
+correctly identified using a given threshold value. The false positive
+rate is the fraction of non-defaulters we incorrectly specify as
+defaulters, using the same threshold value. The ideal ROC curve hugs the
+top left corner, indicating a high true positive rate and a low false
+positive rate. The dotted line represents the \`\`no information\'\'
+classifier; this is what we would expect if student status and credit
+card balance are not associated with the probability of
+default.](figures/fig4_8.png "classificationFig8")
+
+Table [tab:classificationTab6](tab:classificationTab6) shows the
+possible results when applying a classifier (or diagnostic test) to a
+population.
+
+  ------------- ---------------- --------------------- --------------------- -------
+                                 *True class*                                
+                                 \- or Null            \+ or Non-null        Total
+  *Predicted*   \- or Null       True Negative (TN)    False Negative (FN)   N\*
+  *class*       \+ or Non-null   False Positive (FP)   True Positive (TP)    P\*
+                Total            N                     P                     
+  ------------- ---------------- --------------------- --------------------- -------
+
+Table [tab:classificationTab7](tab:classificationTab7) lists many of the
+popular performance measures that are used in this context.
+
+  Name                       Definition   Synonyms
+  -------------------------- ------------ -----------------------------------------------
+  False Positive rate        FP / N       Type I error, 1 - specificity
+  True Positive rate         TP / P       1 - Type II error, power, sensitivity, recall
+  Positive Predicted value   TP / P\*     Precision, 1 - false discovery proportion
+  Negative Predicted value   TN / N\*     
+
+  : Important measures for classification and diagnostic testing,
+  derived from quantities in table
+  [tab:classificationTab6](tab:classificationTab6).
+
+Figure [fig:classificationFig9](fig:classificationFig9) illustrates the
+performances of LDA and QDA in two scenarios. In the left-hand panel,
+the two Gaussian classes have a common correlation of 0.7 between $X_1$
+and $X_2$. As a result, the Bayes decision boundary is nearly linear and
+is accurately approximated by the LDA decision boundary. In contrast,
+the right-hand panel displays a situation in which the orange class has
+a correlation of 0.7 between the variables and blue class has a
+correlation of -0.7.
+
+![Left: The Bayes (purple dashed), LDA (black dotted), and QDA (green
+sold) decision boundaries for a two-class problem with
+$\Sigma_1 = \Sigma_2$. Right: Details are as given in the left-hand
+panel, except that
+$\Sigma_1 \ne \Sigma_2$.](figures/fig4_9.png "classificationFig9")
+
+\FloatBarrier
+
+A Comparison of Classification Methods
+--------------------------------------
+
+Figure [fig:classificationFig10](fig:classificationFig10) illustrates
+the performances of the four classification approaches (KNN, LDA,
+Logistic, and QDA) when Bayes decision boundary is linear.
+
+![Boxplots of the test error rates for each of the linear scenarios
+described in the main text.](figures/fig4_10.png "classificationFig10")
 
 Footnotes
 =========
