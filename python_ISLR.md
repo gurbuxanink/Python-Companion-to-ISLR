@@ -1449,7 +1449,8 @@ Index(['Sales', 'CompPrice', 'Income', 'Advertising', 'Population', 'Price',
        'ShelveLoc', 'Age', 'Education', 'Urban', 'US'],
       dtype='object')
 --------
-Sales ~ CompPrice + Income + Advertising + Population + Price + ShelveLoc + Age + Education + Urban + US + Income:Advertising + Price:Age
+Sales ~ CompPrice + Income + Advertising + Population + Price + ShelveLoc + 
+Age + Education + Urban + US + Income:Advertising + Price:Age
 --------
                   Results: Ordinary least squares
 ====================================================================
@@ -2278,6 +2279,47 @@ row_0
 No        917   48
 Yes        24   11
 ```
+
+\FloatBarrier
+
+Resampling Methods
+==================
+
+Cross-Validation
+----------------
+
+Figure [fig:resamplingFig1](fig:resamplingFig1) displays the *validation
+set approach*, a simple stategy to estimate the test error associated
+with fitting a particular statistical learning method on a set of
+observations.
+
+![A schematic display of the validation set approach. A set of $n$
+observations are randomly split into a training set (shown in blue,
+containing observations 7, 22, and 13, among others) and a validation
+set (shown in red, and containing observation 91, among others). The
+statistical learning method is fit on the training set, and its
+performance is evaluated on the validation
+set.](figures/fig5_1.png "resamplingFig1")
+
+In figure [fig:resamplingFig2](fig:resamplingFig2), the left-hand panel
+shows validation sample MSE as a function of polynomial order for which
+a regression model was fit on training sample. The two samples are
+obtained by randomly splitting `Auto` data set into two data sets of 196
+observations each. The right-hand panel shows the results of repeating
+this exercise 10 times, each time with a different random split of the
+observations into training and validation sets. The model with a
+quadratic term has a lower MSE compared to the model with only a linear
+term. There is not much benefit from adding cubic or higher order
+polynomial terms in the regression model.
+
+![The validation set approach was used in the `Auto` data set in order
+to estimate the test error that results from predicting `mpg` using
+polynomial functions of `horsepower`. Left: Validation error estimates
+for a single split into training and validation data sets. Right: The
+validatioin method was repeated ten times, each time using a different
+random split of the observations into a training set and a validation
+set. This illustrates the variability of of the estimated test MSE that
+results from this approach.](figures/fig5_2.png "resamplingFig2")
 
 Footnotes
 =========
