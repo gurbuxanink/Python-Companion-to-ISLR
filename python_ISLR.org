@@ -3365,6 +3365,32 @@ regression model.
 #+RESULTS: fig5_2plot
 [[file:figures/fig5_2.png]]
 
+
+The left-hand panel of figure [[fig:resamplingFig4]] shows test set MSE as a function of
+polynomial degree when LOOCV is used on the =Auto= data set.  We fit linear
+regression models to predict =mpg= using polynomial functions of =horsepower=.
+The right-hand panel of figure [[fig:resamplingFig4]] shows nine different 10-fold
+CV estimates for the =Auto= data set, each resulting from a different random
+split of the observations into ten folds.
+
+#+NAME: fig5_4plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_4.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap5/')
+  import tenFoldCV
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig4
+#+CAPTION: Cross-validation was used in the =Auto= data set in order to estimate the test error that results from predicting =mpg= using polynomial functions of =horsepower=.  Left: The LOOCV error curve.  Right: 10-fold CV was run nin separate times, each with a different random split of the data into ten parts.  The figure shows the nine slightly different CV error curves.
+#+RESULTS: fig5_4plot
+[[file:figures/fig5_4.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.

@@ -2321,6 +2321,21 @@ random split of the observations into a training set and a validation
 set. This illustrates the variability of of the estimated test MSE that
 results from this approach.](figures/fig5_2.png "resamplingFig2")
 
+The left-hand panel of figure [fig:resamplingFig4](fig:resamplingFig4)
+shows test set MSE as a function of polynomial degree when LOOCV is used
+on the `Auto` data set. We fit linear regression models to predict `mpg`
+using polynomial functions of `horsepower`. The right-hand panel of
+figure [fig:resamplingFig4](fig:resamplingFig4) shows nine different
+10-fold CV estimates for the `Auto` data set, each resulting from a
+different random split of the observations into ten folds.
+
+![Cross-validation was used in the `Auto` data set in order to estimate
+the test error that results from predicting `mpg` using polynomial
+functions of `horsepower`. Left: The LOOCV error curve. Right: 10-fold
+CV was run nin separate times, each with a different random split of the
+data into ten parts. The figure shows the nine slightly different CV
+error curves.](figures/fig5_4.png "resamplingFig4")
+
 Footnotes
 =========
 
