@@ -3365,6 +3365,25 @@ regression model.
 #+RESULTS: fig5_2plot
 [[file:figures/fig5_2.png]]
 
+Figure [[fig:resamplingFig3]] displas the Leave One Out Cross Validation (LOOCV) approach.
+
+#+NAME: fig5_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap5/')
+
+  import loocv_schematic
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig3
+#+CAPTION: A schematic display of LOOCV.  A set of $n$ data points is repeatedly split into a training set (shown in blue) containing all but one observation, and a validation set that contains only that observation (shown in red).  The test error is then estimated by averaging the n resulting MSE's.  The first training set contains all but observation 1, the second training set contains all but observation 2, and so on.
+#+RESULTS: fig5_3plot
+[[file:figures/fig5_3.png]]
 
 The left-hand panel of figure [[fig:resamplingFig4]] shows test set MSE as a function of
 polynomial degree when LOOCV is used on the =Auto= data set.  We fit linear
@@ -3390,6 +3409,26 @@ split of the observations into ten folds.
 #+CAPTION: Cross-validation was used in the =Auto= data set in order to estimate the test error that results from predicting =mpg= using polynomial functions of =horsepower=.  Left: The LOOCV error curve.  Right: 10-fold CV was run nin separate times, each with a different random split of the data into ten parts.  The figure shows the nine slightly different CV error curves.
 #+RESULTS: fig5_4plot
 [[file:figures/fig5_4.png]]
+
+Figure [[fig:resamplingFig5]] illustrates the /k/-fold CV approach.
+
+#+NAME: fig5_5plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_5.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap5/')
+
+  import kFoldCV
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig5
+#+CAPTION: A schematic display of 5-fold CV.  A set of $n$ observations is randomly split into five non-overlapping groups.  Each of these fifths acts as a validation set (shown in red), and the remainder as a training set (shown in blue).  The test error is estimated by averaging the five resulting MSE estimates.
+#+RESULTS: fig5_5plot
+[[file:figures/fig5_5.png]]
 
 * Footnotes
 
