@@ -2,6 +2,7 @@
 #+LATEX_HEADER: \usepackage{amsmath,booktabs,placeins,fancyhdr}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, allcolors=blue, linkbordercolor=white}
 #+LATEX_HEADER: \pagestyle{fancy} \fancyhead{}
+#+LATEX_HEADER: \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 #+LATEX_HEADER: \fancyhead[CO,CE]{\rightmark}
 
 * Introduction
@@ -52,7 +53,7 @@ Figure [[fig:introFig2]] shows boxplots of previous days' percentage changes in 
 #+LATEX: \FloatBarrier
 
 * Statistical Learning
-
+<<chap:statLearn>>
 ** What is Statistical Learning?
 
 Figure [[fig:statLearnFig1]] shows scatter plots of =sales= versus =TV=, =radio=,
@@ -3429,6 +3430,67 @@ Figure [[fig:resamplingFig5]] illustrates the /k/-fold CV approach.
 #+CAPTION: A schematic display of 5-fold CV.  A set of $n$ observations is randomly split into five non-overlapping groups.  Each of these fifths acts as a validation set (shown in red), and the remainder as a training set (shown in blue).  The test error is estimated by averaging the five resulting MSE estimates.
 #+RESULTS: fig5_5plot
 [[file:figures/fig5_5.png]]
+
+In figure [[fig:resamplingFig6]], we plot the cross-validation estimates and true
+test error rates that result from fitting least squares polynomials to the
+simulated data sets illustrated in figures [[fig:statLearnFig9]],
+[[fig:statLearnFig10]], and [[fig:statLearnFig11]] of chapter [[chap:statLearn]].  In all
+three plots, the two cross validation errors are very similar.  
+
+#+NAME: fig5_6plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_6.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import sys
+  sys.path.append('code/chap5/')
+
+  from mseFlexibility import generateDataSets, trueTestMSE, loocvMSE
+  from mseFlexibility import kFoldCV_MSE
+
+  def myFunc1(x):
+      return 6.0 + 2 * np.sin((x - 40.0) / 20.0)
+
+  def myFunc2(x):
+      return 2 + 0.05 * x + 0.0005 * (x ** 2)
+
+  def myFunc3(x):
+      return 0.012 * ((x - 35) ** 2) - 0.00025 * ((x - 35) ** 3)
+
+  func_list = [myFunc1, myFunc2, myFunc3]
+  np.random.seed(911)
+
+  fig = plt.figure(figsize=(8, 3))
+  for i in range(len(func_list)):
+      ax = fig.add_subplot(1, len(func_list), i+1)
+      trueFunc = func_list[i]
+      train_df, test_df = generateDataSets(trueFunc)
+
+      # Plot true Test MSE
+      degree, mse = trueTestMSE(train_df, test_df)
+      ax.plot(degree, mse, c='b')
+
+      # Plot LOOCV MSE
+      degree, mse = loocvMSE(train_df)
+      ax.plot(degree, mse, c='k', linestyle='--')
+
+      # Plot k-Fold MSE
+      degree, mse = kFoldCV_MSE(train_df)
+      ax.plot(degree, mse, c='r', linestyle=':')
+
+      ax.set_xlabel('Flexibility')
+      ax.set_ylabel('Mean Squared Error')
+
+  fig.tight_layout()
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig6
+#+CAPTION: True and estimated test MSE for the simulated data sets in Figures [[fig:statLearnFig9]] (left), [[fig:statLearnFig10]] (center), and [[fig:statLearnFig11]] (right).  The true test MSE is shown in blue, the LOOCV estimate is shown in black dashed line, and the 10-fold CV estimate is shown in red dotted line.
+#+RESULTS: fig5_6plot
+[[file:figures/fig5_6.png]]
 
 * Footnotes
 
