@@ -3552,6 +3552,174 @@ training error rate cannot be used to select the optimal value of /K/.
 
 ** The Bootstrap
 
+Figure [[fig:resamplingFig9]] illustrates the approach for estimating \alpha by
+repeated simulation of data.  In each panel, we simulated 100 pairs of returns
+for the investments /X/ and /Y/.  We used these returns to estimate
+$\sigma_X^2$, $\sigma_Y^2$ and $\sigma_{XY}$, which are then used to estimate \alpha.
+
+#+NAME: fig5_9plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_9.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import numpy as np
+
+  var_x = 1.0
+  var_y = 1.25
+  cov_xy = 0.5
+  df_size = 100
+
+  np.random.seed(911)
+  fig = plt.figure(figsize=(7, 6))
+  for i in range(4):
+      xy_sim = np.random.multivariate_normal([0.0, 0.0],
+					     [[var_x, cov_xy],
+					      [cov_xy, var_y]], size=df_size)
+      cov_xy_sim = np.cov(xy_sim, rowvar=False)
+      alpha_est = (cov_xy_sim[1, 1] - cov_xy_sim[0, 1])/(
+	  cov_xy_sim[0, 0] + cov_xy_sim[1, 1] - 2 * cov_xy_sim[0, 1])
+      ax = fig.add_subplot(2, 2, i+1)
+      ax.scatter(xy_sim[:, 0], xy_sim[:, 1], alpha=0.6)
+      ax.set_xlabel('X')
+      ax.set_ylabel('Y')
+      ax.text(2, -2.5, r'$\bar{\alpha} = $' + str(round(alpha_est, 3)),
+	      horizontalalignment='center',
+	      verticalalignment='center')
+      ax.set_xlim(-3, 3)
+      ax.set_ylim(-3, 3)
+
+  fig.tight_layout()
+
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig9
+#+CAPTION: Each panel displays 100 simulated returns for investments /X/ and /Y/.  The resulting estimates of \alpha are displayed in bottom right corner.
+#+RESULTS: fig5_9plot
+[[file:figures/fig5_9.png]]
+
+It is natural to wish to quantify the accuracy of our estimate of \alpha.  To
+estimate the standard deviation of $\hat{\alpha}$, we repeated the process of
+simulating 100 paired observations of /X/ and /Y/, and estimating \alpha 1000
+times.  We thereby obtain 1000 estimates of \alpha, which we can call
+${\hat{\alpha}}_1, {\hat{\alpha}}_2, ...,{\hat{\alpha}}_{1000}$. The left-hand panel of
+figure [[fig:resamplingFig10]] displays a histogram of the resulting estimates.  The
+mean over all 1000 estimates for \alpha is {{{alhpa_est}}}, which is very close
+to $\alpha = 0.6$.  The standard deviation of the estimates is {{{alpha_std}}}.
+
+The bootstrap approach is illustrated in the center panel of figure
+[[fig:resamplingFig10]], which displays a histogram of 1000 bootstrap estimates of
+\alpha, each computed using a distinct bootstrap data set.  The panel was
+constructed on the basis of a single data set, and hence could be created using
+real data. The right-hand panel displays the information in the center and left
+panels in a different way, via boxplots of the estimates of \alpha obtained by
+generating 1000 simulated data sets from the true population and using the
+boostrap approach.  
+
+#+NAME: alpha_bootstrap
+#+BEGIN_SRC python :exports none :var n_sim=1000
+  # Simulate 100 paired observations of X and Y
+  # Estimate alpha
+  # Repeat 1000 times
+
+  import numpy as np
+
+  df_size = 100
+  var_x = 1.0
+  var_y = 1.25
+  cov_xy = 0.5
+
+  np.random.seed(911)
+  alpha_est = []
+  for i in range(n_sim):
+      xy_sim = np.random.multivariate_normal(
+	  [0, 0], [[var_x, cov_xy], [cov_xy, var_y]], size=df_size)
+      cov_xy_sim = np.cov(xy_sim, rowvar=False)
+      alpha = (cov_xy_sim[1, 1] - cov_xy_sim[0, 1]) / \
+	  (cov_xy_sim[0, 0] + cov_xy_sim[1, 1] - 2 * cov_xy_sim[0, 1])
+      alpha_est.append(alpha)
+#+END_SRC
+
+#+RESULTS: alpha_bootstrap
+: None
+
+#+NAME: alpha_results
+#+BEGIN_SRC python :exports results :results values drawer :noweb yes :var n_sim=1000
+  <<alpha_bootstrap>>
+  import numpy as np
+
+  alpha_mean = np.mean(alpha_est)
+  alpha_sd = np.std(alpha_est)
+
+  alpha_bar = '#+MACRO: alhpa_est ' + str(round(alpha_mean, 3))
+  alpha_std_dev = '#+MACRO: alpha_std ' + str(round(alpha_sd, 3))
+
+  return alpha_bar + '\n' + alpha_std_dev
+#+END_SRC
+
+#+RESULTS: alpha_results
+:RESULTS:
+#+MACRO: alhpa_est 0.599
+#+MACRO: alpha_std 0.08
+:END:
+
+#+NAME: fig5_10plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_10.png" :noweb yes :var n_sim=1000
+  <<alpha_bootstrap>>
+  import matplotlib
+  matplotlib.use('Agg')
+  import numpy as np
+  import matplotlib.pyplot as plt
+  import pandas as pd
+
+  fig = plt.figure(figsize=(8, 3))
+  ax1 = fig.add_subplot(131)
+  ax1.hist(alpha_est,  color='orange', alpha=0.7)
+  ax1.set_xlabel(r'$\alpha$')
+  ax1.axvline(x=0.6, c='r')
+
+  var_x = 1.0
+  var_y = 1.25
+  cov_xy = 0.5
+  df_size = 1000
+
+  np.random.seed(911)
+  xy_sim = np.random.multivariate_normal([0.0, 0.0], [[var_x, cov_xy],
+						      [cov_xy, var_y]],
+					 size=df_size)
+  alpha_boostrap = []
+  for i in range(n_sim):
+      boot_ind = np.random.choice(xy_sim.shape[0], size=100)
+      xy_boot = xy_sim[boot_ind]
+      cov_boot = np.cov(xy_boot, rowvar=False)
+      alpha = (cov_boot[1, 1] - cov_boot[0, 1]) / \
+	  (cov_boot[0, 0] + cov_boot[1, 1] - 2 * cov_boot[0, 1])
+      alpha_boostrap.append(alpha)
+
+  ax2 = fig.add_subplot(132)
+  ax2.hist(alpha_boostrap, color='blue', alpha=0.7)
+  ax2.axvline(x=0.6, c='r')
+  ax2.set_xlabel(r'$\alpha$')
+
+  alpha_df = pd.DataFrame({'True': alpha_est, 'Boostratp': alpha_boostrap})
+
+  ax3 = fig.add_subplot(133)
+  alpha_df.boxplot(widths=0.6, grid=False, ax=ax3)
+  ax3.axhline(y=0.6, c='r', alpha=0.7)
+  ax3.set_ylabel(r'$\alpha$')
+
+  fig.tight_layout()
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig10
+#+CAPTION: Left: A histogram of the estimates of \alpha obtained by generating 1000 simulated data sets from the true population.  Center: A histogram of the estimates of \alpha obtained from 1000 bootstrap samples from a single data set.  Right: The estimates of \alpha displayed in the left and center panels are shown as boxplots.  In each panel, the red line indicates the true value of \alpha.
+#+RESULTS: fig5_10plot
+[[file:figures/fig5_10.png]]
+
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
