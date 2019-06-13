@@ -3492,6 +3492,66 @@ three plots, the two cross validation errors are very similar.
 #+RESULTS: fig5_6plot
 [[file:figures/fig5_6.png]]
 
+Figure [[fig:resamplingFig7]] shows Bayesian decision boundary (blue dashed line)
+and logistic regression decision boundary (black line) for 1- to 4-degree
+polynomials on $X_1$ and $X_2$. 
+
+#+NAME: fig5_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_7.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap5/')
+  sys.path.append('code/chap2/')
+
+  import logisticBayes
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig7
+#+CAPTION: Logistic regression fits on the two-dimensional classification data displayed in figure [[fig:statLearnFig13]].  The Bayes decision boundary is represented using a blue dashed line.  Estimated decision boundaries from linear, quadratic, cubic, and quartic (degrees 1-4) logistic regressions are displayed in black.
+#+RESULTS: fig5_7plot
+[[file:figures/fig5_7.png]]
+
+The left-hand panel of figure [[fig:resamplingFig8]] displays in black 10-fold CV
+error rates that result from fitting ten logistic regression models to the data,
+using polynomial functions of the predictors up to tenth order.  The true test
+errors are shown in red, and the training errors are shown in blue.  The
+training error tends to decrease as the flexibility of the fit increases.  The
+test error is higher than training error.  The 10-fold CV
+error rate is a close approximation to the test error rate.  
+
+The right-hand panel of figure [[fig:resamplingFig8]] displays the same three curves
+using the KNN approach for classification, as a function of the value of /K/
+(the number of neighbors used in the KNN classifier).  Again, the training error
+rate declines as the method becomes more flexible, and so we see that the
+training error rate cannot be used to select the optimal value of /K/.  
+
+#+NAME: fig5_8plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig5_8.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap5/')
+  sys.path.append('code/chap2/')
+
+  import classifyErrorRate
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:resamplingFig8
+#+CAPTION: Test error (red), training error(blue), and 10-fold CV error (black) on the two-dimensional classification data displayed in [[fig:resamplingFig7]].  Left: Logistic regression using polynomial functions of the predictors.  The order of the polynomials used is displayed on the x-axis.  Right: The KNN classifier with different values of K, the number of neighbors used in the KNN classifier.
+#+RESULTS: fig5_8plot
+[[file:figures/fig5_8.png]]
+
+#+LATEX: \FloatBarrier
+
+** The Bootstrap
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
