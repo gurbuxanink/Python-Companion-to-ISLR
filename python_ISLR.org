@@ -3719,6 +3719,232 @@ boostrap approach.
 #+RESULTS: fig5_10plot
 [[file:figures/fig5_10.png]]
 
+** Lab: Cross-Validation and the Bootstrap
+
+*** The Validation Set Approach
+We use the function =choice= in numpy.random library to split the set of
+observations in =Auto= data set into two subsets of 196 observations.  Then we
+fit regression models on the training data set and calculate validation error on
+the validation set.
+
+These results show that a model that predicts =mpg= using a quadratic function
+of =horsepower= performs better than a model that predicts =mpg= using a linear
+function of horsepower.  There is little evidence that a cubic function of
+=horsepower= is better than the quadratic function. 
+
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+
+  auto = datasets.get_rdataset('Auto', 'ISLR').data
+
+  np.random.seed(911)
+  train_ind = np.random.choice(auto.shape[0], size=int(auto.shape[0]/2),
+			       replace=False)
+  all_ind = np.arange(auto.shape[0])
+  test_ind = set(all_ind).difference(set(train_ind))
+  test_ind = list(test_ind)
+  auto_train = auto.iloc[train_ind]
+  auto_test = auto.iloc[test_ind]
+
+  # Fit first linear model
+  lm_model = smf.ols(formula='mpg ~ horsepower', data=auto_train)
+  lm_fit = lm_model.fit()
+  mse_train = np.sum((lm_fit.predict(auto_train) - auto_train['mpg']) ** 2) / \
+      (auto_train.shape[0] - 2)
+  print(mse_train)
+  print(lm_fit.mse_resid)         # same value
+  print('--------')
+
+  mse_test = np.sum((lm_fit.predict(auto_test) - auto_test['mpg']) ** 2) / \
+      (auto_test.shape[0] - 2)
+  print(mse_test)
+  print('--------')
+
+  # Fit quadratic model
+  lm_model2 = smf.ols('mpg ~ horsepower + I(horsepower ** 2)', data=auto_train)
+  lm_fit2 = lm_model2.fit()
+  mse_test2 = np.sum((lm_fit2.predict(auto_test) - auto_test['mpg']) ** 2) / \
+      (auto_test.shape[0] - 3)
+  print(mse_test2)
+  print('--------')
+
+  # Fit third order polynomial model
+  lm_model3 = smf.ols('mpg ~ horsepower + I(horsepower ** 2) + I(horsepower ** 3)',
+		      data=auto_train)
+  lm_fit3 = lm_model3.fit()
+  mse_test3 = np.sum((lm_fit3.predict(auto_test) - auto_test['mpg']) ** 2) / \
+      (auto_test.shape[0] - 4)
+  print(mse_test3)
+#+END_SRC
+
+#+RESULTS:
+: 23.61593457249045
+: 23.615934572490445
+: --------
+: 24.868027221207488
+: --------
+: 20.701029881139203
+: --------
+: 20.893010200297326
+
+*** Leave-One-Out Cross-Validation
+Using first principles, it is straightforward to implement leave-one-out
+cross-validation. 
+
+#+INCLUDE: "code/chap5/mseLOOCV.py" src python
+
+#+BEGIN_SRC python :exports both :results output
+  import sys
+  sys.path.append('code/chap5/')
+
+  import mseLOOCV
+#+END_SRC
+
+#+RESULTS:
+: degree:  1 , mse_loocv: 24.232
+: degree:  2 , mse_loocv: 19.248
+: degree:  3 , mse_loocv: 19.335
+: degree:  4 , mse_loocv: 19.424
+: degree:  5 , mse_loocv: 19.033
+
+*** k-Fold Cross-Validation
+Using first principles, it is straightforward to implement /k/-fold CV.  Once
+again, we see little evidence that using cubic or higher order polynomial terms
+leads to lower test error than simply using a quadratic fit.
+
+#+INCLUDE: "code/chap5/mse_kFoldCV.py" src python
+
+#+BEGIN_SRC python :exports both :results output
+  import sys
+  sys.path.append('cnoode/chap5/')
+
+  import mse_kFoldCV
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+degree:  1 , mse_kfold:  24.213
+degree:  2 , mse_kfold:  19.378
+degree:  3 , mse_kfold:  19.477
+degree:  4 , mse_kfold:  19.538
+degree:  5 , mse_kfold:  19.166
+degree:  6 , mse_kfold:  19.183
+degree:  7 , mse_kfold:  19.157
+degree:  8 , mse_kfold:  23.247
+degree:  9 , mse_kfold:  23.258
+degree:  10 , mse_kfold:  65.251
+#+end_example
+
+*** The Bootstrap
+
+**** Estimating the Accuracy of a Statistic of Interest
+ We will first write a function that takes two inputs, data and index, and
+ calculates the desired statistic \alpha.  Then we will repeatedly call this
+ function and store the estimates of \alpha.
+
+ #+INCLUDE: "code/chap5/alphaBootstrap.py" src python
+
+ #+BEGIN_SRC python :exports both :results output
+   from statsmodels import datasets
+   import numpy as np
+   import sys
+   sys.path.append('code/chap5/')
+   from alphaBootstrap import alphaEst, bootStrap
+
+   portfolio = datasets.get_rdataset('Portfolio', 'ISLR').data
+
+   np.random.seed(911)
+   alpha_boot = bootStrap(portfolio, alphaEst, sample_size=100, n_bootstrap=1000)
+   print(alpha_boot)
+ #+END_SRC
+
+ #+RESULTS:
+ : {'mean': 0.5753949845303641, 'std. error': 0.08938513622277834}
+
+**** Estimating the Accuracy of a Linear Regression Model
+We now use bootstrap method to assess the variability of the estimates for
+\beta_0 and \beta_1, the intercept and slope terms for the linear regression
+model that uses =horsepower= to predict =mpg= in the =Auto= data set.  We will
+compare the estimates obtained using the bootstrap to those obtained using the
+standar formulas for $SE(\hat{\beta}_0)$ and $SE(\hat{\beta}_1)$.
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  import numpy as np
+  import sys
+  sys.path.append('code/chap5/')
+  from alphaBootstrap import autoDataCoef, bootStrap
+
+  auto = datasets.get_rdataset('Auto', 'ISLR').data
+
+  np.random.seed(911)
+  mpg_hp_boot = bootStrap(auto, autoDataCoef, sample_size=392, n_bootstrap=1000)
+  print('Bootstrap results:')
+  for key in mpg_hp_boot.keys():
+      print(key, ':', mpg_hp_boot[key])
+  print('--------')
+
+  lm_model = smf.ols('mpg ~ horsepower', data=auto)
+  lm_fit = lm_model.fit()
+  print('Regression results:')
+  print(lm_fit.summary2().tables[1].iloc[:,:4])
+
+#+END_SRC
+
+#+RESULTS:
+: Bootstrap results:
+: Intercept : {'mean': 39.94234375950751, 'std. error': 0.8748453071088308}
+: horsepower : {'mean': -0.15796112230552348, 'std. error': 0.007526082860287968}
+: --------
+: Regression results:
+:                 Coef.  Std.Err.          t          P>|t|
+: Intercept   39.935861  0.717499  55.659841  1.220362e-187
+: horsepower  -0.157845  0.006446 -24.489135   7.031989e-81
+
+Finally, we compute the bootstrap standard error estimates and the standard
+linear regression estimates that result from fitting the quadratic model to the
+=Auto= data.
+
+#+BEGIN_SRC python :exports results :results output
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  import numpy as np
+  import sys
+  sys.path.append('code/chap5/')
+  from alphaBootstrap import autoDataCoef2, bootStrap
+
+  auto = datasets.get_rdataset('Auto', 'ISLR').data
+
+  np.random.seed(911)
+  mpg_hp_boot = bootStrap(auto, autoDataCoef2, sample_size=392,
+			  n_bootstrap=1000)
+  print('Bootstrap results:')
+  for key in mpg_hp_boot.keys():
+      print(key, ':', mpg_hp_boot[key])
+  print('--------')
+
+  lm_model = smf.ols('mpg ~ horsepower + I(horsepower ** 2)', data=auto)
+  lm_fit = lm_model.fit()
+  print('Regression results:')
+  print(lm_fit.summary2().tables[1].iloc[:,:4])
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Bootstrap results:
+Intercept : {'mean': 57.02549325815686, 'std. error': 2.012215071375403}
+horsepower : {'mean': -0.46840037414346225, 'std. error': 0.03187991112044731}
+I(horsepower ** 2) : {'mean': 0.0012391590913923556, 'std. error': 0.00011523595073730878}
+--------
+Regression results:
+                        Coef.  Std.Err.          t          P>|t|
+Intercept           56.900100  1.800427  31.603673  1.740911e-109
+horsepower          -0.466190  0.031125 -14.978164   2.289429e-40
+I(horsepower ** 2)   0.001231  0.000122  10.080093   2.196340e-21
+#+end_example
 
 * Footnotes
 
