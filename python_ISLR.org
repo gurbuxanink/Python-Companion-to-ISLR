@@ -3946,6 +3946,39 @@ horsepower          -0.466190  0.031125 -14.978164   2.289429e-40
 I(horsepower ** 2)   0.001231  0.000122  10.080093   2.196340e-21
 #+end_example
 
+
+#+LATEX: \FloatBarrier
+* Linear Model Selection and Regularization
+
+** Subset Selection
+
+An application of best subset selection is shown in figure [[fig:selectionFig1]].
+Each plotted point corresponds to a least squares regression model fit using a
+different subset of the 10 predictors in the =Credit= data set.  We have plotted
+the RSS and R^2 statistics for each model, as a function of the number of
+variables.  The red curve connects the best models for each model size,
+according to RSS or R^2.  Initially, these quantities improve as the number of
+varaibles increases. However, from the three-variable model on, there is little
+improvement in RSS and R^2 when more predictors are included.
+
+#+NAME: fig6_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import creditSubsetSelect
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig1
+#+CAPTION: For each possible model containing a subset of the ten predictors in the =Credit= data set, the RSS and R^2 are displayed.  The red frontier tracks the /best/ model for a given number of predictors, according to RSS and R^2.
+#+RESULTS: fig6_1plot
+[[file:figures/fig6_1.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
