@@ -17,6 +17,7 @@ all_x = list(credit.columns)
 y_var = 'Balance'
 all_x.remove(y_var)
 
+# All subsets
 for p in range(1, len(all_x) + 1):
     all_models[p] = []
     x_combinations = combinations(all_x, p)
