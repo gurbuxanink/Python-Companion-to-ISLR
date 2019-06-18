@@ -4032,6 +4032,28 @@ its four-variable model.
 |     3 | Income, Rating, Student       | Rating, Income, Student        |
 |     4 | Income, Limit, Cards, Student | Rating, Income, Student, Limit |
 
+Figure [[fig:selectionFig2]] displays C_p, BIC, and adjusted R^2 for the best model
+of each size produced by best subset selection on the =Credit= data set.
+
+#+NAME: fig6_2plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_2.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import bestModelPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig2
+#+CAPTION: C_p, BIC, and adjusted R^2 are shown for the best models of each size for the =Credit= data set (the lower frontier in figure [[fig:selectionFig1]]).  C_p and BIC are estimates of test MSE.  In the middle panel we see that the BIC estimate of test error shows an increase after four variables are selected.  The other two plots are rather flat after four variables are selected.
+#+RESULTS: fig6_2plot
+[[file:figures/fig6_2.png]]
+
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
