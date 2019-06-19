@@ -16,4 +16,6 @@ Below packages are used in this project.
 | 4 Classification | Generalized models | stats | StatsModels |
 | 4 Classification | Linear/quadratic discriminant analysis | MASS | scikit-learn |
 | 4 Classification | K nearest neighbors | class | scikit-learn |
-
+| 6 Linear Model Selection | Ridge Regression | glmnet | scikit-learn |
+| 6 Linear Model Selection | Lasso | glmnet | scikit-learn |
+| 6 Linear Model Selection | Principal Component Regression | pls | scikit-learn | 6 Linear Model Selection | Partial Least Squares | pls | scikit-learn |
