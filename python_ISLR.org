@@ -4054,6 +4054,36 @@ of each size produced by best subset selection on the =Credit= data set.
 [[file:figures/fig6_2.png]]
 
 
+Figure [[fig:selectionFig3]] displays, as a function of /d/, the BIC, validation set
+errors, and cross-validation errors on the =Credit= data set, for the best
+/d/-variable model.  The validation errors were calculated by randomly selecting
+two-thirds of the observations as the training set, and the remainder as the
+validation set.  The cross-validation errors were computed using $k = 10$
+folds.  Depending upon the choice of the random seed, validation errors may be
+minimized by six or seven predictors.
+
+#+NAME: fig6_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import bestModelValidPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig3
+#+CAPTION: For the =Credit= data set, three quantities are displayed for the best model containing predictors, for /d/ ranging from 1 to 10. The overall /best/ model, based on each of these quantities, is shown as a green cross.  Left: Square root of BIC.  Center: Validation set errors.  Right: Cross-validation errors.
+#+RESULTS: fig6_3plot
+[[file:figures/fig6_3.png]]
+
+** Shrinkage Methods
+
+
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
