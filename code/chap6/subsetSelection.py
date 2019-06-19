@@ -64,7 +64,7 @@ def forwardStepSelect(y_var, all_x, train_df, metric, metric_max=True):
     '''Assumes y_var is the dependent variable, all_x is a list of all
     explanatory variables.  train_df is a dataframe whose columns include
     y_var and all elements of all_x.  metric (an output of statsmodels) is used
-    to select best model at every step.  If metric_max is True, then 
+    to select best model at every step.  If metric_max is True, then
     higher value indicates better model.  If metrix_max is False, then
     lower value indicates better model.'''
     remaining_x = all_x.copy()
@@ -105,7 +105,7 @@ def forwardStepSelect(y_var, all_x, train_df, metric, metric_max=True):
 
 
 def backwardStepSelect(y_var, all_x, train_df, metric, metric_max=True):
-    '''Start with all_x variables.  Use backward step selection method to 
+    '''Start with all_x variables.  Use backward step selection method to
     drop least useful variable one by one.  metric (an output of statsmodels)
     is used to select best model at every step.  y_var is dependent variable.
     train_df is a dataframe whose columns include y_var and all x_var.
@@ -160,3 +160,71 @@ def C_p(model):
     sigma_hat_sq = model.mse_resid
     cp = (RSS + 2.0 * d * sigma_hat_sq) / n
     return cp
+
+
+def bestSubsetCrossVal(y_var, all_x, in_df, k_folds=10):
+    '''Assumes y_var is the dependent variable and all_x are all possible
+    explantory variables.  in_df is a dataframe whose columns include
+    y_var and all_x.  Returns a dictionary of best models selected based
+    on lowest cross-validation error based on k_folds of in_df.'''
+
+    np.random.seed(911)
+    best_models = {}
+    i_folds = np.random.choice(k_folds, in_df.shape[0])
+    for p in range(1, len(all_x) + 1):
+        best_models[p] = {}
+        x_combinations = combinations(all_x, p)
+        select_var_best_mse = np.inf
+        for select_var in x_combinations:
+            total_error_sq = 0
+            my_formula = y_var + ' ~ ' + ' + '.join(select_var)
+            for a_fold in range(k_folds):
+                train_df = in_df.loc[a_fold != i_folds]
+                test_df = in_df.loc[a_fold == i_folds]
+                lm_model = smf.ols(my_formula, data=train_df)
+                lm_fit = lm_model.fit()
+                error_sq = np.mean(
+                    (lm_fit.predict(test_df) - test_df[y_var]) ** 2)
+                total_error_sq += error_sq
+            select_var_mse = total_error_sq / k_folds
+            # pdb.set_trace()
+            if select_var_mse < select_var_best_mse:
+                best_models[p]['x_vars'] = select_var
+                best_models[p]['mse'] = select_var_mse
+                select_var_best_mse = select_var_mse
+    return best_models
+
+
+def bestSubsetValidation(y_var, all_x, in_df, test_frac=0.333):
+    '''Assumes y_var is the dependent variable and all_x are all possible
+    explanatory variables.  in_df is a dataframe whose columns include 
+    y_var and all_x.  Divides dataframe into test (test_frac of input 
+    dataframe) and training.  Returns a dictionary of best models based on
+    lowest test error.'''
+
+    np.random.seed(911)
+    best_models = {}
+    all_ind = np.arange(in_df.shape[0])
+    test_ind = np.random.choice(all_ind,
+                                size=round(len(all_ind) * test_frac),
+                                replace=False)
+    train_ind = set(all_ind).difference(set(test_ind))
+    train_ind = list(train_ind)
+    test_df = in_df.iloc[test_ind]
+    train_df = in_df.iloc[train_ind]
+
+    for p in range(1, len(all_x) + 1):
+        best_models[p] = {}
+        x_combinations = combinations(all_x, p)
+        select_var_best_mse = np.inf
+        for select_var in x_combinations:
+            my_formula = y_var + ' ~ ' + ' + '.join(select_var)
+            lm_model = smf.ols(my_formula, data=train_df)
+            lm_fit = lm_model.fit()
+            select_var_mse = np.mean((lm_fit.predict(test_df) -
+                                      test_df[y_var]) ** 2)
+            if select_var_mse < select_var_best_mse:
+                best_models[p]['x_vars'] = select_var
+                best_models[p]['mse'] = select_var_mse
+                select_var_best_mse = select_var_mse
+    return best_models
