@@ -4080,9 +4080,43 @@ minimized by six or seven predictors.
 #+RESULTS: fig6_3plot
 [[file:figures/fig6_3.png]]
 
+#+LATEX: \FloatBarrier
+
 ** Shrinkage Methods
 
+In figure [[fig:selectionFig4]] the ridge regression coefficient estimates for the
+=Credit= data set are displayed.  In the left-hand panel, each curve corresponds
+to the ridge regression coefficient estimate for one of the four important
+variables, plotted as a function of \lambda.  At the extreme left side of the
+plot, \lambda is essentially zero, and so the corresponding ridge coefficients
+estimates are the same as the usual least square estimates.  But as \lambda
+increases, the ridge coefficients shrink towards zero.  
 
+The right-hand panel of figure [[fig:selectionFig4]] displays the same ridge
+coefficient estimates as the left-hand panel.  But instead of displaying \lambda
+on the /x/-axis, we now display $\| \hat{\beta}_{\lambda}^R \|_2 / \|
+\hat{\beta} \|_2$, where $\hat{\beta}}$ denotes the vector of least squares
+coefficient estimates.  The notation $\| \beta \|_2$ denotes the $\ell_2$
+norm of a vector.  This norm is defined as $\| \beta \|_2 = \sqrt{\sum_{j=1}^p
+\beta_j^2}$.  It measures the distance of \beta from zero.  
+
+#+NAME: fig6_4plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_4.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import coefRidgePlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig4
+#+CAPTION: The standardized ridge regression coefficients are displayed for the =Credit= data set, as a function of \lambda and $\| \hat{\beta}_{\lambda}^R \|_2 / \| \hat{\beta} \|_2$.
+#+RESULTS: fig6_4plot
+[[file:figures/fig6_4.png]]
 
 * Footnotes
 
