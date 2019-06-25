@@ -15,6 +15,7 @@ credit.drop(columns='ID', inplace=True)
 X_numeric = credit[['Income', 'Limit', 'Rating',
                     'Cards', 'Age', 'Education']].copy()
 X_num_std = (X_numeric - X_numeric.mean()) / X_numeric.std()
+# X_num_std = X_numeric / X_numeric.std()
 X_cat = credit[['Gender', 'Student', 'Married', 'Ethnicity']].copy()
 X_cat = pd.get_dummies(X_cat)
 X = pd.concat((X_num_std, X_cat), axis=1)
