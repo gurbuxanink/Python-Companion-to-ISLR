@@ -2041,7 +2041,7 @@ strong multicollinearity or other numerical problems.
 *** Interaction Terms
 The syntax =lstat:black= tells =ols= to include an interaction term between
 =lstat= and =black=.  The syntax =lstat*age= simultaneously includes =lstat,
-age,= and the interaction term $\text{lstat} \times \text{age]$ as predictors.
+age,= and the interaction term $\text{lstat} \times \text{age}$ as predictors.
 It is a shorthand for =lstat + age + lstat:age=. 
 
 #+BEGIN_SRC python :exports both :results output
@@ -4095,7 +4095,7 @@ increases, the ridge coefficients shrink towards zero.
 The right-hand panel of figure [[fig:selectionFig4]] displays the same ridge
 coefficient estimates as the left-hand panel.  But instead of displaying \lambda
 on the /x/-axis, we now display $\| \hat{\beta}_{\lambda}^R \|_2 / \|
-\hat{\beta} \|_2$, where $\hat{\beta}}$ denotes the vector of least squares
+\hat{\beta} \|_2$, where $\hat{\beta}$ denotes the vector of least squares
 coefficient estimates.  The notation $\| \beta \|_2$ denotes the $\ell_2$
 norm of a vector.  This norm is defined as $\| \beta \|_2 = \sqrt{\sum_{j=1}^p
 \beta_j^2}$.  It measures the distance of \beta from zero.  
@@ -4117,6 +4117,30 @@ norm of a vector.  This norm is defined as $\| \beta \|_2 = \sqrt{\sum_{j=1}^p
 #+CAPTION: The standardized ridge regression coefficients are displayed for the =Credit= data set, as a function of \lambda and $\| \hat{\beta}_{\lambda}^R \|_2 / \| \hat{\beta} \|_2$.
 #+RESULTS: fig6_4plot
 [[file:figures/fig6_4.png]]
+
+Ridge regression's advantage over least squares is rooted in /bias-variance
+tradeoff/.  As \lambda increases, the flexibility of ridge regression fit
+decreases, leading to decreased variance but increased bias.  We use a simulated
+data set with $p = 30$ features and $n = 50$ observations.  Figure
+[[fig:selectionFig5]] shows the bias-tradeoff on this simulated data set.
+
+#+NAME: fig6_5plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_5.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import biasVarRidge
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig5
+#+CAPTION: Squared bias, variance, and test mean squared error for the ridge regression predictions on a simulated data set, as a function of \lambda (left-hand panel) and $\| \hat{\beta}_\lambda^R \|_2 / \| \hat{\beta} \|_2$.  The horizontal lines show the minimum possible MSE.  The crosses show the ridge regression models for which the MSE is the smallest.
+#+RESULTS: fig6_5plot
+[[file:figures/fig6_5.png]]
 
 * Footnotes
 
