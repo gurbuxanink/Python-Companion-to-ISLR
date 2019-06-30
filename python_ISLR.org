@@ -4142,6 +4142,37 @@ data set with $p = 30$ features and $n = 50$ observations.  Figure
 #+RESULTS: fig6_5plot
 [[file:figures/fig6_5.png]]
 
+In figure [[fig:selectionFig6]], coefficient plots are generated from applying the
+lasso to the =Credit= data set.  When \lambda = 0, then the lasso simply gives
+the least squares fit.  When \lambda becomes sufficiently large, the lasso gives
+the null model in which all coefficient estimates equal zero.  However, in
+between these two extremes, the ridge regression and the lasso regression models
+are quite different.  In the right-hand panel of figure [[fig:selectionFig6]], as we
+move from left to right, at first the lasso model only contains the =Rating=
+predictor.  Then =Student= and =Limit= enter the model, shortly followed by
+=Income=. Depending upon the value of \lambda, the lasso can produce a model
+involving any number of variables.  In contrast, although the magnitude of the
+estimates will depend upon \lambda, ridge regression will always
+include all of the variables in the model.  
+
+#+NAME: fig6_6plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_6.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import coefLassoPlot
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig6
+#+CAPTION: The standardized lasso coefficients on the =Credit= data set are shown as a function of \lambda and $\| \hat{\beta}_{\lambda}^L \|_1 / \| \hat{\beta} \|_1$.
+#+RESULTS: fig6_6plot
+[[file:figures/fig6_6.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
