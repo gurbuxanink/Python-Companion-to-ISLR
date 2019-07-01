@@ -4173,6 +4173,38 @@ include all of the variables in the model.
 #+RESULTS: fig6_6plot
 [[file:figures/fig6_6.png]]
 
+Figure [[fig:selectionFig7]] illustrates why lasso, unlike ridge regression, results
+in coefficient estimates that are exactly zero.  In the left-hand panel, lasso
+coefficient constraint region is represented by solid blue diamond.  In the
+right-hand panel, ridge regression coefficient constraint region is represented
+by solid blue circle. The ellipses centered around \hat{\beta} represent regions
+of constant RSS.  As ellipses expand outward from the least squares coefficient
+estimates, RSS increases.  Lasso and ridge regression coefficient estimates are
+given by the first point at which an ellipse touches the constraint region.
+Since lasso constraint has /corners/ at each of the axes, the ellipse will often
+intersect the constraint region on an axis.  When this occurs, one of the
+coefficients will equal zero.  On the other hand, since ridge regression
+constraint has no sharp edges, the intersection will generally not occur on an
+axis.  Therefore ridge regression coefficients will usually be non-zero.
+
+#+NAME: fig6_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_7.png"
+  import sys
+  sys.path.append('code/chap6/')
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+
+  import errorContour
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig7
+#+CAPTION: Contours of the error and constraint functions for the lasso (left) and ridge regression (right).  The solid blue areas are contraint regions, $\| \beta_1 \| + \| \beta_2 \| \le s$ and $\beta_1^2 + \beta_2 ^2 \le s$, while the red ellipses are the contours of the RSS.
+#+RESULTS: fig6_7plot
+[[file:figures/fig6_7.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
