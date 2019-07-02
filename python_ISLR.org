@@ -4187,6 +4187,7 @@ coefficients will equal zero.  On the other hand, since ridge regression
 constraint has no sharp edges, the intersection will generally not occur on an
 axis.  Therefore ridge regression coefficients will usually be non-zero.
 
+
 #+NAME: fig6_7plot
 #+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_7.png"
   import sys
@@ -4204,6 +4205,34 @@ axis.  Therefore ridge regression coefficients will usually be non-zero.
 #+CAPTION: Contours of the error and constraint functions for the lasso (left) and ridge regression (right).  The solid blue areas are contraint regions, $\| \beta_1 \| + \| \beta_2 \| \le s$ and $\beta_1^2 + \beta_2 ^2 \le s$, while the red ellipses are the contours of the RSS.
 #+RESULTS: fig6_7plot
 [[file:figures/fig6_7.png]]
+
+
+Figure [[fig:selectionFig12]] displays the choice of \lambda that results from
+performing leave-one-out cross-validation on the ridge regression fits from the
+=Credit= data set. The dashed vertical lines indicate the selected value of
+\lambda. 
+
+#+NAME: fig6_12plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_12.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import ridgeCrossVal
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig12
+#+CAPTION: Left: For various values of \lambda, cross-validation errors that result from applying ridge regression to the =Credit= data set.  Right: The coefficient estimates as a function of \lambda.  The vertical dashed lines indicate the value of \lambda selected by cross-validation.
+#+RESULTS: fig6_12plot
+[[file:figures/fig6_12.png]]
+
+#+LATEX: \FloatBarrier
+
+** Dimension Reduction Methods
 
 * Footnotes
 
