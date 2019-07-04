@@ -4234,6 +4234,31 @@ performing leave-one-out cross-validation on the ridge regression fits from the
 
 ** Dimension Reduction Methods
 
+Figure [[fig:selectionFig14]] shows daily changes in 10-year Treasury note yield (=10
+YR=) and 2-year Treasury note yield (=2 YR=) in year 2018.  The green sold line
+represents the first principal component direction of the data.  We can see by
+eye that this is the direction along which there is the greatest variability in
+the data.  
+
+#+NAME: fig6_14plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_14.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import prinComp2s10s
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig14
+#+CAPTION: Daily changes in 10-year Treasury note yield (=10 YR=) and 2-year Treasury note yield (=2 YR=) in year 2018 are shown as red circles.  The green solid line indicates the first principal component, and the blue dashed line indicates the second principal component.
+#+RESULTS: fig6_14plot
+[[file:figures/fig6_14.png]]
+
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.

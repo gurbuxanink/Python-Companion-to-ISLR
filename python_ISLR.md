@@ -1,122 +1,122 @@
 
 # Table of Contents
 
-1.  [Introduction](#org9a77150)
-2.  [Statistical Learning](#orgee69dc7)
-    1.  [What is Statistical Learning?](#org64c29db)
-    2.  [Assessing Model Accuracy](#org581575a)
-    3.  [Lab: Introduction to Python](#orgfb4737b)
-        1.  [Basic Commands](#org95ff33d)
-        2.  [Graphics](#orge97b448)
-        3.  [Indexing Data](#orgb88d0fe)
-        4.  [Loading Data](#org4fb5dbb)
-        5.  [Additional Graphical and Numerical Summaries](#orga6c97ca)
-3.  [Linear Regression](#org31392f9)
-    1.  [Simple Linear Regression](#orgef0b78c)
-    2.  [Multiple Linear Regression](#org42a4758)
-    3.  [Other Considerations in the Regression Model](#org1d82f8c)
-    4.  [The Marketing Plan](#orga34f121)
-    5.  [Comparison of Linear Regression with K-Nearest Neighbors](#org1fd142b)
-    6.  [Lab: Linear Regression](#org8ac08bb)
-        1.  [Libraries](#org77d552a)
-        2.  [Simple Linear Regression](#org0bb2288)
-        3.  [Multiple Linear Regression](#org5a6fab8)
-        4.  [Interaction Terms](#orgb5a8349)
-        5.  [Non-linear Transformations of the Predictors](#orgee48821)
-        6.  [Qualitative Predictors](#orgdb044f1)
-        7.  [Calling `R` from `Python`](#org6295bb8)
-4.  [Classification](#org25ece8f)
-    1.  [An Overview of Classification](#org8965bee)
-    2.  [Why Not Linear Regression?](#org2acd390)
-    3.  [Logistic Regression](#orge2924ae)
-    4.  [Linear Discriminant Analysis](#orgecb3c63)
-    5.  [A Comparison of Classification Methods](#org583b04d)
-    6.  [Lab: Logistic Regression, LDA, QDA, and KNN](#org2839092)
-        1.  [The Stock Market Data](#org68c37e0)
-        2.  [Logistc Regression](#org32b246c)
-        3.  [Linear Discriminant Analysis](#org596ae49)
-        4.  [Quadratic Discriminant Analysis](#orgb2ca344)
-        5.  [K-Nearest Neightbors](#org4c4111f)
-        6.  [An Application to Caravan Insurance Data](#org5ec856d)
-5.  [Resampling Methods](#orgd599432)
-    1.  [Cross-Validation](#orgdeeb451)
-    2.  [The Bootstrap](#org07f4dad)
-    3.  [Lab: Cross-Validation and the Bootstrap](#org2cee5ee)
-        1.  [The Validation Set Approach](#orgbdfb3eb)
-        2.  [Leave-One-Out Cross-Validation](#orge805c76)
-        3.  [k-Fold Cross-Validation](#org0e77f21)
-        4.  [The Bootstrap](#org108f54b)
-6.  [Linear Model Selection and Regularization](#org2f0089d)
-    1.  [Subset Selection](#org9bd7a9d)
-    2.  [Shrinkage Methods](#org0e48c1c)
-    3.  [Dimension Reduction Methods](#org928ae8b)
+1.  [Introduction](#org8920985)
+2.  [Statistical Learning](#org6110a2b)
+    1.  [What is Statistical Learning?](#org71de362)
+    2.  [Assessing Model Accuracy](#org105b2ab)
+    3.  [Lab: Introduction to Python](#orge6aac6d)
+        1.  [Basic Commands](#org9c0fb56)
+        2.  [Graphics](#org220417e)
+        3.  [Indexing Data](#orgd72754a)
+        4.  [Loading Data](#orgad51d2b)
+        5.  [Additional Graphical and Numerical Summaries](#orge120925)
+3.  [Linear Regression](#orgad2e204)
+    1.  [Simple Linear Regression](#org945648d)
+    2.  [Multiple Linear Regression](#org5cd1b5f)
+    3.  [Other Considerations in the Regression Model](#orgf7aeb8d)
+    4.  [The Marketing Plan](#org273daa4)
+    5.  [Comparison of Linear Regression with K-Nearest Neighbors](#org918fba1)
+    6.  [Lab: Linear Regression](#orgbd6fda5)
+        1.  [Libraries](#orgbe20425)
+        2.  [Simple Linear Regression](#org58d39eb)
+        3.  [Multiple Linear Regression](#org87fa864)
+        4.  [Interaction Terms](#org8962877)
+        5.  [Non-linear Transformations of the Predictors](#org3da67f3)
+        6.  [Qualitative Predictors](#org11c6250)
+        7.  [Calling `R` from `Python`](#org3023e1b)
+4.  [Classification](#org5e05d5b)
+    1.  [An Overview of Classification](#orgcefdcbd)
+    2.  [Why Not Linear Regression?](#org03c93ce)
+    3.  [Logistic Regression](#org3af07e0)
+    4.  [Linear Discriminant Analysis](#org10a9d79)
+    5.  [A Comparison of Classification Methods](#orgbdf0c80)
+    6.  [Lab: Logistic Regression, LDA, QDA, and KNN](#orgac7c247)
+        1.  [The Stock Market Data](#orgc50b4b7)
+        2.  [Logistc Regression](#orgf1b56f0)
+        3.  [Linear Discriminant Analysis](#orgf3a442a)
+        4.  [Quadratic Discriminant Analysis](#org2178807)
+        5.  [K-Nearest Neightbors](#org7e5d317)
+        6.  [An Application to Caravan Insurance Data](#orgd5a7a76)
+5.  [Resampling Methods](#org3bbb838)
+    1.  [Cross-Validation](#orga619f3e)
+    2.  [The Bootstrap](#orgcfe055c)
+    3.  [Lab: Cross-Validation and the Bootstrap](#org070cad6)
+        1.  [The Validation Set Approach](#org658aba9)
+        2.  [Leave-One-Out Cross-Validation](#org073d0b5)
+        3.  [k-Fold Cross-Validation](#orgbce6267)
+        4.  [The Bootstrap](#org486107f)
+6.  [Linear Model Selection and Regularization](#orgb269e31)
+    1.  [Subset Selection](#orgb0340a2)
+    2.  [Shrinkage Methods](#orgf322aed)
+    3.  [Dimension Reduction Methods](#orge5dd17b)
 
 
 
-<a id="org9a77150"></a>
+<a id="org8920985"></a>
 
 # Introduction
 
-Figure [2](#org1de0e7a) shows graphs of Wage versus three variables. 
+Figure [2](#org066e400) shows graphs of Wage versus three variables. 
 
 ![img](figures/fig1_1.png "`Wage` data, which contains income survey information for males from the central Atlantic region of the United States.  Left: `wage` as a function of `age`.  On average, `wage` increases with `age` until about 60 years of age, at which point it begins to decline.  Center: `wage` as a function of `year`.  There is a slow but steady increase of approximately $10,000 in the average `wage` between 2003 and 2009.  Right: Boxplots displaying `wage` as a function of `education`, with 1 indicating the lowest level (no highschool diploma) and 5 the highest level (an advanced graduate degree).  On average, `wage` increases with the level of `education`.")
 
-Figure [4](#org22accad) shows boxplots of previous days' percentage changes in S&P
+Figure [4](#org89772b6) shows boxplots of previous days' percentage changes in S&P
 500 grouped according to today's change `Up` or `Down`. 
 
 ![img](figures/fig1_2.png "Left: Boxplots of the previous day's percentage change in the S&P 500 index for the days for which the market increased or decreased, obtained from the `Smarket` data.  Center and Right: Same as left panel, but the percentage changes for two and three days previous are shown.")
 
 
-<a id="orgee69dc7"></a>
+<a id="org6110a2b"></a>
 
 # Statistical Learning
 
-<a id="org518429d"></a>
+<a id="orgd21766f"></a>
 
 
-<a id="org64c29db"></a>
+<a id="org71de362"></a>
 
 ## What is Statistical Learning?
 
-Figure [7](#org1d6bcda) shows scatter plots of `sales` versus `TV`, `radio`,
+Figure [7](#org7a53683) shows scatter plots of `sales` versus `TV`, `radio`,
 and `newspaper` advertising.  In each panel, the figure also includes an OLS
 regression line.  
 
 ![img](figures/fig2_1.png "The `Advertising` data set. The plot displays `sales`, in thousands of units, as a function of `TV`, `radio`, and `newspaper` budgets, in thousands of dollars, for 200 different markets.  In each plot we show the simple least squares fit of `sales` to that variable.  In other words, each red line represents a simple model that can be used to predict `sales` using `TV`, `radio`, and `newspaper`, respectively.")
 
-Figure [9](#orgbef05fd) is a plot of `Income` versus `Years of Education` from the
+Figure [9](#org1658ebe) is a plot of `Income` versus `Years of Education` from the
 Income data set.  In the left panel, the \`\`true'' function (given by blue line)
 is actually my guess.  
 
 ![img](figures/fig2_2.png "The `Income` data set.  Left: The red dots are the observed values of `income` (in tens of thousands of dollars) and `years of education` for 30 individuals.  Right: The blue curve represents the true underlying relationship between `income` and `years of education`, which is generally unknown (but is known in this case because the data are simulated).  The vertical lines represent the error associated with each observation.  Note that some of the errors are positive (when an observation lies above the blue curve) and some are negative (when an observation lies below the curve).  Overall, these errors have approximately mean zero.")
 
-Figure [11](#orgbba3491) is a plot of `Income` versus `Years of Education` and
+Figure [11](#org47b58df) is a plot of `Income` versus `Years of Education` and
 `Seniority` from the `Income` data set.  Since the book does not provide the
 true values of `Income`, \`\`true'' values shown in the plot are actually third
 order polynomial fit.  
 
 ![img](figures/fig2_3.png "The plot displays `income` as a function of `years of education` and `seniority` in the `Income` data set.  The blue surface represents the true underlying relationship between `income` and `years of education` and `seniority`, which is known since the data are simulated.  The red dots indicate the observed values of these quantities for 30 individuals.")
 
-Figure [13](#org812e89b) shows an example of the parametric approach applied to
+Figure [13](#orgbf8fbe7) shows an example of the parametric approach applied to
 the `Income` data from previous figure. 
 
-![img](figures/fig2_4.png "A linear model fit by least squares to the `Income` data from figure [11](#orgbba3491).  The observations are shown in red, and the blue plane indicates the least squares fit to the data.")
+![img](figures/fig2_4.png "A linear model fit by least squares to the `Income` data from figure [11](#org47b58df).  The observations are shown in red, and the blue plane indicates the least squares fit to the data.")
 
-Figure [15](#org045259a) provides an illustration of the trade-off between
+Figure [15](#org0b14ba9) provides an illustration of the trade-off between
 flexibility and interpretability for some of the methods covered in this book.
 
 ![img](figures/figure2_7.png "A representation of the tradeoff between flexibility and interpretability, using different statistical learning methods.  In general, as the flexibility of a method increases, its interpretability decreases.")
 
-Figure [17](#orgb38d2a9) provides a simple illustration of the clustering problem.
+Figure [17](#org91ad835) provides a simple illustration of the clustering problem.
 
 ![img](figures/fig2_8.png "A clustering data set involving three groups.  Each group is shown using a different colored symbol.  Left: The three groups are well-separated.  In this setting, a clustering approach should successfully identify the three groups.  Right: There is some overlap among the groups.  Now the clustering taks is more challenging.")
 
 
-<a id="org581575a"></a>
+<a id="org105b2ab"></a>
 
 ## Assessing Model Accuracy
 
-Figure [21](#org37d72e4) illustrates the tradeoff between training MSE and test
+Figure [21](#org84b6709) illustrates the tradeoff between training MSE and test
 MSE.  We select a \`\`true function'' whose shape is similar to that shown in the
 book.  In the left panel, the orange, blue, and green curves illustrate three possible estimates
 for \(f\) given by the black curve.  The orange line is the linear regression
@@ -129,45 +129,45 @@ For the right panel, we have chosen polynomial fits.  The degree of polynomial
 represents the level of flexibility.  This is because the function
 `UnivariateSpline` does not more than five degrees of freedom.  
 
-When we repeat the simulations for figure [21](#org37d72e4), we see considerable
+When we repeat the simulations for figure [21](#org84b6709), we see considerable
 variation in the right panel MSE plots.  But the overall conclusion remains the
 same.   
 
 ![img](figures/fig2_9.png "Left: Data simulated from \(f\), shown in black.  Three estimates of \(f\) are shown: the linear regression line (orange curve), and two smoothing spline fits (blue and green curves).  Right: Training MSE (grey curve), test MSE (red curve), and minimum possible test MSE over all methods (dashed grey line).")
 
-Figure [23](#org2a6069f) provides another example in which the true \(f\) is
+Figure [23](#org40b19eb) provides another example in which the true \(f\) is
 approximately linear. 
 
-![img](figures/fig2_10.png "Details are as in figure [21](#org37d72e4) using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.")
+![img](figures/fig2_10.png "Details are as in figure [21](#org84b6709) using a different true \(f\) that is much closer to linear.  In this setting, linear regression provides a very good fit to the data.")
 
-Figure [25](#org6d4d441) displays an example in which \(f\) is highly
+Figure [25](#org589e0dc) displays an example in which \(f\) is highly
 non-linear. The training and test MSE curves still exhibit the same general
 patterns.
 
-![img](figures/fig2_11.png "Details are as in figure [21](#org37d72e4), using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.")
+![img](figures/fig2_11.png "Details are as in figure [21](#org84b6709), using a different \(f\) that is far from linear.  In this setting, linear regression provides a very poor fit to the data.")
 
-Figure [27](#org90003a4) displays the relationship between bias, variance, and
+Figure [27](#orgcaa5672) displays the relationship between bias, variance, and
 test MSE.  This relationship is referred to as *bias-variance trade-off*.  When
 simulations are repeated, we see considerable variation in different graphs,
 especially for MSE lines.  But overall shape remains the same. 
 
-![img](figures/fig2_12.png "Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures [21](#org37d72e4) - [25](#org6d4d441).  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.")
+![img](figures/fig2_12.png "Squared bias (blue curve), variance (orange curve), \(Var(\epsilon)\) (dashed line), and test MSE (red curve) for the three data sets in figures [21](#org84b6709) - [25](#org589e0dc).  The vertical dotted line indicates the flexibility level corresponding to the smallest test MSE.")
 
-Figure [29](#org993aaea) provides an example using a simulated data set in
+Figure [29](#org66298f5) provides an example using a simulated data set in
 two-dimensional space consisting of predictors \(X_1\) and \(X_2\).  
 
 ![img](figures/fig2_13.png "A simulated data set consisting of 200 observations in two groups, indicated in blue and orange.  The dashed line represents the Bayes decision boundary.  The orange background grid indicates the region in which a test observation will be assigned to the orange class, and blue background grid indicates the region in which a test observation will be assigned to the blue class.")
 
-Figure [31](#orga8bee01) displays the KNN decision boundary, using \(K=10\), when
-applied to the simulated data set from figure [29](#org993aaea).  Even though
+Figure [31](#orgfe9d143) displays the KNN decision boundary, using \(K=10\), when
+applied to the simulated data set from figure [29](#org66298f5).  Even though
 the true distribution is not known by the KNN classifier, the KNN decision
 making boundary is very close to that of the Bayes classifier.  
 
-![img](figures/fig2_15.png "The firm line indicates the KNN decision boundary on the data from figure [29](#org993aaea), using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.")
+![img](figures/fig2_15.png "The firm line indicates the KNN decision boundary on the data from figure [29](#org66298f5), using \(K = 10\). The Bayes decision boundary is shown as a dashed line.  The KNN and Bayes decision boundaries are very similar.")
 
-![img](figures/fig2_16.png "A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure [29](#org993aaea).  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.")
+![img](figures/fig2_16.png "A comparison of the KNN decision boundaries (solid curves) obtained using \(K=1\) and \(K=100\) on the data from figure [29](#org66298f5).  With \(K=1\), the decision boundary is overly flexible, while with \(K=100\) it is not sufficiently flexible.  The Bayes decision boundary is shown as dashed line.")
 
-In figure [34](#org8175140) we have plotted the KNN test and training errors as
+In figure [34](#org3301fc7) we have plotted the KNN test and training errors as
 a function of \(\frac{1}{K}\).  As \(\frac{1}{K}\) increases, the method becomes
 more flexible.  As in the regression setting, the training error rate
 consistently declines as the flexibility increases.  However, the test error
@@ -175,15 +175,15 @@ exhibits the characteristic U-shape, declining at first (with a minimum at
 approximately \(K=10\)) before increasing again when the method becomes
 excessively flexible and overfits. 
 
-![img](figures/fig2_17.png "The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure [29](#org993aaea) as the level of flexibility (assessed using \(\frac{1}{K}\)) increases, or equivalently as the number of neighbors \(K\) decreases.  The black dashed line indicates the Bayes error rate.")
+![img](figures/fig2_17.png "The KNN training error rate (blue, 200 observations) and test error rate (orange, 5,000 observations) on the data from figure [29](#org66298f5) as the level of flexibility (assessed using \(\frac{1}{K}\)) increases, or equivalently as the number of neighbors \(K\) decreases.  The black dashed line indicates the Bayes error rate.")
 
 
-<a id="orgfb4737b"></a>
+<a id="orge6aac6d"></a>
 
 ## Lab: Introduction to Python
 
 
-<a id="org95ff33d"></a>
+<a id="org9c0fb56"></a>
 
 ### Basic Commands
 
@@ -241,7 +241,7 @@ and `y`, and use `numpy.corrcoef` to calculate correlation between them.
     0.9330621750073688
 
 
-<a id="orge97b448"></a>
+<a id="org220417e"></a>
 
 ### Graphics
 
@@ -282,7 +282,7 @@ an end of a given length.
     ax.clabel(CS, inline=1)
 
 
-<a id="orgb88d0fe"></a>
+<a id="orgd72754a"></a>
 
 ### Indexing Data
 
@@ -319,7 +319,7 @@ rows followed by number of columns.
     (4, 4)
 
 
-<a id="org4fb5dbb"></a>
+<a id="orgad51d2b"></a>
 
 ### Loading Data
 
@@ -360,7 +360,7 @@ the internet.
           dtype='object')
 
 
-<a id="orga6c97ca"></a>
+<a id="orge120925"></a>
 
 ### Additional Graphical and Numerical Summaries
 
@@ -405,42 +405,42 @@ On `pandas` dataframes, `describe` method produces a summary of each variable.
     [8 rows x 7 columns]
 
 
-<a id="org31392f9"></a>
+<a id="orgad2e204"></a>
 
 # Linear Regression
 
 
-<a id="orgef0b78c"></a>
+<a id="org945648d"></a>
 
 ## Simple Linear Regression
 
-Figure [48](#orgd016866) displays the simple linear regression fit to the
+Figure [48](#org6202bbf) displays the simple linear regression fit to the
 `Advertising` data, where \(\hat{\beta_0} =\) 0.0475
  and \(\hat{\beta_1} =\) 7.0326.
 
 ![img](figures/fig3_1.png "For the `Advertising` data, the least squares fit for the regression of `sales` onto `TV` is shown.  The fit is found by minimizing the sum of squared errors.  Each grey line represents an error, and the fit makes a compromise by averaging their squares.  In this case a linear fit captures the essence of the relationship, although it is somewhat deficient in the left of the plot.")
 
 
-In figure [50](#orgc81909e), we have computed RSS for a number of values of
+In figure [50](#org0348a80), we have computed RSS for a number of values of
 \(\beta_0\) and \(\beta_1\), using the advertising data with `sales` as the response
 and `TV` as the predictor. 
 
 ![img](figures/fig3_2.png "Contour and three-dimensional plots of the RSS on the `Advertising` data, using `sales` as the response and `TV` as the predictor.  The red dots correspond to the least squares estimates \(\hat{\beta_0}\) and \(\hat{\beta_1}\).")
 
-The left-hand panel of figure [52](#orgd2ebff9) displays *population regression
+The left-hand panel of figure [52](#org7b3e560) displays *population regression
 line* and *least squares line* for a simple simulated example.  The red line in
 the left-hand panel displays the *true* relationship, \(f(X) = 2 + 3X\), while the
 blue line is the least squares estimate based on observed data.  In the
-right-hand panel of figure [52](#orgd2ebff9) we have generated five different
+right-hand panel of figure [52](#org7b3e560) we have generated five different
 data sets from the model \(Y = 2 + 3X + \epsilon\) and plotted the corresponding
 five least squares lines.  
 
 ![img](figures/fig3_3.png "A simulated data set.  Left: The red line represents the true relationship, \(f(X) = 2 + 3X\), which is known as the population regression line.  The blue line is the least squares line; it is the least squares estimate for \(f(X)\) based on the observed data, shown in grey circles.  Right: The population regression line is again shown in red, and the least squares line in blue.  In cyan, five least squares lines are shown, each computed on the basis of a separate random set of observations.  Each least squares line is different, but on average, the least squares lines are quite close to the population regression line.")
 
-For `Advertising` data, table [1](#org3e69151) provides details of the least squares model for the
+For `Advertising` data, table [1](#org3fd82ae) provides details of the least squares model for the
 regression of number of units sold on TV advertising budget. 
 
-<table id="org3e69151" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3fd82ae" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> For `Advertising` data, the coefficients of the least squares model for the regression of number of units sold on TV advertising budget.  An increase of $1,000 on the TV advertising budget is associated with an increase in sales by around 50 units.</caption>
 
 <colgroup>
@@ -484,9 +484,9 @@ regression of number of units sold on TV advertising budget.
 </tbody>
 </table>
 
-Next, in table [2](#orgd20c64b), we report more information about the least squares model.  
+Next, in table [2](#orgdaf0be8), we report more information about the least squares model.  
 
-<table id="orgd20c64b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgdaf0be8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 2:</span> For the `Advertising` data, more information about the least squares model for the regression of number of units sold on TV advertising budget.</caption>
 
 <colgroup>
@@ -522,17 +522,17 @@ Next, in table [2](#orgd20c64b), we report more information about the least squa
 </table>
 
 
-<a id="org42a4758"></a>
+<a id="org5cd1b5f"></a>
 
 ## Multiple Linear Regression
 
-Table [3](#org41b1799)  shows results of two simple linear
+Table [3](#org47bc1d9)  shows results of two simple linear
 regressions, each of which uses a different advertising medium as a predictor.
 We find that a $1,000 increase in spending on radio advertising is associated
 with an increase in sales by around 202 units.  A $1,000 increase in advertising
 spending on on newspapers increases sales by approximately 55 units. 
 
-<table id="org41b1799" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org47bc1d9" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 3:</span> More simple linear regression models for `Advertising` data.  Coefficients of the simple linear regression model for number of units sold on Top: radio advertising budget and Bottom: newspaper advertising budget. A $1,000 increase in spending on radio advertising is associated with an average increase sales by around 202 units, while the same increase in spending on newspaper advertising is associated with an average increase of around 55 units.  `Sales` variable is in thousands of units, and the `radio` and `newspaper` variables are in thousands of dollars..</caption>
 
 <colgroup>
@@ -596,16 +596,16 @@ spending on on newspapers increases sales by approximately 55 units.
 </table>
 
 
-Figure [57](#org77a4d1e) illustrates an example of the least squares fit to a
+Figure [57](#org93cb35a) illustrates an example of the least squares fit to a
 toy data set with \(p = 2\) predictors. 
 
 ![img](figures/fig3_4.png "In a three-dimensional setting, with two predictors and one response, the least squares regression line becomes a plane.  The plane is chosen to minimize the sum of the squared vertical distances between each observation (shown in red) and the plane.")
 
-Table [4](#org67a57af) displays multiple regression coefficient estimates when
+Table [4](#org8c63de2) displays multiple regression coefficient estimates when
 TV, radio, and newspaper advertising budgets are used to predict product sales
 using `Advertising` data.
 
-<table id="org67a57af" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org8c63de2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 4:</span> For the `Advertising` data, least squares coefficient estimates of the multiple linear regression of number of units sold on radio, TV, and newspaper advertising budgets.</caption>
 
 <colgroup>
@@ -667,10 +667,10 @@ using `Advertising` data.
 </tbody>
 </table>
 
-Table [5](#orgb465444) shows the correlation matrix for the three predictor
-variables and response variable in table [4](#org67a57af). 
+Table [5](#org4d2cb13) shows the correlation matrix for the three predictor
+variables and response variable in table [4](#org8c63de2). 
 
-<table id="orgb465444" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org4d2cb13" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 5:</span> Correlation matrix for `TV`, `radio`, and `sales` for the `Advertising` data.</caption>
 
 <colgroup>
@@ -732,8 +732,8 @@ variables and response variable in table [4](#org67a57af).
 </tbody>
 </table>
 
-<table id="org9ac691a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 6:</span> More information about the least squares model for the regression of number of units sold on TV, newspaper, and radio advertising budgets in the `Advertising` data.  Other information about this model was displayed in table [4](#org67a57af).</caption>
+<table id="orgb786b6e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 6:</span> More information about the least squares model for the regression of number of units sold on TV, newspaper, and radio advertising budgets in the `Advertising` data.  Other information about this model was displayed in table [4](#org8c63de2).</caption>
 
 <colgroup>
 <col  class="org-left" />
@@ -767,27 +767,27 @@ variables and response variable in table [4](#org67a57af).
 </tbody>
 </table>
 
-Figure [61](#org0c58ff8) displays a three-dimensional plot of `TV` and `radio`
+Figure [61](#org02dda29) displays a three-dimensional plot of `TV` and `radio`
 versus `sales`.  
 
 ![img](figures/fig3_5.png "For the `Advertising` data, a linear regression fit to `sales` using `TV` and `radio` as predictors.  From the pattern of the residuals, we can see that there is a pronounced non-linear relationship in the data.  The positive residuals tend to lie along the 45-degree line, where TV and Radio budgets are split evenly.  The negative residuals tend to lie away from this line, where budgets are more lopsided.")
 
 
-<a id="org1d82f8c"></a>
+<a id="orgf7aeb8d"></a>
 
 ## Other Considerations in the Regression Model
 
-`Credit` data set displayed in figure [63](#org201e3f6) records `balance`
+`Credit` data set displayed in figure [63](#org92249db) records `balance`
 (average credit card debt for a number of individuals) as well as several
 quantitative predictors: `age`, `cards` (number of credit cards), `education`
 and `rating` (credit rating).
 
 ![img](figures/fig3_6.png "The `Credit` dataset contains information about `balance`, `age`, `cards`, `education`, `income`, `limit`, and `rating` for a number of potential customers.")
 
-Table [7](#org7244db2) displays the coefficient estimates and other information
+Table [7](#orgd6d1c91) displays the coefficient estimates and other information
 associated with the model where `gender` is the only explanatory variable.
 
-<table id="org7244db2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgd6d1c91" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 7:</span> Least squares coefficient estimates associated with the regression of `balance` onto `gender` in the `Credit` data set.</caption>
 
 <colgroup>
@@ -831,13 +831,13 @@ associated with the model where `gender` is the only explanatory variable.
 </tbody>
 </table>
 
-From table [8](#orgcd3106c) we see that the estimated `balance` for the
+From table [8](#org9bc96d0) we see that the estimated `balance` for the
 baseline, African American, is $531.0. It is estimated that the
 Asian category will have an additional $-18.7 debt, and that the
 Caucasian category will have an additional $-12.5 debt compared to
 African American category.
 
-<table id="orgcd3106c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org9bc96d0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 8:</span> Least squares coefficient estimates associated with the regression of `balance` onto `ethnicity` in the `Credit` data set.</caption>
 
 <colgroup>
@@ -891,16 +891,16 @@ African American category.
 </table>
 
 
-Table [9](#org4ade2d0) shows results of regressing `sales` and `TV` and `radio`
+Table [9](#org3593d7a) shows results of regressing `sales` and `TV` and `radio`
 when an interaction term is included.  Coefficient of interaction term
 `TV:radio` is highly significant.
 
-In figure [68](#orgb97a9b5), the left panel shows least squares lines when
+In figure [68](#orgb2659f1), the left panel shows least squares lines when
 we predict `balance` using `income` (quantitative) and `student` (qualitative
 variables). There is no interaction term between `income` and `student`.  The
 right panel shows least squares lines when an interaction term is included. 
 
-<table id="org4ade2d0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3593d7a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 9:</span> For `Advertising` data, least squares coefficient estimates associated with the regression of `sales` onto `TV` and `radio`, with an interaction term.</caption>
 
 <colgroup>
@@ -964,17 +964,17 @@ right panel shows least squares lines when an interaction term is included.
 
 ![img](figures/fig3_7.png "For the `Credit` data, the least squares lines are shown for prediction of `balance` from `income` for students and non-students.  Left: There is no interaction between `income` and `student`.  Right: There is an interaction term between `income` and `students`.")
 
-Figure [70](#orgf049de1) shows a scatter plot of `mpg` (gas mileage in miles per
+Figure [70](#org465a007) shows a scatter plot of `mpg` (gas mileage in miles per
 gallon) versus `horsepower` in the `Auto` data set.  The figure also includes
 least squares fit line for linear, second degree, and fifth degree polynomials
 in `horsepower`. 
 
 ![img](figures/fig3_8.png "The `Auto` data set.  For a number of cars, `mpg` and `horsepower` are shown.  The linear regression fit is shown in orange.  The linear regression fit for a model that includes first- and second-order terms of `horsepower` is shown as blue curve.  The linear regression fit for a model that includes all polynomials of `horsepower` up to fifth-degree is shown in green.")
 
-Table [10](#org3305968) shows regression results of a quadratic fit to explain
+Table [10](#org47d5fc4) shows regression results of a quadratic fit to explain
 `mpg` as a function of `horsepower` and \(\mathttt{horsepower^2}\).  
 
-<table id="org3305968" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org47d5fc4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 10:</span> For the `Auto` data set, least squares coefficient estimates associated with the regression of `mpg` onto `horsepower` and \(\texttt{horsepower^2}\).</caption>
 
 <colgroup>
@@ -1027,18 +1027,18 @@ Table [10](#org3305968) shows regression results of a quadratic fit to explain
 </tbody>
 </table>
 
-The left panel of figure [73](#orge31212a) displays a residual plot from the
+The left panel of figure [73](#orgb98ec5f) displays a residual plot from the
 linear regression of `mpg` onto `horsepower` on the `Auto` data set.  The red
 line is a smooth fit to the residuals, which is displayed in order to make it
 easier to identify any trends.  The residuals exhibit a clear U-shape, which
 strongly suggests non-linearity in the data.  In contrast, the right hand panel
-of figure[73](#orge31212a) displays the residual plot results from the model
+of figure[73](#orgb98ec5f) displays the residual plot results from the model
 which contains a quadratic term in `horsepower`.  Now there is little pattern in
 residuals, suggesting that the quadratic term improves the fit to the data.
 
 ![img](figures/fig3_9.png "Plots of residuals versus predicted (or fitted) values for the `Auto` data set.  In each plot, the red line is a smooth fit to the residuals, intended to make it easier to identify a trend.  Left: A linear regression of `mpg` on `horsepower`.  A strong pattern in the residuals indicates non-linearity in the data.  Right: A linear regression of `mpg` on `horsepower` and square of `horsepower`.  Now there is little pattern in the residuals.")
 
-Figure [75](#orga4edb73) provides an illustration of correlations among
+Figure [75](#orgfeda115) provides an illustration of correlations among
 residuals.  In the top panel, we see the residuals from a linear regression fit
 to data generated with uncorrelated errors.  There is no evidence of
 time-related trend in the residuals.  In contrast, the residuals in the bottom
@@ -1050,7 +1050,7 @@ tracking, but the pattern is less pronounced.
 
 ![img](figures/fig3_10.png "Plots of residuals from simulated time series data sets generated with differeing levels of correlation \(\rho\) between error terms for adjacent time points.")
 
-In the left-hand panel of figure [77](#orgea1bca2), the magnitude of the
+In the left-hand panel of figure [77](#org3f77408), the magnitude of the
 residuals tends to increase with the fitted values.  The right hand panel
 displays residual plot after transforming the response using \(\log(Y)\).  The
 residuals now appear to have constant variance, although there is some evidence
@@ -1059,44 +1059,44 @@ of a non-linear relationship in the data.
 ![img](figures/fig3_11.png "Residual plots.  The red line, a smooth fit to the residuals, is intended to make it easier to identify a trend.  The blue lines track \(5^{th}\) and \(95^{th}\) percentiles of the residuals, and emphasize patterns.  Left: The funnel shape indicates heteroscedasticity.  Right: the response has been log transformed, and now there is no evidence of heteroscedasticity.")
 
 The red point (observation 20) in the left hand panel of figure
-[79](#orgf86b532) illustrates a typical outlier.  The red solid line is the
+[79](#org6453224) illustrates a typical outlier.  The red solid line is the
 least squares regression fit, while the blue dashed line is the least squares
 fit after removal of the outlier.  In this case, removal of outlier has little
 effect on the least squares line.  In the center panel of figure
-[79](#orgf86b532), the outlier is clearly visible.  In practice, to decide if
+[79](#org6453224), the outlier is clearly visible.  In practice, to decide if
 the outlier is sufficiently big to be considered an outlier, we can plot
 *studentized residuals*, computed by dividing each residual \(\epsilon_i\) by its
 estimated standard error.  These are shown in the right hand panel. 
 
 ![img](figures/fig3_12.png "Left: The least squares regression line is shown in red.  The regression line after removing the outlier is is shown in blue.  Center: The residual plot clearly identifies the outlier.  Right: The outlier has a studentized residual of 6; typically we expect values between -3 and 3.")
 
-Observation 41 in the left-hand panel in figure [81](#org0316881) has
+Observation 41 in the left-hand panel in figure [81](#org662b99b) has
 high leverage, in that the predictor value for this observation is large
 relative to the other observations.  The data displayed in figure
-[81](#org0316881) are the same as the data displayed in figure
-[79](#orgf86b532), except for the addition of a single high leverage
+[81](#org662b99b) are the same as the data displayed in figure
+[79](#org6453224), except for the addition of a single high leverage
 observation<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.  The red solid line is the least squares fit to the data,
 while the blue dashed line is the fit produced when observation 41 is
-removed. Comparing the left-hand panels of figures [79](#orgf86b532) and
-[81](#org0316881), we observe that removing the high leverage observation has a
+removed. Comparing the left-hand panels of figures [79](#org6453224) and
+[81](#org662b99b), we observe that removing the high leverage observation has a
 much more substantial impact on least squares line than removing the outlier.
-The center panel of figure [81](#org0316881), for a data set with two
+The center panel of figure [81](#org662b99b), for a data set with two
 predictors \(X_1\) and \(X_2\). While most of the observations' predictor values
 fall within the region of blue dashed lines, the red observation is well outside this
 range. But neither the value for \(X_1\) nor the value for \(X_2\) is unusual.  So
 if we examine just \(X_1\) or \(X_2\), we will not notice this high leverage
-point. The right-panel of figure [81](#org0316881) provides a plot of
+point. The right-panel of figure [81](#org662b99b) provides a plot of
 studentized residuals versus \(h_i\) for the data in the left hand panel.
 Observation 41 stands out as having a very high leverage statistic as well as a
 high studentized residual.
 
 ![img](figures/fig3_13.png "Left: Observation 41 is a high leverage point, while 20 is not.  The red line is the fit to all the data, and the blue line is the fit with observation 41 removed.  Center: The red observation is not unusual in terms of its \(X_1\) value or its \(X_2\) value, but still falls outside the bulk of the data, and hence has high leverage.  Right: Observation 41 has a high leverage and a high residual.")
 
-Figure [83](#org8baa79c) illustrates the concept of collinearity.
+Figure [83](#org7f344e0) illustrates the concept of collinearity.
 
 ![img](figures/fig3_14.png "Scatter plots of the observations from the `Credit` data set.  Left: A plot of `age` versus `limit`.  These two variables not collinear.  Right: A plot of `rating` versus `limit`.  There is high collinearity.")
 
-Figure [86](#orgcbedbc9) illustrates some of the difficulties that can result
+Figure [86](#orgafed486) illustrates some of the difficulties that can result
 from collinearity.  The left panel is a contour plot of the RSS associated with
 different possible coefficient estimates for the regression of `balance` on
 `limit` and `age`.  Each ellipse represents a set of coefficients that
@@ -1108,7 +1108,7 @@ coefficients that are up to four standard errors on either side of the least
 squares estimates.  We see that the true `limit` coefficient is almost certainly
 between 0.15 and 0.20.
 
-In contrast, the right hand panel of figure [86](#orgcbedbc9) displays contour
+In contrast, the right hand panel of figure [86](#orgafed486) displays contour
 plots of the RSS associated with possible coefficient estimates for the
 regression of `balance` onto `limit` and `rating`, which we know to be highly
 collinear.  Now the contours run along a narrow valley; there is a broad range
@@ -1116,7 +1116,7 @@ of values for the coefficient estimates that result in equal values for RSS.
 
 ![img](figures/fig3_15.png "Contour plots for the RSS values as a function of the parameters \(\beta\) for various regressions involving the `Credit` data set.  In each plot, the black dots represent the coefficient values corresponding to the minimum RSS.  Left: A contour plot of RSS for the regression of `balance` onto `age` and `limit`.  The minimum value is well defined.  Right: A contour plot of RSS for the regression of `balance` onto `rating` and `limit`.  Because of the collinearity, there are many pairs \((\beta_{Limit}, \beta_{Rating})\) with a similar value for RSS.")
 
-Table [11](#org250eec8) compares the coefficient estimates obtained from two
+Table [11](#orga26ce43) compares the coefficient estimates obtained from two
 separate multiple regression models.  The first is a regression of `balance` on
 `age` and `limit`.  The second is a regression of `balance` on `rating` and
 `limit`.  In the first regression, both `age` and `limit` are highly significant
@@ -1126,7 +1126,7 @@ by a factor of 12 and the p-value to increase to 0.701. In other words, the
 importance of the `limit` variable has been masked due to the presence of
 collinearity.  
 
-<table id="org250eec8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orga26ce43" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 11:</span> The results for two multiple regression models involving the `Credit` data set.  The top panel is a regression of `balance` on `age` and `limit`.  The bottom panel is a regression of `balance` on `rating` and `limit`.  The standard error of \(\hat{\beta}_{Limit}\) increases 12-fold in the second regression, due to collinearity.</caption>
 
 <colgroup>
@@ -1208,16 +1208,16 @@ collinearity.
 </table>
 
 
-<a id="orga34f121"></a>
+<a id="org273daa4"></a>
 
 ## The Marketing Plan
 
 
-<a id="org1fd142b"></a>
+<a id="org918fba1"></a>
 
 ## Comparison of Linear Regression with K-Nearest Neighbors
 
-Figure [89](#org43fa0e5) illustrates two KNN fits on a data set with \(p = 2\)
+Figure [89](#org7d758d2) illustrates two KNN fits on a data set with \(p = 2\)
 predictors. The fit with \(K = 1\) is shown in the left-hand panel, while the
 right-hand panel displays the fit with \(K = 9\).  When \(K = 1\), the KNN fit
 perfectly interpolates the training observations, and consequently takes the
@@ -1227,7 +1227,7 @@ prediction, and consequently a smoother fit.
 
 ![img](figures/fig3_16.png "Plots of \(\hat{f}(X)\) using KNN regression on two-dimensional data set with 64 observations (brown dots).  Left: \(K = 1\) results in a rough step function fit.  Right: \(K = 9\) produces a much smoother fit.")
 
-Figure [91](#org4004bdf) provides an example of KNN regression with data
+Figure [91](#orgb202765) provides an example of KNN regression with data
 generated from a one-dimensional regression model.  the black dashed lines
 represent \(f(X)\), while the blue curves correspond to the KNN fits using \(K = 1\)
 and \(K = 9\).  In this case, the \(K = 1\) predictions are far too variable, while
@@ -1235,16 +1235,16 @@ the smoother \(K = 9\) fit is much closer to \(f(X)\).
 
 ![img](figures/fig3_17.png "Plots of \(\hat{f}(X)\) using KNN regression on a one-dimensional data set with 50 observations.  The true relationship is given by the black dashed line.  Left: The blue curve corresponds to \(K = 1\) and interpolates (i.e., passes directly through) training data.  Right: The blue curve corresponds to \(K = 9\), and represents a smoother fit.")
 
-Figure [93](#org4164013) represents the linear regression fit to the same
-data.  It is almost perfect.  The right hand panel of figure [93](#org4164013)
+Figure [93](#org53b2785) represents the linear regression fit to the same
+data.  It is almost perfect.  The right hand panel of figure [93](#org53b2785)
 reveals that linear regression outperforms KNN for this data.  The green line,
 plotted as a function of \(\frac{1}{K}\), represents the test set mean squared
 error (MSE) for KNN.  The KNN errors are well above the horizontal dashed line,
 which is the test MSE for linear regression.
 
-![img](figures/fig3_18.png "The same data set shown in figure [91](#org4004bdf) is investigated further.  Left: The blue dashed line is the least squares fit to the data.  Since \(f(X)\) is in fact linear (displayed in black line), the least squares regression line provides a very good estimate of \(f(X)\).  Right: The dashed horizontal line represents the least squares test set MSE, while the green line corresponds to the MSE for KNN as a function of \(\frac{1}{K}\).  Linear regression achieves a lower test MSE than does KNN regression, since \(f(X)\) is in fact linear.")
+![img](figures/fig3_18.png "The same data set shown in figure [91](#orgb202765) is investigated further.  Left: The blue dashed line is the least squares fit to the data.  Since \(f(X)\) is in fact linear (displayed in black line), the least squares regression line provides a very good estimate of \(f(X)\).  Right: The dashed horizontal line represents the least squares test set MSE, while the green line corresponds to the MSE for KNN as a function of \(\frac{1}{K}\).  Linear regression achieves a lower test MSE than does KNN regression, since \(f(X)\) is in fact linear.")
 
-Figure [95](#org2cd507e) examines the relative performances of least squares
+Figure [95](#org651bd7e) examines the relative performances of least squares
 regression and KNN under increasing levels of non-linearity in the relationship
 between \(X\) and \(Y\).  In the top row, the true relationship is nearly linear.
 In this case, we see that the test MSE for linear regression is still superior
@@ -1255,23 +1255,23 @@ outperforms linear regression for all values of \(K\).
 
 ![img](figures/fig3_19.png "Top Left: In a setting with a slightly non-linear relationship between \(X\) and \(Y\) (solid black line), the KNN fits with \(K = 1\) (blue) and \(K = 9\) (red) are displayed.  Top Right: For the slightly non-linear data,the test set MSE for least squares regression (horizontal) and KNN with various values of \(\frac{1}{K}\) (green) are displayed.  Bottom Left and Bottom Right: As in the top panel, but with a strongly non-linear relationship between \(X\) and \(Y\).")
 
-Figure [97](#org832adc6) considers the same strongly non-linear situation as in the lower
-panel of figure [95](#org2cd507e), except that we have added additional *noise*
+Figure [97](#org053373a) considers the same strongly non-linear situation as in the lower
+panel of figure [95](#org651bd7e), except that we have added additional *noise*
 predictors that are not associated with the response.  When \(p = 1\) or \(p = 2\),
 KNN outperforms linear regression.  But as we increase \(p\), linear regression
 becomes superior to KNN.  In fact, increase in dimensionality has only caused a
 small increase in linear regression test set MSE, but it has caused a much
 bigger increase in the MSE for KNN.
 
-![img](figures/fig3_20.png "Test MSE for linear regressions (black horizontal lines) and KNN (green curves) as the number of variables \(p\) increases.  The true function is non-linear in the first variable, as in the lower panel in figure [95](#org2cd507e), and does not depend upon the additional variables. The performance of linear regression deteriorates slowly in the presense of these additional variables, whereas KNN's performance degrades more quickly as \(p\) increases.")
+![img](figures/fig3_20.png "Test MSE for linear regressions (black horizontal lines) and KNN (green curves) as the number of variables \(p\) increases.  The true function is non-linear in the first variable, as in the lower panel in figure [95](#org651bd7e), and does not depend upon the additional variables. The performance of linear regression deteriorates slowly in the presense of these additional variables, whereas KNN's performance degrades more quickly as \(p\) increases.")
 
 
-<a id="org8ac08bb"></a>
+<a id="orgbd6fda5"></a>
 
 ## Lab: Linear Regression
 
 
-<a id="org77d552a"></a>
+<a id="orgbe20425"></a>
 
 ### Libraries
 
@@ -1282,7 +1282,7 @@ Before a library can be loaded, it must be installed on the system.
     import statsmodels.formula.api as smf
 
 
-<a id="org0bb2288"></a>
+<a id="org58d39eb"></a>
 
 ### Simple Linear Regression
 
@@ -1450,7 +1450,7 @@ Next we examine some diagnostic plots.
     fig.tight_layout()
 
 
-<a id="org5a6fab8"></a>
+<a id="org87fa864"></a>
 
 ### Multiple Linear Regression
 
@@ -1549,7 +1549,7 @@ individually, or use code to create a formula.
     --------
 
 
-<a id="orgb5a8349"></a>
+<a id="org8962877"></a>
 
 ### Interaction Terms
 
@@ -1593,7 +1593,7 @@ It is a shorthand for `lstat + age + lstat:age`.
     strong multicollinearity or other numerical problems.
 
 
-<a id="orgee48821"></a>
+<a id="org3da67f3"></a>
 
 ### Non-linear Transformations of the Predictors
 
@@ -1682,7 +1682,7 @@ quadratic term included, there is no discernible pattern in residuals.
     1     503.0  15347.243158      1.0  4125.13826  135.199822  7.630116e-28
 
 
-<a id="orgdb044f1"></a>
+<a id="org11c6250"></a>
 
 ### Qualitative Predictors
 
@@ -1755,21 +1755,21 @@ categorical.
     strong multicollinearity or other numerical problems.
 
 
-<a id="org6295bb8"></a>
+<a id="org3023e1b"></a>
 
 ### Calling `R` from `Python`
 
 
-<a id="org25ece8f"></a>
+<a id="org5e05d5b"></a>
 
 # Classification
 
 
-<a id="org8965bee"></a>
+<a id="orgcefdcbd"></a>
 
 ## An Overview of Classification
 
-In figure [110](#org8dcac22), we have plotted annual `income` and monthly
+In figure [110](#orgf90e7a5), we have plotted annual `income` and monthly
 credit card `balance` for a subset of individuals in `Credit` data set.  The
 left hand panel displays individuals who defaulted in brown, and those who did
 not in blue.  We have plotted only a fraction of individuals who did not
@@ -1781,16 +1781,16 @@ binary `default` variable; the second is a similar plot for `income`.
 ![img](figures/fig4_1.png "The `Default` data set.  Left: The annual income and monthly credit card balances of a number of individuals.  The individuals who defaulted on their credit card debt are shown in brown, and those who did not default are shown in blue.  Center: Boxplots of `balance` as a function of `default` status.  Right: Boxplots of `income` as a function of `default` status.")
 
 
-<a id="org2acd390"></a>
+<a id="org03c93ce"></a>
 
 ## Why Not Linear Regression?
 
 
-<a id="orge2924ae"></a>
+<a id="org3af07e0"></a>
 
 ## Logistic Regression
 
-Using `Default` data set, in figure [112](#orge48cc03) we show probability of default as a function of
+Using `Default` data set, in figure [112](#org6324068) we show probability of default as a function of
 `balance`.  The left panel shows a model fitted using linear regression.  Some
 of the probabilities estimates (for low balance) are outside the \([0, 1]\)
 interval.  The right panel shows a model fitted using logistic regression, which
@@ -1799,11 +1799,11 @@ probability estimates are in the \([0, 1]\) interval.
 
 ![img](figures/fig4_2.png "Classification using `Default` data.  Left: Estimated probability of `default` using linear regression.  Some estimated probabilities are negative!  The brown ticks indicate the 0/1 values coded for `default` (`No` or `Yes`).  Right: Predicted probabilities of `default` using logistic regression.  All probabilities lie between 0 and 1.")
 
-Table [12](#org4d23d26) shows the coefficient estimates and related
+Table [12](#org92eeb8c) shows the coefficient estimates and related
 information that result from fitting a logistic regression model on the
 `Default` data in order to predict the probability of `default = Yes` using `balance`.
 
-<table id="org4d23d26" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org92eeb8c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 12:</span> For the `Default` data, estimated coefficients of the logistic regression model that predicts the probability of `default` using `balance`.  A one-unit increase in `balance` is associated with an increase in the log odds of `default` by 0.0055 units.</caption>
 
 <colgroup>
@@ -1847,14 +1847,14 @@ information that result from fitting a logistic regression model on the
 </tbody>
 </table>
 
-Table [13](#orge721aec) shows the results of logistic model where `default`
+Table [13](#org8440ef6) shows the results of logistic model where `default`
 is a function of the qualitative variable `student`.  
 
-Table [14](#org41f86f7) shows the coefficient estimates for a logistic
+Table [14](#org759c256) shows the coefficient estimates for a logistic
 regression model that uses `balance`, `income` (in thousands of dollars), and
 `student` status to predict probability of `default`.
 
-<table id="orge721aec" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org8440ef6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 13:</span> For the `Default` data, estimated coefficients of the logistic regression model that predicts the probability of `default` using student status.</caption>
 
 <colgroup>
@@ -1898,7 +1898,7 @@ regression model that uses `balance`, `income` (in thousands of dollars), and
 </tbody>
 </table>
 
-<table id="org41f86f7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org759c256" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 14:</span> For the `Default` data, estimated coefficients of the logistic regression model that predicts the probability of `default` using `balance`, `income`, and `student` status.  In fitting this model, `income` was measured in thousands of dollars.</caption>
 
 <colgroup>
@@ -1960,26 +1960,26 @@ regression model that uses `balance`, `income` (in thousands of dollars), and
 </tbody>
 </table>
 
-The left hand panel of figure [117](#org936e6ff) shows average default rates
+The left hand panel of figure [117](#org672b8c2) shows average default rates
 for students and non-students, respectively, as a function of credit card
 balance.  *For a fixed value* of `balance` and `income`, a student is less
 likely to default than a non-student.  This is true for all values of balance.
 This is consistent with negative coefficient of student in table
-[14](#org41f86f7).  But the horizontal lines near the base of the plot, which show the default rates
+[14](#org759c256).  But the horizontal lines near the base of the plot, which show the default rates
 for students and non-students averaged over all values of `balance` and
 `income`, suggest the opposite effect: the overall student default rate is
 higher than non-student default rate.  Consequently, there is a positive
 coefficient for `student` in the single variable logistic regression output
-shown in table [13](#orge721aec). 
+shown in table [13](#org8440ef6). 
 
 ![img](figures/fig4_3.png "Confounding in the `Default` data.  Left: Default rates are shown for students (brown) and non-students (blue).  The solid lines display default rate as a function of `balance`, while the horizontal lines display the overall default rates.  Right: Boxplots of `balance` for students and non-students are shown.")
 
 
-<a id="orgecb3c63"></a>
+<a id="org10a9d79"></a>
 
 ## Linear Discriminant Analysis
 
-In the left panel of figure [119](#org9d97b98), two normal density functions
+In the left panel of figure [119](#orgdbd02c8), two normal density functions
 that are displayed, \(f_1(x)\) and \(f_2(x)\), represent two distinct classes.  The
 Bayes classifier boundary, shown as vertical dashed line, is estimated using the
 function `GaussianNB()`.  The right hand panel displays a histogram of a random
@@ -1989,7 +1989,7 @@ as firm vertical line.
 ![img](figures/fig4_4.png "Left: Two one-dimensional normal density functions are shown.  The dashed vertical line represents the Bayes decision boundary.  Right: 20 observations were drawn from each of the two classes, and are shown as histograms.  The Bayes decision boundary is again shown as a dashed vertical line.  The solid vertical line represents the LDA decision boundary estimated from the training data.")
 
 Two examples of multivariate Gaussian distributions with \(p = 2\) are shown in
-figure [121](#org0b096c2).  In the upper panel, the height of the surface at
+figure [121](#org5fe0666).  In the upper panel, the height of the surface at
 any particular point represents the probability that both \(X_1\) and \(X_2\) fall
 in the small region around that point.  If the surface is cut along the \(X_1\)
 axis or along the \(X_2\) axis, the resulting cross-section will have the shape of
@@ -1997,25 +1997,25 @@ a one-dimensional normal distribution.  The left-hand panel illustrates an examp
 which \(\text{var}(X_1) = \text{var}(X_2)\) and \(\text{cor}(X_1, X_2) = 0\); this surface has a
 characteristic *bell shape*.  However, the bell shape will be distorted if the
 predictors are correlated or have unequal variances, as is illustrated in the
-right-hand panel of figure [121](#org0b096c2).  In this situation, the base
+right-hand panel of figure [121](#org5fe0666).  In this situation, the base
 of the bell will have an elliptical, rather than circular, shape.  The contour
 plots in the lower panel are not in the book. 
 
 ![img](figures/fig4_5.png "Two multivariate Gaussian density functions are shown, with \(p = 2\).  Left: The two predictors are uncorrelated.  Right: The two predictors have a correlation of 0.7.  The lower panel shows contour plots of the surfaces drawn in the upper panel.  Here the correlations can be easily seen.")
 
-Figure [123](#orgd4093fc) shows an example of three equally sized Gaussian
+Figure [123](#org5669225) shows an example of three equally sized Gaussian
 classes with class-specific mean vectors and a common covariance matrix. The
 dashed lines are the Bayes decision boundaries.  
 
 ![img](figures/fig4_6.png "An example with three classes. The observation from each class are drawn from a multivariate Gaussian distribution with \(p = 2\), with a class-specific mean vector and a common covariance matrix.  Left: The dashed lines are the Bayes decision boundaries.  Right: 20 observations were generated from each class, and the corresponding LDA decision boundaries are indicated using solid black lines.  The Bayes decision boundaries are once again shown as dashed lines.")
 
 A *confusion matrix*, shown for the `Default` data in table
-[15](#org3152705), is a convenient way to display prediction of default in
-comparison to true default.  Table [16](#org9671bff) shows the error rates
+[15](#org50437b7), is a convenient way to display prediction of default in
+comparison to true default.  Table [16](#orgdf41843) shows the error rates
 that result when we label any customer with a posterior probability of default
 above 20% to the *default* class.
 
-<table id="org3152705" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org50437b7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 15:</span> A confusion matrix compares the LDA predictions to the true default statuses for the training observations in the `Default` data set.  Elements of the diagonal matrix represent individuals whose default statuses were correctly predicted, while off-diagonal elements represent individuals that were missclassified.</caption>
 
 <colgroup>
@@ -2063,7 +2063,7 @@ above 20% to the *default* class.
 </tbody>
 </table>
 
-<table id="org9671bff" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgdf41843" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 16:</span> A confusion matrix compares LDA predictions to the true default statuses for the training observations in the `Default` data set, using a modified threshold value that predicts default for any individuals whose posterior default probability exceeds 20%.</caption>
 
 <colgroup>
@@ -2111,7 +2111,7 @@ above 20% to the *default* class.
 </tbody>
 </table>
 
-Figure [126](#org86ee21f) illustrates the trade-off that results from
+Figure [126](#orgc3006e4) illustrates the trade-off that results from
 modifying the threshold value for the posterior probability of default.  Various
 error rates are shown as a function of the threshold value.  Using a threshold
 of 0.5 minimizes the overall error rate, shown as a black line.  But when a
@@ -2122,15 +2122,15 @@ individuals who do not default increases.
 
 ![img](figures/fig4_7.png "For the `Default` data set, error rates are shown as a function of the threshold value for the posterior probability that is used to perform the assignment of default.  The black sold line displays the overall error rate.  The blue dashed line represents the fraction of defaulting customers that are incorrectly classified, and the orange dotted line indicates the fraction of errors among the non-defaulting customers.")
 
-Figure [128](#org8c2a30a) displays the ROC curve for the LDA classifier on
+Figure [128](#orga209e94) displays the ROC curve for the LDA classifier on
 the `Default` data set.
 
 ![img](figures/fig4_8.png "A ROC curve for the LDA classifier on the `Default` data.  It traces two types of error as we vary the threshold value for the posterior probability of default.  The actual thresholds are not shown.  The true positive rate is the sensitivity: the fraction of defaulters that are correctly identified using a given threshold value.  The false positive rate is the fraction of non-defaulters we incorrectly specify as defaulters, using the same threshold value.  The ideal ROC curve hugs the top left corner, indicating a high true positive rate and a low false positive rate.  The dotted line represents the \`\`no information'' classifier; this is what we would expect if student status and credit card balance are not associated with the probability of default.")
 
-Table [17](#orgb7fb312) shows the possible results when applying a
+Table [17](#orgf81079f) shows the possible results when applying a
 classifier (or diagnostic test) to a population.  
 
-<table id="orgb7fb312" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgf81079f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 17:</span> Possible results when applying a classifier or diagnostic test to a population.</caption>
 
 <colgroup>
@@ -2193,11 +2193,11 @@ classifier (or diagnostic test) to a population.
 </tbody>
 </table>
 
-Table [18](#orgb052585) lists many of the popular performance measures that
+Table [18](#orge572f3f) lists many of the popular performance measures that
 are used in this context.
 
-<table id="orgb052585" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 18:</span> Important measures for classification and diagnostic testing, derived from quantities in table [17](#orgb7fb312).</caption>
+<table id="orge572f3f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 18:</span> Important measures for classification and diagnostic testing, derived from quantities in table [17](#orgf81079f).</caption>
 
 <colgroup>
 <col  class="org-left" />
@@ -2244,7 +2244,7 @@ are used in this context.
 </tbody>
 </table>
 
-Figure [132](#org53452d1) illustrates the performances of LDA and QDA in two
+Figure [132](#orge67cf39) illustrates the performances of LDA and QDA in two
 scenarios.  In the left-hand panel, the two Gaussian classes have a common
 correlation of 0.7 between \(X_1\) and \(X_2\).  As a result, the Bayes decision
 boundary is nearly linear and is accurately approximated by the LDA decision
@@ -2255,23 +2255,23 @@ correlation of -0.7.
 ![img](figures/fig4_9.png "Left: The Bayes (purple dashed), LDA (black dotted), and QDA (green sold) decision boundaries for a two-class problem with \(\Sigma_1 = \Sigma_2\).  Right: Details are as given in the left-hand panel, except that \(\Sigma_1 \ne \Sigma_2\).")
 
 
-<a id="org583b04d"></a>
+<a id="orgbdf0c80"></a>
 
 ## A Comparison of Classification Methods
 
-Figure [134](#orgfa750ca) illustrates the performances of the four
+Figure [134](#org60d759c) illustrates the performances of the four
 classification approaches (KNN, LDA, Logistic, and QDA) when Bayes decision
 boundary is linear.
 
 ![img](figures/fig4_10.png "Boxplots of the test error rates for each of the linear scenarios described in the main text.")
 
 
-<a id="org2839092"></a>
+<a id="orgac7c247"></a>
 
 ## Lab: Logistic Regression, LDA, QDA, and KNN
 
 
-<a id="org68c37e0"></a>
+<a id="orgc50b4b7"></a>
 
 ### The Stock Market Data
 
@@ -2322,7 +2322,7 @@ We will begin by examining some numerical and graphical summaries of the
     --------
 
 
-<a id="org32b246c"></a>
+<a id="orgf1b56f0"></a>
 
 ### Logistc Regression
 
@@ -2506,7 +2506,7 @@ for year 2005 to test the model.
     dtype: float64
 
 
-<a id="org596ae49"></a>
+<a id="orgf3a442a"></a>
 
 ### Linear Discriminant Analysis
 
@@ -2559,7 +2559,7 @@ Now we will perform LDA on `Smarket` data.
     182
 
 
-<a id="orgb2ca344"></a>
+<a id="org2178807"></a>
 
 ### Quadratic Discriminant Analysis
 
@@ -2599,7 +2599,7 @@ We will now fit a QDA model to the `Smarket` data.
     0.5992063492063492
 
 
-<a id="org4c4111f"></a>
+<a id="org7e5d317"></a>
 
 ### K-Nearest Neightbors
 
@@ -2644,7 +2644,7 @@ We will now perform KNN, also on the `Smarket` data.
     0.5317460317460317
 
 
-<a id="org5ec856d"></a>
+<a id="orgd5a7a76"></a>
 
 ### An Application to Caravan Insurance Data
 
@@ -2758,22 +2758,22 @@ library.
     Yes        24   11
 
 
-<a id="orgd599432"></a>
+<a id="org3bbb838"></a>
 
 # Resampling Methods
 
 
-<a id="orgdeeb451"></a>
+<a id="orga619f3e"></a>
 
 ## Cross-Validation
 
-Figure [143](#org9db2f60) displays the *validation set approach*, a simple
+Figure [143](#orgba05950) displays the *validation set approach*, a simple
 stategy to estimate the test error associated with fitting a particular
 statistical learning method on a set of observations.
 
 ![img](figures/fig5_1.png "A schematic display of the validation set approach.  A set of \(n\) observations are randomly split into a training set (shown in blue, containing observations 7, 22, and 13, among others) and a validation set (shown in red, and containing observation 91, among others).  The statistical learning method is fit on the training set, and its performance is evaluated on the validation set.")
 
-In figure [145](#orga82f8e1), the left-hand panel shows validation sample MSE as a
+In figure [145](#orgb94f62c), the left-hand panel shows validation sample MSE as a
 function of polynomial order for which a regression model was fit on training
 sample.  The two samples are obtained by randomly splitting `Auto` data set into
 two data sets of 196 observations each.  The right-hand panel shows the results
@@ -2785,38 +2785,38 @@ regression model.
 
 ![img](figures/fig5_2.png "The validation set approach was used in the `Auto` data set in order to estimate the test error that results from predicting `mpg` using polynomial functions of `horsepower`.  Left: Validation error estimates for a single split into training and validation data sets.  Right: The validatioin method was repeated ten times, each time using a different random split of the observations into a training set and a validation set.  This illustrates the variability of of the estimated test MSE that results from this approach.")
 
-Figure [147](#org6cc6235) displas the Leave One Out Cross Validation (LOOCV) approach.
+Figure [147](#org605bccf) displas the Leave One Out Cross Validation (LOOCV) approach.
 
 ![img](figures/fig5_3.png "A schematic display of LOOCV.  A set of \(n\) data points is repeatedly split into a training set (shown in blue) containing all but one observation, and a validation set that contains only that observation (shown in red).  The test error is then estimated by averaging the n resulting MSE's.  The first training set contains all but observation 1, the second training set contains all but observation 2, and so on.")
 
-The left-hand panel of figure [149](#org4697593) shows test set MSE as a function of
+The left-hand panel of figure [149](#orga4340b4) shows test set MSE as a function of
 polynomial degree when LOOCV is used on the `Auto` data set.  We fit linear
 regression models to predict `mpg` using polynomial functions of `horsepower`.
-The right-hand panel of figure [149](#org4697593) shows nine different 10-fold
+The right-hand panel of figure [149](#orga4340b4) shows nine different 10-fold
 CV estimates for the `Auto` data set, each resulting from a different random
 split of the observations into ten folds.
 
 ![img](figures/fig5_4.png "Cross-validation was used in the `Auto` data set in order to estimate the test error that results from predicting `mpg` using polynomial functions of `horsepower`.  Left: The LOOCV error curve.  Right: 10-fold CV was run nin separate times, each with a different random split of the data into ten parts.  The figure shows the nine slightly different CV error curves.")
 
-Figure [151](#orgac548ab) illustrates the *k*-fold CV approach.
+Figure [151](#org8c0d4a5) illustrates the *k*-fold CV approach.
 
 ![img](figures/fig5_5.png "A schematic display of 5-fold CV.  A set of \(n\) observations is randomly split into five non-overlapping groups.  Each of these fifths acts as a validation set (shown in red), and the remainder as a training set (shown in blue).  The test error is estimated by averaging the five resulting MSE estimates.")
 
-In figure [153](#org85e36af), we plot the cross-validation estimates and true
+In figure [153](#orgaa4ca28), we plot the cross-validation estimates and true
 test error rates that result from fitting least squares polynomials to the
-simulated data sets illustrated in figures [21](#org37d72e4),
-[23](#org2a6069f), and [25](#org6d4d441) of chapter [2](#org518429d).  In all
+simulated data sets illustrated in figures [21](#org84b6709),
+[23](#org40b19eb), and [25](#org589e0dc) of chapter [2](#orgd21766f).  In all
 three plots, the two cross validation errors are very similar.  
 
-![img](figures/fig5_6.png "True and estimated test MSE for the simulated data sets in Figures [21](#org37d72e4) (left), [23](#org2a6069f) (center), and [25](#org6d4d441) (right).  The true test MSE is shown in blue, the LOOCV estimate is shown in black dashed line, and the 10-fold CV estimate is shown in red dotted line.")
+![img](figures/fig5_6.png "True and estimated test MSE for the simulated data sets in Figures [21](#org84b6709) (left), [23](#org40b19eb) (center), and [25](#org589e0dc) (right).  The true test MSE is shown in blue, the LOOCV estimate is shown in black dashed line, and the 10-fold CV estimate is shown in red dotted line.")
 
-Figure [155](#org6e4ca2f) shows Bayesian decision boundary (blue dashed line)
+Figure [155](#org012c03b) shows Bayesian decision boundary (blue dashed line)
 and logistic regression decision boundary (black line) for 1- to 4-degree
 polynomials on \(X_1\) and \(X_2\). 
 
-![img](figures/fig5_7.png "Logistic regression fits on the two-dimensional classification data displayed in figure [29](#org993aaea).  The Bayes decision boundary is represented using a blue dashed line.  Estimated decision boundaries from linear, quadratic, cubic, and quartic (degrees 1-4) logistic regressions are displayed in black.")
+![img](figures/fig5_7.png "Logistic regression fits on the two-dimensional classification data displayed in figure [29](#org66298f5).  The Bayes decision boundary is represented using a blue dashed line.  Estimated decision boundaries from linear, quadratic, cubic, and quartic (degrees 1-4) logistic regressions are displayed in black.")
 
-The left-hand panel of figure [158](#org594a361) displays in black 10-fold CV
+The left-hand panel of figure [158](#org6f1adce) displays in black 10-fold CV
 error rates that result from fitting ten logistic regression models to the data,
 using polynomial functions of the predictors up to tenth order.  The true test
 errors are shown in red, and the training errors are shown in blue.  The
@@ -2824,20 +2824,20 @@ training error tends to decrease as the flexibility of the fit increases.  The
 test error is higher than training error.  The 10-fold CV
 error rate is a close approximation to the test error rate.  
 
-The right-hand panel of figure [158](#org594a361) displays the same three curves
+The right-hand panel of figure [158](#org6f1adce) displays the same three curves
 using the KNN approach for classification, as a function of the value of *K*
 (the number of neighbors used in the KNN classifier).  Again, the training error
 rate declines as the method becomes more flexible, and so we see that the
 training error rate cannot be used to select the optimal value of *K*.  
 
-![img](figures/fig5_8.png "Test error (red), training error(blue), and 10-fold CV error (black) on the two-dimensional classification data displayed in [155](#org6e4ca2f).  Left: Logistic regression using polynomial functions of the predictors.  The order of the polynomials used is displayed on the x-axis.  Right: The KNN classifier with different values of K, the number of neighbors used in the KNN classifier.")
+![img](figures/fig5_8.png "Test error (red), training error(blue), and 10-fold CV error (black) on the two-dimensional classification data displayed in [155](#org012c03b).  Left: Logistic regression using polynomial functions of the predictors.  The order of the polynomials used is displayed on the x-axis.  Right: The KNN classifier with different values of K, the number of neighbors used in the KNN classifier.")
 
 
-<a id="org07f4dad"></a>
+<a id="orgcfe055c"></a>
 
 ## The Bootstrap
 
-Figure [160](#org0fd9958) illustrates the approach for estimating &alpha; by
+Figure [160](#org93c26bc) illustrates the approach for estimating &alpha; by
 repeated simulation of data.  In each panel, we simulated 100 pairs of returns
 for the investments *X* and *Y*.  We used these returns to estimate
 \(\sigma_X^2\), \(\sigma_Y^2\) and \(\sigma_{XY}\), which are then used to estimate &alpha;.
@@ -2849,12 +2849,12 @@ estimate the standard deviation of \(\hat{\alpha}\), we repeated the process of
 simulating 100 paired observations of *X* and *Y*, and estimating &alpha; 1000
 times.  We thereby obtain 1000 estimates of &alpha;, which we can call
 \({\hat{\alpha}}_1, {\hat{\alpha}}_2, ...,{\hat{\alpha}}_{1000}\). The left-hand panel of
-figure [163](#orga1d8d52) displays a histogram of the resulting estimates.  The
+figure [163](#org0795f2f) displays a histogram of the resulting estimates.  The
 mean over all 1000 estimates for &alpha; is 0.599, which is very close
 to \(\alpha = 0.6\).  The standard deviation of the estimates is 0.08.
 
 The bootstrap approach is illustrated in the center panel of figure
-[163](#orga1d8d52), which displays a histogram of 1000 bootstrap estimates of
+[163](#org0795f2f), which displays a histogram of 1000 bootstrap estimates of
 &alpha;, each computed using a distinct bootstrap data set.  The panel was
 constructed on the basis of a single data set, and hence could be created using
 real data. The right-hand panel displays the information in the center and left
@@ -2866,12 +2866,12 @@ boostrap approach.
 ![img](figures/fig5_10.png "Left: A histogram of the estimates of &alpha; obtained by generating 1000 simulated data sets from the true population.  Center: A histogram of the estimates of &alpha; obtained from 1000 bootstrap samples from a single data set.  Right: The estimates of &alpha; displayed in the left and center panels are shown as boxplots.  In each panel, the red line indicates the true value of &alpha;.")
 
 
-<a id="org2cee5ee"></a>
+<a id="org070cad6"></a>
 
 ## Lab: Cross-Validation and the Bootstrap
 
 
-<a id="orgbdfb3eb"></a>
+<a id="org658aba9"></a>
 
 ### The Validation Set Approach
 
@@ -2940,7 +2940,7 @@ function of horsepower.  There is little evidence that a cubic function of
     20.893010200297326
 
 
-<a id="orge805c76"></a>
+<a id="org073d0b5"></a>
 
 ### Leave-One-Out Cross-Validation
 
@@ -2991,7 +2991,7 @@ cross-validation.
     degree:  5 , mse_loocv: 19.033
 
 
-<a id="org0e77f21"></a>
+<a id="orgbce6267"></a>
 
 ### k-Fold Cross-Validation
 
@@ -3054,7 +3054,7 @@ leads to lower test error than simply using a quadratic fit.
     degree:  10 , mse_kfold:  65.251
 
 
-<a id="org108f54b"></a>
+<a id="org486107f"></a>
 
 ### The Bootstrap
 
@@ -3203,16 +3203,16 @@ leads to lower test error than simply using a quadratic fit.
         I(horsepower ** 2)   0.001231  0.000122  10.080093   2.196340e-21
 
 
-<a id="org2f0089d"></a>
+<a id="orgb269e31"></a>
 
 # Linear Model Selection and Regularization
 
 
-<a id="org9bd7a9d"></a>
+<a id="orgb0340a2"></a>
 
 ## Subset Selection
 
-An application of best subset selection is shown in figure [172](#org3083c9a).
+An application of best subset selection is shown in figure [172](#orgd5f3150).
 Each plotted point corresponds to a least squares regression model fit using a
 different subset of the 10 predictors in the `Credit` data set.  We have plotted
 the RSS and R<sup>2</sup> statistics for each model, as a function of the number of
@@ -3223,7 +3223,7 @@ improvement in RSS and R<sup>2</sup> when more predictors are included.
 
 ![img](figures/fig6_1.png "For each possible model containing a subset of the ten predictors in the `Credit` data set, the RSS and R<sup>2</sup> are displayed.  The red frontier tracks the *best* model for a given number of predictors, according to RSS and R<sup>2</sup>.")
 
-Table [19](#orgcc9b229) shows first four selected models for the best subset and
+Table [19](#org2b34073) shows first four selected models for the best subset and
 forward subset selection on the `Credit` data set.  Both best subset selection
 and forward stepwise selection choose `Rating` for the best one-variable model
 and then include `Income` and `Student` for the two- and three-variable models.
@@ -3231,7 +3231,7 @@ However, best subset selection replaces `Rating` by `Cards` in the four-variable
 model.  On the other hand forward stepwise selection must maintain `Rating` in
 its four-variable model. 
 
-<table id="orgcc9b229" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org2b34073" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 19:</span> The first four selected models for best subset selection and forward stepwise selection on the `Credit` data set.  The first three models are identical, but the fourth models differ.</caption>
 
 <colgroup>
@@ -3279,12 +3279,12 @@ its four-variable model.
 </tbody>
 </table>
 
-Figure [175](#orgf7dc088) displays C<sub>p</sub>, BIC, and adjusted R<sup>2</sup> for the best model
+Figure [175](#orga3d93c8) displays C<sub>p</sub>, BIC, and adjusted R<sup>2</sup> for the best model
 of each size produced by best subset selection on the `Credit` data set.
 
-![img](figures/fig6_2.png "C<sub>p</sub>, BIC, and adjusted R<sup>2</sup> are shown for the best models of each size for the `Credit` data set (the lower frontier in figure [172](#org3083c9a)).  C<sub>p</sub> and BIC are estimates of test MSE.  In the middle panel we see that the BIC estimate of test error shows an increase after four variables are selected.  The other two plots are rather flat after four variables are selected.")
+![img](figures/fig6_2.png "C<sub>p</sub>, BIC, and adjusted R<sup>2</sup> are shown for the best models of each size for the `Credit` data set (the lower frontier in figure [172](#orgd5f3150)).  C<sub>p</sub> and BIC are estimates of test MSE.  In the middle panel we see that the BIC estimate of test error shows an increase after four variables are selected.  The other two plots are rather flat after four variables are selected.")
 
-Figure [177](#org859cb2e) displays, as a function of *d*, the BIC, validation set
+Figure [177](#orgad4768e) displays, as a function of *d*, the BIC, validation set
 errors, and cross-validation errors on the `Credit` data set, for the best
 *d*-variable model.  The validation errors were calculated by randomly selecting
 two-thirds of the observations as the training set, and the remainder as the
@@ -3295,11 +3295,11 @@ minimized by six or seven predictors.
 ![img](figures/fig6_3.png "For the `Credit` data set, three quantities are displayed for the best model containing predictors, for *d* ranging from 1 to 10. The overall *best* model, based on each of these quantities, is shown as a green cross.  Left: Square root of BIC.  Center: Validation set errors.  Right: Cross-validation errors.")
 
 
-<a id="org0e48c1c"></a>
+<a id="orgf322aed"></a>
 
 ## Shrinkage Methods
 
-In figure [180](#orga9f9b67) the ridge regression coefficient estimates for the
+In figure [180](#orgbe88a72) the ridge regression coefficient estimates for the
 `Credit` data set are displayed.  In the left-hand panel, each curve corresponds
 to the ridge regression coefficient estimate for one of the four important
 variables, plotted as a function of &lambda;.  At the extreme left side of the
@@ -3307,7 +3307,7 @@ plot, &lambda; is essentially zero, and so the corresponding ridge coefficients
 estimates are the same as the usual least square estimates.  But as &lambda;
 increases, the ridge coefficients shrink towards zero.  
 
-The right-hand panel of figure [180](#orga9f9b67) displays the same ridge
+The right-hand panel of figure [180](#orgbe88a72) displays the same ridge
 coefficient estimates as the left-hand panel.  But instead of displaying &lambda;
 on the *x*-axis, we now display \(\| \hat{\beta}_{\lambda}^R \|_2 / \|
 \hat{\beta} \|_2\), where \(\hat{\beta}\) denotes the vector of least squares
@@ -3321,16 +3321,16 @@ Ridge regression's advantage over least squares is rooted in *bias-variance
 tradeoff*.  As &lambda; increases, the flexibility of ridge regression fit
 decreases, leading to decreased variance but increased bias.  We use a simulated
 data set with \(p = 30\) features and \(n = 50\) observations.  Figure
-[182](#org4677c01) shows the bias-tradeoff on this simulated data set.
+[182](#org88831ca) shows the bias-tradeoff on this simulated data set.
 
 ![img](figures/fig6_5.png "Squared bias, variance, and test mean squared error for the ridge regression predictions on a simulated data set, as a function of &lambda; (left-hand panel) and \(\| \hat{\beta}_\lambda^R \|_2 / \| \hat{\beta} \|_2\).  The horizontal lines show the minimum possible MSE.  The crosses show the ridge regression models for which the MSE is the smallest.")
 
-In figure [184](#orgff694e0), coefficient plots are generated from applying the
+In figure [184](#org0d83a0d), coefficient plots are generated from applying the
 lasso to the `Credit` data set.  When &lambda; = 0, then the lasso simply gives
 the least squares fit.  When &lambda; becomes sufficiently large, the lasso gives
 the null model in which all coefficient estimates equal zero.  However, in
 between these two extremes, the ridge regression and the lasso regression models
-are quite different.  In the right-hand panel of figure [184](#orgff694e0), as we
+are quite different.  In the right-hand panel of figure [184](#org0d83a0d), as we
 move from left to right, at first the lasso model only contains the `Rating`
 predictor.  Then `Student` and `Limit` enter the model, shortly followed by
 `Income`. Depending upon the value of &lambda;, the lasso can produce a model
@@ -3340,7 +3340,7 @@ include all of the variables in the model.
 
 ![img](figures/fig6_6.png "The standardized lasso coefficients on the `Credit` data set are shown as a function of &lambda; and \(\| \hat{\beta}_{\lambda}^L \|_1 / \| \hat{\beta} \|_1\).")
 
-Figure [186](#org40c5a76) illustrates why lasso, unlike ridge regression, results
+Figure [186](#orgbfdf90d) illustrates why lasso, unlike ridge regression, results
 in coefficient estimates that are exactly zero.  In the left-hand panel, lasso
 coefficient constraint region is represented by solid blue diamond.  In the
 right-hand panel, ridge regression coefficient constraint region is represented
@@ -3356,7 +3356,7 @@ axis.  Therefore ridge regression coefficients will usually be non-zero.
 
 ![img](figures/fig6_7.png "Contours of the error and constraint functions for the lasso (left) and ridge regression (right).  The solid blue areas are contraint regions, \(\| \beta_1 \| + \| \beta_2 \| \le s\) and \(\beta_1^2 + \beta_2 ^2 \le s\), while the red ellipses are the contours of the RSS.")
 
-Figure [188](#orgd6fc192) displays the choice of &lambda; that results from
+Figure [188](#org6492d7c) displays the choice of &lambda; that results from
 performing leave-one-out cross-validation on the ridge regression fits from the
 `Credit` data set. The dashed vertical lines indicate the selected value of
 &lambda;. 
@@ -3364,9 +3364,17 @@ performing leave-one-out cross-validation on the ridge regression fits from the
 ![img](figures/fig6_12.png "Left: For various values of &lambda;, cross-validation errors that result from applying ridge regression to the `Credit` data set.  Right: The coefficient estimates as a function of &lambda;.  The vertical dashed lines indicate the value of &lambda; selected by cross-validation.")
 
 
-<a id="org928ae8b"></a>
+<a id="orge5dd17b"></a>
 
 ## Dimension Reduction Methods
+
+Figure [190](#org7f0bff5) shows daily changes in 10-year Treasury note yield (`10
+YR`) and 2-year Treasury note yield (`2 YR`) in year 2018.  The green sold line
+represents the first principal component direction of the data.  We can see by
+eye that this is the direction along which there is the greatest variability in
+the data.  
+
+![img](figures/fig6_14.png "Daily changes in 10-year Treasury note yield (`10 YR`) and 2-year Treasury note yield (`2 YR`) in year 2018 are shown as red circles.  The green solid line indicates the first principal component, and the blue dashed line indicates the second principal component.")
 
 
 # Footnotes
