@@ -4259,6 +4259,35 @@ the data.
 [[file:figures/fig6_14.png]]
 
 
+In another interpretation of PCA, the first principal component vector defines
+the line that is /as close as possible/ to the data.  In figure
+[[fig:selectionFig15]], the left-hand panel shows the distances between data points
+and the first principal component.  The first principal component has been
+chosen so that the projected observations are /as close as possible/ to the
+original observations.  
+
+In the right-hand panel of figure [[fig:selectionFig15]], the left-hand panel has
+been rotated so that the first principal component direction coincides with the
+/x/-axis. 
+
+#+NAME: fig6_15plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_15.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import firstPrComp
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig15
+#+CAPTION: A subset of the Treasury yield data.  Left: The first principal component direction is shown in blue.  It is the dimension along which the data vary the most, and it also defines the line that is closest to all /n/ of the observations.  The distances from each observation to the principal component are represented in using black dashed line segments.  Right: The left-hand panel has been rotated so that the first principal component direction coincides with the x-axis.
+#+RESULTS: fig6_15plot
+[[file:figures/fig6_15.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
