@@ -4288,6 +4288,53 @@ been rotated so that the first principal component direction coincides with the
 #+RESULTS: fig6_15plot
 [[file:figures/fig6_15.png]]
 
+Figure [[fig:selectionFig16]] displays =10 YR= and =2 YR= versus first principal
+component scores.  The plots show a strong relationship between the first
+principal component and the two features.  In other words, the first principal
+component appears to capture most of the information contained in =10 YR= and =2
+YR=. 
+
+#+NAME: fig6_16plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_16.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import firstPCvsData
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig16
+#+CAPTION: Plots of =10 YR= and =2 YR= versus first principal component scores. The relationships are strong.
+#+RESULTS: fig6_16plot
+[[file:figures/fig6_16.png]]
+
+Figure [[fig:selectionFig17]] displays =10 YR= and =2 YR= versus second principal
+component scores.  The plots show a weak relationship between the second
+principal component and the two features. In other words, one only needs the
+first principal component to accurately represent =10 YR= and =2 YR=. 
+
+#+NAME: fig6_17plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_17.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import secondPCvsData
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig17
+#+CAPTION: Plots of =10 YR= and =2 YR= versus second principal component scores.  The relationships are weak.
+#+RESULTS: fig6_17plot
+[[file:figures/fig6_17.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
