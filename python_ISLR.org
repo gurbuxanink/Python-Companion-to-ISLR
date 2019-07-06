@@ -1,9 +1,11 @@
 #+TITLE: A Python Companion to ISLR
-#+LATEX_HEADER: \usepackage{amsmath,booktabs,placeins,fancyhdr}
+#+LATEX_HEADER: \usepackage{amsmath,booktabs,placeins,fancyhdr,xcolor}
 #+LATEX_HEADER: \hypersetup{colorlinks=true, allcolors=blue, linkbordercolor=white}
 #+LATEX_HEADER: \pagestyle{fancy} \fancyhead{}
 #+LATEX_HEADER: \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 #+LATEX_HEADER: \fancyhead[CO,CE]{\rightmark}
+#+LATEX_HEADER: \lstset{keywordstyle=\color{blue}\bfseries, stringstyle=\ttfamily, commentstyle=\color{olive}\slshape, basicstyle=\ttfamily, showstringspaces=false, breaklines=true, showstringspaces=false}
+# #+LATEX_HEADER: \input{listings-acm.prf}
 #+PROPERTY: header-args :eval never-export
 
 * Introduction
