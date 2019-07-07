@@ -4,7 +4,7 @@
 #+LATEX_HEADER: \pagestyle{fancy} \fancyhead{}
 #+LATEX_HEADER: \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 #+LATEX_HEADER: \fancyhead[CO,CE]{\rightmark}
-#+LATEX_HEADER: \lstset{keywordstyle=\color{blue}\bfseries, commentstyle=\color{purple}\slshape, showstringspaces=false, breaklines=true, breakwhitespace=false, stringstyle=\color{red}, basicstyle=\fontfamily{lmtt}\selectfont\footnotesize, procnamekeys={def,class}, frame=lines}
+#+LATEX_HEADER: \lstset{keywordstyle=\color{blue}\bfseries, commentstyle=\color{purple}\slshape, showstringspaces=false, breaklines=true, breakwhitespace=false, stringstyle=\color{red}, basicstyle=\fontfamily{lmtt}\selectfont\footnotesize, procnamekeys={def,class}, frame=lines, tabsize=2, keepspaces=false}
 #+property: header-args :eval never-export
 
 * Introduction
@@ -4335,6 +4335,63 @@ first principal component to accurately represent =10 YR= and =2 YR=.
 #+CAPTION: Plots of =10 YR= and =2 YR= versus second principal component scores.  The relationships are weak.
 #+RESULTS: fig6_17plot
 [[file:figures/fig6_17.png]]
+
+#+LATEX: \FloatBarrier
+
+** Considerations in High Dimensions
+
+Figure [[fig:selectionFig22]] shows /p/ = 1 feature (plus an intercept) in two
+cases: when there are 20 observations (left-hand panel), and when there are only
+two observations (right-hand panel).  When there are 20 observations, /n > p/
+and the least squares regression line does not perfectly fit the data; instead,
+the regression line seeks to approximate the 20 observations as well as
+possible.  On the other hand, when there are only two observations, then
+regardless of the values of those two observations, the regression line will fit
+the data exactly.
+
+#+NAME: fig6_22plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_22.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import lstSqLoDim
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig22
+#+CAPTION: Left: Least squares regression in the low-dimensional setting.  Right: Least squares regression with /n/ = 2 observations and two parameters to be estimated (an intercept and a coefficient).
+#+RESULTS: fig6_22plot
+[[file:figures/fig6_22.png]]
+
+Figure [[fig:selectionFig23]] further illustrates the risk of carelessly applying
+least squares when the number of features /p/ is large.  Data were simulated
+with /n/ = 20 observations, and regression was performed with between 1 and 20
+features, each of which was completely unrelated to the response.  As the number
+of features included increases, R^2 increases to 1, and correspondingly training
+set MSE decreases to zero.  On the other hand, as the number features included
+increases, MSE on an /independent test set/ becomes extremely large. 
+
+#+NAME: fig6_23plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_23.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import featuresVsMSE
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig23
+#+CAPTION: On a simulated example with /n/ = 20 training observations, features that are completely unrelated to the outcome are added to the model.  Left:  As more features are included, the training R^2 increases to 1.  Center:  As more features are added, the training set MSE decreases to zero.  Right: As more features are included, the test set MSE increases.
+#+RESULTS: fig6_23plot
+[[file:figures/fig6_23.png]]
 
 * Footnotes
 
