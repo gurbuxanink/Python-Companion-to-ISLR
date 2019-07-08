@@ -4393,6 +4393,28 @@ increases, MSE on an /independent test set/ becomes extremely large.
 #+RESULTS: fig6_23plot
 [[file:figures/fig6_23.png]]
 
+Figure [[fig:selectionFig24]] illustrates the performance of the lasso in a simple
+simulated example.  There are /p/ = 20, 50, or 2000 features, of which 20 are
+truly associated with the outcome.  
+
+#+NAME: fig6_24plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig6_24.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap6/')
+
+  import lassoMSEboxplots
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:selectionFig24
+#+CAPTION: The lasso was performed with /n/ = 100 observations and three values of /p/, the number of features.  Of the /p/ features, 20 were associated with the response.  The boxplots show the test MSEs that result using four different values of the tuning parameter \lambda.  For ease of interpretation, rather than reporting \lambda, the degrees of freedom are reported; for the lasso, this turns out to be simply the number of estimated non-zero coefficients.  When /p/ = 20, the lowest test MSE was obtained with the smallest amount of regularization.  When /p/ = 50, the lowest test MSE was achieved when there was a substantial amount of regularization.  When /p/ = 2000, we see results similar to /p/ = 50, with very slight increase in test MSE with degrees of freedom.  
+#+RESULTS: fig6_24plot
+[[file:figures/fig6_24.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
