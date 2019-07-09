@@ -228,3 +228,42 @@ def bestSubsetValidation(y_var, all_x, in_df, test_frac=0.333):
                 best_models[p]['mse'] = select_var_mse
                 select_var_best_mse = select_var_mse
     return best_models
+
+
+# This function can speed up execution because it does not store all models
+def bestModel(y_var, all_x, train_df, subset_size=1, metric='rsquared_adj',
+              metric_max=True, func_or_attr='attr'):
+    '''Assume y_var is the dependent variable, all_x is a list of all
+    explanatory variables.  train_df is the dataframe whose columns include
+    y_var and all elements of all_x.  metric is either a metric output by
+    statsmodels or a user-defined function.  If metric_max=True, then best
+    model has the highest value of metric.  Otherwise, best model has the
+    lowest valur of the metric.  
+    Returns best model chosen according to metric.'''
+
+    x_combinations = combinations(all_x, subset_size)
+    if metric_max:
+        best_metric = 0
+    else:
+        best_metric = np.inf
+
+    for select_var in x_combinations:
+        my_formula = y_var + ' ~ ' + ' + '.join(select_var)
+        lm_model = smf.ols(my_formula, data=train_df)
+        lm_fit = lm_model.fit()
+        if func_or_attr == 'attr':  # metric is output by statsmodels
+            getMetric = attrgetter(metric)
+        elif func_or_attr == 'func':  # metric is calculated by function
+            getMetric = metric
+
+        metric_val = getMetric(lm_fit)
+        # Check if best model needs to be updated
+        update_model = (metric_max and (metric_val > best_metric)) or \
+            ((not metric_max) and (metric_val < best_metric))
+        if update_model:
+            model = lm_fit
+            model_vars = select_var
+            model_metric = metric_val
+            best_metric = metric_val
+
+    return dict(model=model, model_vars=model_vars, model_metric=model_metric)
