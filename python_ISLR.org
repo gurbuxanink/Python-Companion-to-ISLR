@@ -4415,6 +4415,379 @@ truly associated with the outcome.
 #+RESULTS: fig6_24plot
 [[file:figures/fig6_24.png]]
 
+#+LATEX: \FloatBarrier
+
+** Lab 1: Subset Selection Methods
+
+*** Best Subset Selection
+Here we apply the best subset selection approach to the =Hitters= data.  We wish
+to predict a baseball player's =Salary= on the basis of various statistics
+associated with performance in the previous year.
+
+We note that the =Salary= variable is missing for some of the players.  The
+=dropna()= function in =pandas= module can be used to remove all the rows that
+have missing values in any variable. 
+
+It is straightforward to consider subsets of different sizes and, given a
+criterion, identify best model for each size. Program =subsetSelection.py=
+includes a function for this purpose. Using a given criterion, =bestModel= uses
+exhaustive enumeration to find the best model for a given size. 
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  # import pandas as pd
+  import numpy as np
+  import sys
+  sys.path.append('code/chap6/')
+  from subsetSelection import bestModel, C_p
+  from itertools import combinations
+  from operator import attrgetter
+  import matplotlib.pyplot as plt
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+  print(hitters.columns)
+  print('------')
+  print(hitters.shape)
+  print('------')
+  print(np.sum(hitters['Salary'].isna()))
+  print('------')
+  hitters.dropna(inplace=True)
+  print(hitters.shape)
+  print('------')
+
+  # Prepare inputs for allSubsets function
+  y_var = 'Salary'
+  x_vars = list(hitters.columns)
+  x_vars.remove(y_var)
+
+  # Select best model for a given subset size
+  # Use smallest RSS as the criterion to find best model
+  best_models = {}
+  for p in range(1, 7):
+      best_models[p] = bestModel(y_var, x_vars, hitters, subset_size=p,
+				 metric='ssr', metric_max=False)
+
+  for p in best_models.keys():
+      print('Number of variables: ' + str(p))
+      best_vars = list(best_models[p]['model_vars'])
+      best_vars.sort()
+      print(best_vars)
+  print('------')
+
+  # Print r-squared and adjusted r-squared
+  for p in best_models.keys():
+      print('Num vars: ' + str(p) + ', R-squared: ' +
+	    str(round(best_models[p]['model'].rsquared, 3)) +
+	    ', adjusted R-squared: ' +
+	    str(round(best_models[p]['model'].rsquared_adj, 3)))
+
+  # Plot R-squared, adjusted R-squared, Cp, and BIC versus number of variables
+  fig = plt.figure(figsize=(8, 8))
+  ax1 = fig.add_subplot(221)
+  rsq = [best_models[k]['model'].rsquared for k in best_models.keys()]
+  ax1.plot(best_models.keys(), rsq)
+  ax1.set_ylabel(r'$R^2$')
+
+  ax2 = fig.add_subplot(222)
+  adj_rsq = [best_models[k]['model'].rsquared_adj for k in best_models.keys()]
+  ax2.plot(best_models.keys(), adj_rsq)
+  ax2.set_ylabel(r'Adjusted $R^2$')
+
+  ax3 = fig.add_subplot(223)
+  Cp = [C_p(best_models[k]['model']) for k in best_models.keys()]
+  ax3.plot(best_models.keys(), Cp)
+  ax3.set_ylabel(r'$C_p$')
+
+  ax4 = fig.add_subplot(224)
+  bic = [best_models[k]['model'].bic for k in best_models.keys()]
+  ax4.plot(best_models.keys(), bic)
+  ax4.set_ylabel('BIC')
+
+  for ax in fig.axes:
+      ax.set_xlabel('Number of variables')
+  fig.tight_layout()
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Index(['AtBat', 'Hits', 'HmRun', 'Runs', 'RBI', 'Walks', 'Years', 'CAtBat',
+       'CHits', 'CHmRun', 'CRuns', 'CRBI', 'CWalks', 'League', 'Division',
+       'PutOuts', 'Assists', 'Errors', 'Salary', 'NewLeague'],
+      dtype='object')
+------
+(322, 20)
+------
+59
+------
+(263, 20)
+------
+Number of variables: 1
+['CRBI']
+Number of variables: 2
+['CRBI', 'Hits']
+Number of variables: 3
+['CRBI', 'Hits', 'PutOuts']
+Number of variables: 4
+['CRBI', 'Division', 'Hits', 'PutOuts']
+Number of variables: 5
+['AtBat', 'CRBI', 'Division', 'Hits', 'PutOuts']
+Number of variables: 6
+['AtBat', 'CRBI', 'Division', 'Hits', 'PutOuts', 'Walks']
+------
+Num vars: 1, R-squared: 0.321, adjusted R-squared: 0.319
+Num vars: 2, R-squared: 0.425, adjusted R-squared: 0.421
+Num vars: 3, R-squared: 0.451, adjusted R-squared: 0.445
+Num vars: 4, R-squared: 0.475, adjusted R-squared: 0.467
+Num vars: 5, R-squared: 0.491, adjusted R-squared: 0.481
+Num vars: 6, R-squared: 0.509, adjusted R-squared: 0.497
+#+end_example
+
+The above results are output of program =subsetSelection.py=, which uses
+=statsmodels=.  An advantage of using =statsmodels= is that a number of metrics
+(e.g., RSS, R-squared, adjusted R-squared, BIC, AIC, etc.) are built-in.
+Therefore, any of these can be used as the criterion to select the ``best''
+model.  But, when number of variables is large, =statsmodels= can be slow.  The
+program =subsetSelectionSklearn.py= implements best subset selection using
+=sklearn=, which is faster than =statsmodels=.  A disadvantage of using
+=sklearn= is that most of the metrics are not implemented.  These can be
+implemented in a straightforward fashion. 
+
+In the next code block, we use =subsetSelectionSklearn.py= to find best models
+using exhaustive enumeration.  As before, for any given subset size, best model
+is defined as the model which minimizes RSS. 
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import pandas as pd
+  import sys
+  sys.path.append('code/chap6/')
+  from subsetSelectionSklearn import getVarLookup, bestSubset, testStats
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+  hitters = hitters.dropna()
+
+  # Prepare inputs for sklearn LinearRegression()
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+  X_numeric = hitters[var_numeric]
+
+  X_categoric = hitters[var_categoric]
+  X_categoric_dummies = pd.get_dummies(X_categoric)
+  var_categoric_dummies = list(X_categoric_dummies.columns)
+
+  X = pd.concat((X_numeric, X_categoric_dummies), axis=1)
+  y = hitters[y_var]
+
+  x_var_names = list(hitters.columns)
+  x_var_names.remove(y_var)
+
+  # Select best model for a given subset size
+  # Best model is defined as model with the lowest RSS
+  best_models = {}
+  best_model_stats = {}
+  for p in range(1, 19):
+      best_models[p] = bestSubset(y, var_numeric, var_categoric,
+				  var_categoric_dummies, X, subset_size=p)
+      best_model_stats[p] = testStats(X, y, best_models[p])
+  for p in best_models.keys():
+      print('Subset size: ' + str(p) + ', ' +
+	    best_models[p]['metric_name'] + ': ' + 
+	    str(round(best_models[p]['metric'])))
+      print(best_models[p]['x_var_names'])
+      print('Adjusted R-squared: ' +
+	    str(round(best_model_stats[p]['adj_rsq'], 3)) +
+	    ', Cp: ' + str(round(best_model_stats[p]['C_p'])) +
+	    ', AIC: ' + str(round(best_model_stats[p]['AIC'])) +
+	    ', BIC: ' + str(round(best_model_stats[p]['BIC'])))
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Subset size: 1, RSS: 36179679.0
+('CRBI',)
+Adjusted R-squared: 0.319, Cp: 138323.0, AIC: 3862.0, BIC: 3869.0
+Subset size: 2, RSS: 30646560.0
+('Hits', 'CRBI')
+Adjusted R-squared: 0.421, Cp: 118042.0, AIC: 3820.0, BIC: 3831.0
+Subset size: 3, RSS: 29249297.0
+('Hits', 'CRBI', 'PutOuts')
+Adjusted R-squared: 0.445, Cp: 113486.0, AIC: 3810.0, BIC: 3825.0
+Subset size: 4, RSS: 27970852.0
+('Hits', 'CRBI', 'PutOuts', 'Division')
+Adjusted R-squared: 0.467, Cp: 109382.0, AIC: 3800.0, BIC: 3818.0
+Subset size: 5, RSS: 27149899.0
+('AtBat', 'Hits', 'CRBI', 'PutOuts', 'Division')
+Adjusted R-squared: 0.481, Cp: 107018.0, AIC: 3795.0, BIC: 3816.0
+Subset size: 6, RSS: 26194904.0
+('AtBat', 'Hits', 'Walks', 'CRBI', 'PutOuts', 'Division')
+Adjusted R-squared: 0.497, Cp: 104144.0, AIC: 3787.0, BIC: 3812.0
+Subset size: 7, RSS: 25906548.0
+('Hits', 'Walks', 'CAtBat', 'CHits', 'CHmRun', 'PutOuts', 'Division')
+Adjusted R-squared: 0.501, Cp: 103805.0, AIC: 3786.0, BIC: 3815.0
+Subset size: 8, RSS: 25136930.0
+('AtBat', 'Hits', 'Walks', 'CHmRun', 'CRuns', 'CWalks', 'PutOuts', 'Division')
+Adjusted R-squared: 0.514, Cp: 101636.0, AIC: 3780.0, BIC: 3813.0
+Subset size: 9, RSS: 24814051.0
+('AtBat', 'Hits', 'Walks', 'CAtBat', 'CRuns', 'CRBI', 'CWalks', 'PutOuts', 
+'Division')
+Adjusted R-squared: 0.518, Cp: 101166.0, AIC: 3779.0, BIC: 3815.0
+Subset size: 10, RSS: 24500402.0
+('AtBat', 'Hits', 'Walks', 'CAtBat', 'CRuns', 'CRBI', 'CWalks', 'PutOuts', 
+'Assists', 'Division')
+Adjusted R-squared: 0.522, Cp: 100731.0, AIC: 3778.0, BIC: 3817.0
+Subset size: 11, RSS: 24387345.0
+('AtBat', 'Hits', 'Walks', 'CAtBat', 'CRuns', 'CRBI', 'CWalks', 'PutOuts', 
+'Assists', 'League', 'Division')
+Adjusted R-squared: 0.523, Cp: 101058.0, AIC: 3778.0, BIC: 3821.0
+Subset size: 12, RSS: 24333232.0
+('AtBat', 'Hits', 'Runs', 'Walks', 'CAtBat', 'CRuns', 'CRBI', 'CWalks', 
+'PutOuts', 'Assists', 'League', 'Division')
+Adjusted R-squared: 0.522, Cp: 101610.0, AIC: 3780.0, BIC: 3826.0
+Subset size: 13, RSS: 24289148.0
+('AtBat', 'Hits', 'Runs', 'Walks', 'CAtBat', 'CRuns', 'CRBI', 'CWalks', 
+'PutOuts', 'Assists', 'Errors', 'League', 'Division')
+Adjusted R-squared: 0.521, Cp: 102200.0, AIC: 3781.0, BIC: 3831.0
+Subset size: 14, RSS: 24248660.0
+('AtBat', 'Hits', 'HmRun', 'Runs', 'Walks', 'CAtBat', 'CRuns', 'CRBI', 
+'CWalks', 'PutOuts', 'Assists', 'Errors', 'League', 'Division')
+Adjusted R-squared: 0.52, Cp: 102803.0, AIC: 3783.0, BIC: 3836.0
+Subset size: 15, RSS: 24235177.0
+('AtBat', 'Hits', 'HmRun', 'Runs', 'Walks', 'CAtBat', 'CHits', 'CRuns', 'CRBI', 
+'CWalks', 'PutOuts', 'Assists', 'Errors', 'League', 'Division')
+Adjusted R-squared: 0.518, Cp: 103509.0, AIC: 3785.0, BIC: 3842.0
+Subset size: 16, RSS: 24219377.0
+('AtBat', 'Hits', 'HmRun', 'Runs', 'RBI', 'Walks', 'CAtBat', 'CHits', 'CRuns', 
+'CRBI', 'CWalks', 'PutOuts', 'Assists', 'Errors', 'League', 'Division')
+Adjusted R-squared: 0.516, Cp: 104206.0, AIC: 3787.0, BIC: 3847.0
+Subset size: 17, RSS: 24209447.0
+('AtBat', 'Hits', 'HmRun', 'Runs', 'RBI', 'Walks', 'CAtBat', 'CHits', 'CRuns', 
+'CRBI', 'CWalks', 'PutOuts', 'Assists', 'Errors', 'League', 'Division', 'NewLeague')
+Adjusted R-squared: 0.514, Cp: 104926.0, AIC: 3788.0, BIC: 3853.0
+Subset size: 18, RSS: 24201837.0
+('AtBat', 'Hits', 'HmRun', 'Runs', 'RBI', 'Walks', 'Years', 'CAtBat', 'CHits', 
+'CRuns', 'CRBI', 'CWalks', 'PutOuts', 'Assists', 'Errors', 'League', 'Division', 'NewLeague')
+Adjusted R-squared: 0.513, Cp: 105654.0, AIC: 3790.0, BIC: 3858.0
+#+end_example
+
+Using BIC, the best subset has six variables.  Using AIC or C_p, the best subset has 10
+variables.  Finally, using adjusted R-squared, the best subset has 11 variables.
+
+*** Forward and Backward Stepwise Selection
+Forward and backward stepwise selection are implemented in functions
+=forwardStepSelect= and =backwardStepSelect=. Given a data set and a metric,
+these functions add or eliminate a variable at every step. 
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import pandas as pd
+  import sys
+  sys.path.append('code/chap6/')
+  from subsetSelection import forwardStepSelect, backwardStepSelect
+  from subsetSelectionSklearn import getVarLookup, bestSubset
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+  hitters = hitters.dropna()
+
+  # Prepare inputs for subsetSelectionSklearn
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+  X_numeric = hitters[var_numeric]
+
+  X_categoric = hitters[var_categoric]
+  X_categoric_dummies = pd.get_dummies(X_categoric)
+  var_categoric_dummies = list(X_categoric_dummies.columns)
+
+  X = pd.concat((X_numeric, X_categoric_dummies), axis=1)
+  y = hitters[y_var]
+
+  x_var_names = list(hitters.columns)
+  x_var_names.remove(y_var)
+
+  # Select best model for a given subset size
+  # Best model is defined as model with the lowest RSS
+  best_model7 = bestSubset(y, var_numeric, var_categoric,
+			   var_categoric_dummies, X, subset_size=7)
+
+  print('Best models for subset size 7')
+  print('------')
+  print('Best model from exhaustive enumeration')
+  best_model7_res = pd.DataFrame({'variable': ['intercept'],
+				  'coef': [best_model7['model'].intercept_]})
+  best_model7_res = pd.concat((best_model7_res, pd.DataFrame(
+      {'variable': best_model7['var_numeric_dummies'],
+       'coef': best_model7['model'].coef_})), axis=0, ignore_index=True)
+  print(best_model7_res)
+  print('------')
+
+  # Prepare inputs for forward step or backward step
+  y_var = 'Salary'
+  x_vars = list(hitters.columns)
+  x_vars.remove(y_var)
+
+  # Forward step select
+  fwd_best_models = forwardStepSelect(y_var, x_vars, hitters, 'ssr',
+				      metric_max=False)
+  print('Best model using forward step select')
+  print(fwd_best_models[7]['model'].params)
+  print('------')
+
+  # Backward step select
+  bkwd_best_models = backwardStepSelect(y_var, x_vars, hitters, 'ssr',
+					metric_max=False)
+  print('Best model using backward step select')
+  print(bkwd_best_models[7]['model'].params)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Best models for subset size 7
+Best model from exhaustive enumeration
+     variable       coef
+0        Hits   1.283351
+1       Walks   3.227426
+2      CAtBat  -0.375235
+3       CHits   1.495707
+4      CHmRun   1.442054
+5     PutOuts   0.236681
+6  Division_E  64.993322
+7  Division_W -64.993322
+------
+Best model using forward step select
+Intercept        109.787306
+Division[T.W]   -127.122393
+CRBI               0.853762
+Hits               7.449877
+PutOuts            0.253340
+AtBat             -1.958885
+Walks              4.913140
+CWalks            -0.305307
+dtype: float64
+------
+Best model using backward step select
+Intercept        105.648749
+Division[T.W]   -116.169217
+AtBat             -1.976284
+Hits               6.757491
+Walks              6.055869
+CRuns              1.129309
+CWalks            -0.716335
+PutOuts            0.302885
+dtype: float64
+#+end_example
+
+*** Choosing Among Models Using the Validation Set Approach and Cross-Validation
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
