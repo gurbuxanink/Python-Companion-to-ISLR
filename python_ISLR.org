@@ -4752,16 +4752,18 @@ these functions add or eliminate a variable at every step.
 #+RESULTS:
 #+begin_example
 Best models for subset size 7
+------
 Best model from exhaustive enumeration
      variable       coef
-0        Hits   1.283351
-1       Walks   3.227426
-2      CAtBat  -0.375235
-3       CHits   1.495707
-4      CHmRun   1.442054
-5     PutOuts   0.236681
-6  Division_E  64.993322
-7  Division_W -64.993322
+0   intercept  14.457626
+1        Hits   1.283351
+2       Walks   3.227426
+3      CAtBat  -0.375235
+4       CHits   1.495707
+5      CHmRun   1.442054
+6     PutOuts   0.236681
+7  Division_E  64.993322
+8  Division_W -64.993322
 ------
 Best model using forward step select
 Intercept        109.787306
@@ -4787,6 +4789,225 @@ dtype: float64
 #+end_example
 
 *** Choosing Among Models Using the Validation Set Approach and Cross-Validation
+We now split the =Hitters= data set into two groups: training and test.  We use
+training group to estimate regression coefficients. Then we use these coefficients
+to estimate RSS on test group.  By repeating this procedure on subsets of all
+sizes, we find the optimal subset size (which results in the smallest RSS).  For
+this subset size, we find the best model using the /entire/ data set. Note that
+the last step has already been done in the previous section.
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import numpy as np
+  import pandas as pd
+  # from sklearn import LinearRegression
+  import sys
+  sys.path.append('code/chap6/')
+  from subsetSelectionSklearn import bestSubsetTest, getVarLookup, bestSubset
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+  hitters = hitters.dropna()
+
+  # Create indexes to split data between training and test groups
+  np.random.seed(911)
+  train_ind = np.random.choice([True, False], hitters.shape[0])
+  test_ind = (train_ind == False)
+
+  # Prepare inputs for LinearRegression
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+  X_numeric = hitters[var_numeric]
+
+  X_categoric = hitters[var_categoric]
+  X_categoric_dummies = pd.get_dummies(X_categoric)
+  var_categoric_dummies = list(X_categoric_dummies.columns)
+
+  X = pd.concat((X_numeric, X_categoric_dummies), axis=1)
+  y = hitters[y_var]
+
+  x_var_names = list(hitters.columns)
+  x_var_names.remove(y_var)
+
+  # Select best model for given subset size
+  # Estimate coefficients using training data
+  # Best model minimizes test RSS
+  best_models = {}
+  for p in range(1, 19):
+      best_models[p] = bestSubsetTest(y, var_numeric, var_categoric,
+				      var_categoric_dummies, X, train_ind,
+				      test_ind, subset_size=p)
+
+  RSS = [best_models[k]['metric'] for k in best_models.keys()]
+  best_ind = np.argmin(RSS)
+  best_subset_size = list(best_models.keys())[best_ind]
+
+  print('Best model from cross-validation')
+  print('subset size: ' + str(best_subset_size) + ', RSS: ' +
+	str(round(best_models[best_ind]['metric'], 0)))
+  coef_df = pd.DataFrame({'variable': ['intercept'], 'coefficient':
+			  best_models[best_ind]['model'].intercept_})
+  coef_df = pd.concat((coef_df, pd.DataFrame(
+      {'variable': best_models[best_ind]['var_numeric_dummies'],
+       'coefficient': best_models[best_ind]['model'].coef_})),
+		      axis=0, ignore_index=True)
+
+  print(coef_df)
+  print('------')
+
+  # Use full dataset to reestimate model for best subset size
+  best_model_alldata = bestSubset(y, var_numeric, var_categoric,
+				  var_categoric_dummies, X,
+				  best_subset_size)
+  coef_alldata = pd.DataFrame({'variable': ['intercept'],
+			       'coefficient':
+			       best_model_alldata['model'].intercept_})
+  coef_alldata = pd.concat(
+      (coef_alldata, pd.DataFrame(
+	  {'variable': best_model_alldata['var_numeric_dummies'],
+	   'coefficient': best_model_alldata['model'].coef_})), axis=0,
+      ignore_index=True)
+  print('Best subset size from cross validation')
+  print('Best model coefficients reestimated using all data')
+  print(coef_alldata)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Best model from cross-validation
+subset size: 10, RSS: 15473294.0
+       variable  coefficient
+0     intercept    80.226817
+1         AtBat    -1.961614
+2          Hits     7.665752
+3         Walks     4.392214
+4        CHmRun     0.780084
+5         CRuns     0.655072
+6        CWalks    -0.334012
+7        Errors     0.739688
+8    Division_E    60.649902
+9    Division_W   -60.649902
+10  NewLeague_A   -18.555935
+11  NewLeague_N    18.555935
+------
+Best subset size from cross validation
+Best model coefficients reestimated using all data
+      variable  coefficient
+0    intercept   106.345413
+1        AtBat    -2.168650
+2         Hits     6.918017
+3        Walks     5.773225
+4       CAtBat    -0.130080
+5        CRuns     1.408249
+6         CRBI     0.774312
+7       CWalks    -0.830826
+8      PutOuts     0.297373
+9      Assists     0.283168
+10  Division_E    56.190029
+11  Division_W   -56.190029
+#+end_example
+
+We see that the best ten-variable model on the full data set has a different set
+of variables than the best ten-variable model on the training set.  Moreover,
+the best ten-variable model on the training set is different from the result in
+the book.  In fact, it can change with the choice of seed used to partition the
+data set between training and test groups. 
+
+We now use 10-fold cross-validation to find best model (which minimizes test
+error) for each subset size.  To speed up calculations, we use =multiprocessing=
+package. 
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import numpy as np
+  import pandas as pd
+  import sys
+  sys.path.append('code/chap6/')
+  # from subsetSelection import bestSubsetCrossValSize, bestModel
+  from subsetSelectionSklearn import bestSubsetCrossVal, bestSubset, getVarLookup
+  from multiprocessing import Pool
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+  hitters.dropna(inplace=True)
+
+  # Prepare inputs for LinearRegression
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+  X_numeric = hitters[var_numeric]
+
+  X_categoric = hitters[var_categoric]
+  X_categoric_dummies = pd.get_dummies(X_categoric)
+  var_categoric_dummies = list(X_categoric_dummies.columns)
+
+  X = pd.concat((X_numeric, X_categoric_dummies), axis=1)
+  y = hitters[y_var]
+
+  x_var_names = list(hitters.columns)
+  x_var_names.remove(y_var)
+
+
+  def bestSubsetMP(s):
+      return bestSubsetCrossVal(y, var_numeric, var_categoric,
+				var_categoric_dummies, X, subset_size=s)
+
+  size_list = np.arange(1, 19)
+  with Pool() as p:
+      best_model_list = p.map(bestSubsetMP, size_list)
+
+  mse = [round(model['metric']) for model in best_model_list]
+  print('Cross validation MSE')
+  print(mse)
+  print('------')
+
+  best_ind = np.argmin(mse)
+  best_size = size_list[best_ind]
+  print('Best subset size: ' + str(best_size))
+  best_model_cv = bestSubset(y, var_numeric, var_categoric,
+			     var_categoric_dummies, X,
+			     subset_size=best_size)
+
+  coef_df = pd.DataFrame({'variable': ['intercept'],
+			  'coefficient': best_model_cv['model'].intercept_})
+  coef_df = pd.concat(
+      (coef_df, pd.DataFrame({'variable': best_model_cv['var_numeric_dummies'],
+			      'coefficient': best_model_cv['model'].coef_})),
+      axis=0, ignore_index=True)
+  print('Best model coefficients')
+  print(coef_df)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Cross validation MSE
+[149266.0, 131142.0, 125944.0, 121753.0, 118906.0, 115753.0, 115437.0, 114081.0,
+ 113859.0, 114321.0, 114903.0, 115714.0, 116646.0, 117833.0, 119352.0, 121777.0,
+ 123248.0, 125228.0]
+------
+Best subset size: 9
+Best model coefficients
+      variable  coefficient
+0    intercept    88.574850
+1        AtBat    -1.936768
+2         Hits     6.656721
+3        Walks     5.552044
+4       CAtBat    -0.099539
+5        CRuns     1.250671
+6         CRBI     0.661768
+7       CWalks    -0.777985
+8      PutOuts     0.277731
+9   Division_E    57.674751
+10  Division_W   -57.674751
+#+end_example
+
 
 * Footnotes
 
