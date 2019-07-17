@@ -94,3 +94,102 @@ def testStats(X, y, model):
     AIC = -2 * llf + 2 * (p_vars + 1)
     BIC = -2 * llf + np.log(n_obs) * (p_vars + 1)
     return {'adj_rsq': adj_rsq, 'C_p': C_p, 'AIC': AIC, 'BIC': BIC}
+
+
+# Estimate coefficients on training data set
+# Select best model using RSS on test data set
+def bestSubsetTest(y, x_vars_numeric, x_vars_cat, x_var_dummies,
+                   df, train_ind, test_ind, subset_size=1):
+    '''Assumes y is the dependent variable vector.
+    x_vars_numeric is a list of numeric independent variables.
+    x_vars_cat is a list of categorical independent variables.
+    x_var_dummies is the list of dummy variables obtained from x_vars_cat.
+    df is the dataframe whose columns include all numeric and dummy variables.
+    train_ind is a boolean vector whose True values select training data.
+    test_ind (complement of train_ind) is used to select test data.
+    Returns best model for which test RSS is minimized.'''
+
+    train_df = df.loc[train_ind]
+    test_df = df.loc[test_ind]
+    y_train = y[train_ind]
+    y_test = y[test_ind]
+
+    var_lookup = getVarLookup(x_vars_numeric, x_vars_cat,
+                              x_var_dummies)
+    all_x = x_vars_numeric.copy()
+    all_x.extend(x_vars_cat)
+    x_combinations = combinations(all_x, subset_size)
+
+    best_metric = np.inf
+    for select_var in x_combinations:
+        x_columns = []
+        for x_name in select_var:
+            x_columns.extend(var_lookup[x_name])
+
+        X_train = train_df[x_columns]
+        reg_model = LinearRegression()
+        reg_model.fit(X_train, y_train)
+        X_test = test_df[x_columns]
+        y_fit = reg_model.predict(X_test)
+        model_metric = np.sum((y_fit - y_test) ** 2)
+        if model_metric < best_metric:
+            best_model = reg_model
+            best_x_vars = select_var
+            best_var_dummies = x_columns
+            best_metric = model_metric
+    return {'model': best_model, 'x_var_names': best_x_vars,
+            'var_numeric_dummies': best_var_dummies,
+            'metric': best_metric, 'metric_name': 'RSS'}
+
+
+def bestSubsetCrossVal(y, x_vars_numeric, x_vars_cat, x_var_dummies, df,
+                       subset_size=1, k_folds=10):
+    '''Assumes y is the vector of dependent variable.
+    x_vars_numeric is the list of names of numeric explanatory variables.
+    x_vars_cat is the list of names of categorical variables.
+    x_vars_dummies is the list of names of dummy variables obtained from
+    categorical variables.
+    df is the dataframe whose columns include numeric and dummy variables.
+    subset_size is the size for which best model is to be selected.
+    k_folds is the number of folds to be used in cross validation.
+    Returns model which minimizes MSE in cross validation.'''
+
+    var_lookup = getVarLookup(x_vars_numeric, x_vars_cat,
+                              x_var_dummies)
+    all_x = x_vars_numeric.copy()
+    all_x.extend(x_vars_cat)
+    x_combinations = combinations(all_x, subset_size)
+
+    np.random.seed(211)
+
+    i_folds = np.random.choice(k_folds, df.shape[0])
+    best_mse = np.inf
+
+    for select_var in x_combinations:
+        x_columns = []
+        for x_name in select_var:
+            x_columns.extend(var_lookup[x_name])
+
+        total_error_sq = 0
+        for a_fold in range(k_folds):
+            train_df = df.loc[a_fold != i_folds]
+            test_df = df.loc[a_fold == i_folds]
+            y_train = y[a_fold != i_folds]
+            y_test = y[a_fold == i_folds]
+            X_train = train_df[x_columns]
+            reg_model = LinearRegression()
+            reg_model.fit(X_train, y_train)
+
+            X_test = test_df[x_columns]
+            y_fit = reg_model.predict(X_test)
+            error_sq = np.mean((y_fit - y_test) ** 2)
+            total_error_sq += error_sq
+        select_var_mse = total_error_sq / k_folds
+        if select_var_mse < best_mse:
+            best_x_vars = select_var
+            best_var_dummies = x_columns
+            best_mse = select_var_mse
+
+    return {'x_var_names': best_x_vars,
+            'var_numeric_dummies': best_var_dummies,
+            'metric': best_mse, 'metric_name': 'MSE'}
