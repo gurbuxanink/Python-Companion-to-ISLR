@@ -4927,7 +4927,6 @@ package.
   import pandas as pd
   import sys
   sys.path.append('code/chap6/')
-  # from subsetSelection import bestSubsetCrossValSize, bestModel
   from subsetSelectionSklearn import bestSubsetCrossVal, bestSubset, getVarLookup
   from multiprocessing import Pool
 
@@ -4988,26 +4987,32 @@ package.
 #+RESULTS:
 #+begin_example
 Cross validation MSE
-[149266.0, 131142.0, 125944.0, 121753.0, 118906.0, 115753.0, 115437.0, 114081.0,
- 113859.0, 114321.0, 114903.0, 115714.0, 116646.0, 117833.0, 119352.0, 121777.0,
- 123248.0, 125228.0]
+[139557.0, 119654.0, 115384.0, 111173.0, 108374.0, 104886.0, 104685.0, 102869.0,
+ 101997.0, 101760.0, 101805.0, 102509.0, 103381.0, 104389.0, 105478.0, 107019.0,
+ 108827.0, 110783.0]
 ------
-Best subset size: 9
+Best subset size: 10
 Best model coefficients
       variable  coefficient
-0    intercept    88.574850
-1        AtBat    -1.936768
-2         Hits     6.656721
-3        Walks     5.552044
-4       CAtBat    -0.099539
-5        CRuns     1.250671
-6         CRBI     0.661768
-7       CWalks    -0.777985
-8      PutOuts     0.277731
-9   Division_E    57.674751
-10  Division_W   -57.674751
+0    intercept   106.345413
+1        AtBat    -2.168650
+2         Hits     6.918017
+3        Walks     5.773225
+4       CAtBat    -0.130080
+5        CRuns     1.408249
+6         CRBI     0.774312
+7       CWalks    -0.830826
+8      PutOuts     0.297373
+9      Assists     0.283168
+10  Division_E    56.190029
+11  Division_W   -56.190029
 #+end_example
 
+In the reported results, cross-validation selects a 10-variable model.
+Depending upon the choice of seed, a 9-, 10- or 11-variable model may be
+selected.  
+
+** Lab 2: Ridge Regression and the Lasso
 
 * Footnotes
 
