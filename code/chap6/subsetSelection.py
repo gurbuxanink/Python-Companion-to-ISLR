@@ -267,3 +267,34 @@ def bestModel(y_var, all_x, train_df, subset_size=1, metric='rsquared_adj',
             best_metric = metric_val
 
     return dict(model=model, model_vars=model_vars, model_metric=model_metric)
+
+
+def bestSubsetCrossValSize(y_var, all_x, in_df, subset_size=1, k_folds=10):
+    '''Assumes y_var is the dependent variable and all_x are all possible
+    explantory variables.  in_df is a dataframe whose columns include
+    y_var and all_x.  subset_size is the size for which best model is to
+    be selected. Returns best model of subset_size selected based
+    on lowest cross-validation error based on k_folds of in_df.'''
+
+    np.random.seed(911)
+    best_model = {}
+    i_folds = np.random.choice(k_folds, in_df.shape[0])
+    x_combinations = combinations(all_x, subset_size)
+    select_var_best_mse = np.inf
+    for select_var in x_combinations:
+        total_error_sq = 0
+        my_formula = y_var + ' ~ ' + ' + '.join(select_var)
+        for a_fold in range(k_folds):
+            train_df = in_df.loc[a_fold != i_folds]
+            test_df = in_df.loc[a_fold == i_folds]
+            lm_model = smf.ols(my_formula, data=train_df)
+            lm_fit = lm_model.fit()
+            error_sq = np.mean(
+                (lm_fit.predict(test_df) - test_df[y_var]) ** 2)
+            total_error_sq += error_sq
+        select_var_mse = total_error_sq / k_folds
+        if select_var_mse < select_var_best_mse:
+            best_model['x_vars'] = select_var
+            best_model['mse'] = select_var_mse
+            select_var_best_mse = select_var_mse
+    return best_model
