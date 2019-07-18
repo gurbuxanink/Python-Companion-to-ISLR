@@ -5146,6 +5146,96 @@ Test MSE with best lambda
 
 *** The Lasso
 
+We now ask whether the lasso can yield either a more accurate or a more
+interpretable model than ridge regression.  We find that test MSE is much lower
+than the test MSE from a model with no coefficients.  Test MSE from best fit
+lasso model is comparable to test MSE from best fit ridge model.  Note that, for
+the chosen seeds, test MSE is slightly /lower/ than training MSE.  For other
+seeds, we find that test MSE is higher than training MSE. 
+
+Using the =alpha= of the best lasso model, we fit a lasso on the entire data
+set.  Some of the variables have zero coefficients.  Although the test MSE is
+very similar to test MSE reported in the book, the coefficients are quite different.
+
+#+BEGIN_SRC python :exports both :results output
+  from sklearn.linear_model import Lasso, LassoCV
+  import numpy as np
+  import pandas as pd
+
+  hitters = pd.read_csv('data/Hitters.csv', index_col=0)
+  hitters.dropna(inplace=True)
+
+  # Prepare data for input to sklearn
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+
+  y = hitters[y_var]
+  X_numeric = hitters[var_numeric]
+  X_numeric_std = (X_numeric - X_numeric.mean()) / X_numeric.std()
+  X_categoric = hitters[var_categoric]
+  X_cat_dummies = pd.get_dummies(X_categoric)
+  X = pd.concat((X_numeric_std, X_cat_dummies), axis=1)
+
+  # Split data into training and test groups
+  np.random.seed(911)
+  shuffle_ind = np.arange(X.shape[0])
+  np.random.shuffle(shuffle_ind)
+  train_ind = shuffle_ind[:int(X.shape[0] / 2.0)]
+  test_ind = shuffle_ind[int(X.shape[0] / 2.0):]
+  X_train = X.iloc[train_ind]
+  y_train = y[train_ind]
+  X_test = X.iloc[test_ind]
+  y_test = y[test_ind]
+
+  # Find best alpha, calculate MSE
+  alpha_vals = np.logspace(-3, 3)
+  lasso_cv = LassoCV(alphas=alpha_vals, max_iter=10000, cv=10, random_state=211)
+  lasso_cv.fit(X_train, y_train)
+
+  y_predict = lasso_cv.predict(X_train)
+  print('Train MSE with best lambda')
+  print(round(np.mean((y_predict - y_train) ** 2)))
+
+  y_predict = lasso_cv.predict(X_test)
+  print('Test MSE with best lambda')
+  print(round(np.mean((y_predict - y_test) ** 2)))
+  print('------')
+
+  # Use best alpha to fit lasso on full data set
+  lasso = Lasso(alpha=lasso_cv.alpha_)
+  lasso.fit(X, y)
+  best_coef = pd.Series(lasso.coef_, index=X.columns)
+  best_coef = best_coef[np.abs(best_coef) > 1e-5]
+  best_coef = pd.concat((pd.Series(lasso.intercept_, index=['Intercept']),
+			 best_coef))
+  print('Coefficients of best lasso fit')
+  print(best_coef)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Train MSE with best lambda
+116129.0
+Test MSE with best lambda
+102605.0
+------
+Coefficients of best lasso fit
+Intercept     506.569249
+Hits           84.392705
+Walks          48.147509
+CRuns          71.418900
+CRBI          128.901955
+PutOuts        60.083757
+Division_E     59.851120
+dtype: float64
+#+end_example
+
+** Lab 3: PCR and PLS Regression
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
