@@ -5014,6 +5014,138 @@ selected.
 
 ** Lab 2: Ridge Regression and the Lasso
 
+From =sklearn= library, we will use =Ridge= and =Lasso= functions to perform
+ridge regression and the lasso.  
+
+*** Ridge Regression
+
+In the =Ridge()= function of =sklearn= library, =alpha= input is similar to
+\lambda in the book.  The =Ridge()= function minimizes $\|y - Xw\|_2^2 + \alpha
+\|w\|^2_2$.  On the other hand, for ridge regression, =glmnet= used in
+the book minimizes $\frac{1}{N} \|y - X\beta\|_2^2 +
+\frac{\lambda}{2}\|\beta\|_2^2$. Therefore, to obtain comparable results similar
+to the book, we need to use in $\alpha_{Ridge} = \lambda_{book} N / 2$.  
+
+We see that the $\ell_2$ norms of ridge coefficients are different from
+those reported in the book. But, consistent with the book, as penalty decreases,
+$\ell_2$ norm of coefficients increases. 
+
+Fitting a ridge regression model with \lambda = 4 leads to a much lower test MSE
+than than fitting a model with just an intercept.  However, unlike the book,
+test MSE from ordinary least squares regression is lower than test MSE from
+ridge regression.  These results change with the choice of seed. 
+
+#+BEGIN_SRC python :exports both :results output
+  from sklearn.linear_model import Ridge, RidgeCV
+  from sklearn.metrics import make_scorer, mean_squared_error
+  import numpy as np
+  import pandas as pd
+
+  hitters = pd.read_csv('data/Hitters.csv', index_col=0)
+  hitters.dropna(inplace=True)
+
+  # Prepare data for input to sklearn
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+
+  y = hitters[y_var]
+  X_numeric = hitters[var_numeric]
+  X_numeric_std = X_numeric / X_numeric.std()
+  X_categoric = hitters[var_categoric]
+  X_cat_dummies = pd.get_dummies(X_categoric)
+  X = pd.concat((X_numeric_std, X_cat_dummies), axis=1)
+
+  # lambda = 11498
+  ridge11k = Ridge(alpha=11498 * X.shape[0] / 2)
+  ridge11k.fit(X, y)
+  print('el2 norm when lambda is 11498')
+  print(np.sqrt(np.sum(ridge11k.coef_ ** 2)))
+
+  # lambda = 705
+  ridge700 = Ridge(alpha=705 * X.shape[0] / 2)
+  ridge700.fit(X, y)
+  print('el2 norm when lambda is 705')
+  print(np.sqrt(np.sum(ridge700.coef_ ** 2)))
+  print('------')
+
+  # Split data into training and test groups
+  np.random.seed(911)
+  shuffle_ind = np.arange(X.shape[0])
+  np.random.shuffle(shuffle_ind)
+  train_ind = shuffle_ind[:int(X.shape[0] / 2.0)]
+  test_ind = shuffle_ind[int(X.shape[0] / 2.0):]
+  X_train = X.iloc[train_ind]
+  y_train = y[train_ind]
+  X_test = X.iloc[test_ind]
+  y_test = y[test_ind]
+
+  # lambda = 4
+  ridge4 = Ridge(alpha=4 * X.shape[0] / 2)
+  ridge4.fit(X_train, y_train)
+  y_predict = ridge4.predict(X_test)
+  print('Test MSE with lambda = 4')
+  print(round(np.mean((y_predict - y_test) ** 2)))
+
+  y_predict_train = ridge4.predict(X_train)
+  print('Test MSE when only an intercept is fit')
+  print(round(np.mean((y_test - np.mean(y_predict_train)) ** 2)))
+
+  # Very large lambda
+  ridge_inf = Ridge(alpha=1e10)
+  ridge_inf.fit(X_train, y_train)
+  y_predict = ridge_inf.predict(X_test)
+  print('Test MSE with very large lambda')
+  print(round(np.mean((y_predict - y_test) ** 2)))
+
+  # lambda = 0, equivalanet to OLS
+  ridge_zero = Ridge(alpha=0)
+  ridge_zero.fit(X_train, y_train)
+  y_predict = ridge_zero.predict(X_test)
+  print('Test MSE with zero lambda')
+  print(round(np.mean((y_predict - y_test) ** 2)))
+  print('------')
+
+  # Select best alpha using cross-validation
+  alpha_vals = np.logspace(-2, 5)
+  negative_mse = make_scorer(mean_squared_error, greater_is_better=False)
+  ridge_cv = RidgeCV(alphas=alpha_vals, scoring=negative_mse)
+  ridge_cv.fit(X_train, y_train)
+  print('Best lambda: ' + str(round(ridge_cv.alpha_ * 2 / X_train.shape[0], 3)))
+
+  ridge_best = Ridge(alpha=ridge_cv.alpha_)
+  ridge_best.fit(X_train, y_train)
+  y_predict = ridge_best.predict(X_test)
+  print('Test MSE with best lambda')
+  print(round(np.mean((y_predict - y_test) ** 2)))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+el2 norm when lambda is 11498
+0.1361967493538057
+el2 norm when lambda is 705
+2.1801333373772005
+------
+Test MSE with lambda = 4
+123619.0
+Test MSE when only an intercept is fit
+202378.0
+Test MSE with very large lambda
+202378.0
+Test MSE with zero lambda
+103859.0
+------
+Best lambda: 2.121
+Test MSE with best lambda
+108007.0
+#+end_example
+
+*** The Lasso
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
