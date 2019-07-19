@@ -5236,6 +5236,202 @@ dtype: float64
 
 ** Lab 3: PCR and PLS Regression
 
+*** Principal Components Regression
+
+We first run PCA on =Hitters= data.  Then we use principal components as
+explanatory variables in linear regression.  
+
+#+BEGIN_SRC python :exports both :results output
+  from sklearn.decomposition import PCA
+  from sklearn.linear_model import LinearRegression
+  import pandas as pd
+  import numpy as np
+  from sklearn.model_selection import cross_val_score, KFold
+  from sklearn.metrics import mean_squared_error
+
+  hitters = pd.read_csv('data/Hitters.csv', index_col=0)
+  hitters.dropna(inplace=True)
+
+  # Prepare data for use in sklearn
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+
+  X_numeric = hitters[var_numeric]
+  X_categoric = hitters[var_categoric]
+  X_cat_dummies = pd.get_dummies(X_categoric)
+  # An alternative method of including dummy variables
+  # Use this method to tie out with results in the book
+  X_cat_dummies.drop(columns=['League_A', 'Division_E', 'NewLeague_A'],
+		     inplace=True)
+  X = pd.concat((X_numeric, X_cat_dummies), axis=1)
+  X = (X - X.mean()) / X.std()
+  y = hitters[y_var]
+
+  # Run PCA on explanatory variables
+  pca = PCA()
+  pca.fit(X)
+
+  # Run OLS regression using 1, 2, ..., all principal components
+  # Calculate percent variance of y explained (r-squared) using cross validation
+  X_transform = pca.transform(X)
+  k_fold10 = KFold(n_splits=10, shuffle=True, random_state=911)
+  lm_model = LinearRegression()
+  r_sq = []                       # on training data
+  r_sq_cv = []                    # in cross validation
+  mse = []                        # on training data
+  mse_cv = []                     # in cross validation
+  for i_components in np.arange(1, X_transform.shape[1] + 1):
+      scores_mse  = cross_val_score(lm_model, X_transform[:, :i_components],
+				    y, scoring='neg_mean_squared_error',
+				    cv=k_fold10)
+      mse_cv.append(np.mean(scores_mse))
+
+      # For LinearRegression, score is r-squared
+      scores_rsq = cross_val_score(lm_model, X_transform[:, :i_components],
+				   y, cv=k_fold10)
+      r_sq_cv.append(np.mean(scores_rsq))
+      # Fit on all data
+      lm_model.fit(X_transform[:, :i_components], y)
+      r_sq.append(lm_model.score(X_transform[:, :i_components], y))
+      mse.append(mean_squared_error(y, lm_model.predict(
+	  X_transform[:, :i_components])))
+
+  mse_cv = [-1 * mse for mse in mse_cv]
+
+  print('Training data variance explained by principal components')
+  explain_df = pd.DataFrame(
+      {'num_components': np.arange(1, X_transform.shape[1] + 1),
+       'X': np.round(np.cumsum(pca.explained_variance_ratio_), 4),
+       'y': r_sq})
+  explain_df.set_index('num_components', inplace=True)
+  print(explain_df.head(10))
+  print('------')
+
+  n_best_train = np.argmin(mse) + 1
+  n_best_cv = np.argmin(mse_cv) + 1
+  print('On training data, lowest mse occurs when %0.0f components are incuded' %
+	n_best_train)
+  print('In cross validation, lowest mse occurs when %0.0f components are included'
+	% n_best_cv)
+  print('------')
+
+  # Split data into training and test
+  np.random.seed(211)
+  train_ind = np.random.choice([True, False], X_transform.shape[0])
+  test_ind = (train_ind == False)
+  X_train = X.loc[train_ind]
+  X_train = (X_train - X_train.mean()) / X_train.std()
+  y_train = y[train_ind]
+
+  X_test = X.loc[test_ind]
+  X_test = (X_test - X_test.mean()) / X_test.std()
+  y_test = y[test_ind]
+
+  pca = PCA()
+  pca.fit(X_train)
+  X_train_transform = pca.transform(X_train)[:, :n_best_cv]
+  lm_model = LinearRegression()
+  lm_model.fit(X_train_transform, y_train)
+
+  X_test_transform = pca.transform(X_test)[:, :n_best_cv]
+  rss = np.mean((y_test - lm_model.predict(X_test_transform)) ** 2)
+  print('Using number of components that results in lowest cv MSE')
+  print('Test RSS: %0.0f' % rss)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Training data variance explained by principal components
+                     X         y
+num_components                  
+1               0.3831  0.406269
+2               0.6016  0.415822
+3               0.7084  0.421733
+4               0.7903  0.432236
+5               0.8429  0.449044
+6               0.8863  0.464800
+7               0.9226  0.466864
+8               0.9496  0.467498
+9               0.9628  0.468580
+10              0.9726  0.477632
+------
+On training data, lowest mse occurs when 19 components are incuded
+In cross validation, lowest mse occurs when 6 components are included
+------
+Using number of components that results in lowest cv MSE
+Test RSS: 110989
+#+end_example
+
+*** Partial Least Squares
+
+To perform partial least squares regression, we use =PLSRegression= function in
+=sklearn= library.  While the overall results are the same (for best model using
+training data, test MSE is comparable to best model using PCA, ridge, or lasso),
+actual results will vary based on the choice of seed.   
+
+#+BEGIN_SRC python :exports both :results output
+  import pandas as pd
+  import numpy as np
+  from sklearn.cross_decomposition import PLSRegression
+  from sklearn.model_selection import cross_val_score
+
+  hitters = pd.read_csv('data/Hitters.csv', index_col=0)
+  hitters.dropna(inplace=True)
+
+  # Prepare data for sklearn
+  y_var = 'Salary'
+  var_categoric = ['League', 'Division', 'NewLeague']
+  var_numeric = list(hitters.columns)
+  var_numeric.remove(y_var)
+  for name in var_categoric:
+      var_numeric.remove(name)
+
+  X_numeric = hitters[var_numeric]
+  X_categoric = hitters[var_categoric]
+  X_cat_dummies = pd.get_dummies(X_categoric)
+  X = pd.concat((X_numeric, X_cat_dummies), axis=1)
+  y = hitters[y_var]
+
+  # Split data between training and test groups
+  np.random.seed(911)
+  train_ind = np.random.choice([True, False], X.shape[0])
+  test_ind = np.vectorize(lambda x: not x)(train_ind)
+  X_train = X.loc[train_ind]
+  X_test = X.loc[test_ind]
+  X_train = (X_train - X_train.mean()) / X_train.std()
+  X_test = (X_test - X_test.mean()) / X_test.std()
+  y_train = y[train_ind]
+  y_test = y[test_ind]
+
+  mse_cv = []
+  for i_components in np.arange(1, 20):
+      pls = PLSRegression(n_components=i_components)
+      scores = cross_val_score(pls, X_train, y_train, cv=10,
+			       scoring='neg_mean_squared_error')
+      mse_cv.append(np.mean(scores))
+
+  mse_cv = [-1 * mse for mse in mse_cv]
+  best_comp_count = np.argmin(mse_cv) + 1
+  print('Lowest MSE obtained when number of components is %0.0f'
+	% best_comp_count)
+
+  # Fit PLS on test data using best number of components
+  pls = PLSRegression(n_components=best_comp_count)
+  pls.fit(X_test, y_test)
+  mse_test = np.mean((pls.predict(X_test).ravel() - y_test) ** 2)
+  print('Using best number of components from training PLS')
+  print('Test MSE: %0.0f' % mse_test)
+#+END_SRC
+
+#+RESULTS:
+: Lowest MSE obtained when number of components is 3
+: Using best number of components from training PLS
+: Test MSE: 109315
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
