@@ -5432,6 +5432,38 @@ actual results will vary based on the choice of seed.
 : Using best number of components from training PLS
 : Test MSE: 109315
 
+* Moving Beyond Linearity
+
+** Polynomial Regression
+
+The left-hand panel of figure [[fig:beyondLinearFig1]] is a plot of =wage= against
+=age= for the =Wage= data set, which contains demographic information for males
+who reside in the central Atlantic region of the United States.  The scatter
+plot shows individual data points.  The firm line is regression fit of fourth
+order polynomial.  The dotted lines show 95% confidence interval.  
+
+The right-hand panel shows fitted probabilities of =wage > 250= from a logistic
+regression, also on fourth order polynomial of =age=.  The grey marks on the top
+and bottom of the panel indicate the ages of the high earners and low earners.    
+
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig7_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap7/')
+
+  import matplotlib.pyplot as plt
+  import degree4_polynomial
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:beyondLinearFig1
+#+CAPTION: The =Wage= data.  Left: The sold curve is a degree-4 polynomial of =wage= (in thousands of dollars) as a function of =age=, fit by least squares.  The dotted curves indicate an estimated 95% confidence interval.  Right: We model the binary event =wage > 250= using logistic regression, again with a degree-4 polynomial.  The fitted posterior probability of =wage= exceeding $250,000 is shown in blue.  
+#+RESULTS:
+[[file:figures/fig7_1.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
