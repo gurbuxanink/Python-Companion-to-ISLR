@@ -5489,6 +5489,214 @@ based on =age=.  The right-hand panel displays the fitted posterior probabilitie
 
 ** Basis Functions
 
+** Regression Splines
+
+** Lab: Non-linear Modeling
+
+*** Polynomial Regression and Step Functions
+
+We define a simple function to replicate the output of =poly= function in =R=.
+We then fit =wage= as a fourth order orthogonal polynomial of =age=. Then we fit
+=wage= as a fourth order raw polynomnial of =age=.  Predicted values from both
+fits are very close to one another.
+
+ANOVA analysis on nested models of upto five degree polynomials shows that first
+three degrees are highly significant.  Fourth degree has a p-value just above
+0.05.  Fifth degree is not significant.  Either a cubic or a quartic polynomial
+provide a reasonable fit.
+
+With the fourth order polynomial as the chosen model, it is straightforward to
+plot fitted values and confidence intervals. 
+
+#+BEGIN_SRC python :exports both :results output
+  import pandas as pd
+  import numpy as np
+  import statsmodels.formula.api as smf
+  from statsmodels import datasets
+  from statsmodels.stats.api import anova_lm
+  import statsmodels.api as sm
+  import matplotlib.pyplot as plt
+
+  wage = datasets.get_rdataset('Wage', 'ISLR').data
+
+  # Replicate poly() function in R
+  # Based on an answer by K. A. Buhr on stackoverflow
+  def poly(x, p):
+      x = np.array(x)
+      X_mat = np.transpose(np.vstack([x ** k for k in range(p + 1)]))
+      return np.linalg.qr(X_mat)[0][:, 1:]
+
+
+  # Fit wage as a function of orthogonal polynomial of age
+  X_wage = poly(wage['age'], 4)
+  X_wage = sm.add_constant(X_wage)
+
+  poly_model = sm.OLS(wage['wage'], X_wage)
+  poly_fit = poly_model.fit()
+
+  print('Coefficients of orthogonal polynomials upto 4 degrees')
+  print(poly_fit.summary2().tables[1].iloc[:, :4])
+  print('------')
+
+  # Fit wage as a function of raw polynomials of age
+  model = smf.ols('wage ~ age + I(age ** 2) + I(age ** 3) + I(age ** 4)',
+		  data=wage)
+  fit = model.fit()
+  print('Coefficients of raw polynomials upto 4 degrees')
+  print(fit.summary2().tables[1].iloc[:, :4])
+  print('------')
+
+  # Verify that both models produce identical fitted values
+  print('Orthogonal polynomials and raw polynomials fitted values nearly equal:')
+  print(np.all(np.abs(fit.fittedvalues - poly_fit.fittedvalues) < 1e-7))
+  print('------')
+
+  # Fit models of degrees 1 to 5, then compare using ANOVA
+  fit1 = smf.ols('wage ~ age', data=wage).fit()
+  fit2 = smf.ols('wage ~ age + I(age ** 2)', data=wage).fit()
+  fit3 = smf.ols('wage ~ age + I(age ** 2) + I(age ** 3)', data=wage).fit()
+  fit4 = smf.ols('wage ~ age + I(age ** 2) + I(age ** 3) + I(age ** 4)',
+		 data=wage).fit()
+  fit5 = smf.ols('wage ~ age + I(age ** 2) + I(age ** 3) + I(age ** 4) + I(age ** 5)', data=wage).fit()
+
+  print('ANOVA on nested models upto 5 degrees')
+  print(anova_lm(fit1, fit2, fit3, fit4, fit5))
+  print('------')
+
+  # For plotting, create age array, get prediction and confidence intervals
+  res_df = pd.DataFrame({'age': np.linspace(wage['age'].min(),
+					    wage['age'].max())})
+  res_df['wage_predict'] = fit.get_prediction(exog=res_df).predicted_mean
+  res_df['wage_low'] = fit.get_prediction(exog=res_df).conf_int()[:, 0]
+  res_df['wage_high'] = fit.get_prediction(exog=res_df).conf_int()[:, 1]
+
+  fig = plt.figure()
+  ax = fig.add_subplot()
+  wage.plot(x='age', y='wage', kind='scatter', alpha=0.5, ax=ax)
+  res_df.plot(x='age', y='wage_predict', c='r', ax=ax)
+  res_df.plot(x='age', y='wage_low', c='r', linestyle='--', ax=ax)
+  res_df.plot(x='age', y='wage_high', c='r', linestyle='-.', ax=ax)
+  ax.set_xlabel('Age')
+  ax.set_ylabel('Wage')
+  ax.set_title('Degree-4 Polynomial')
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Coefficients of orthogonal polynomials upto 4 degrees
+            Coef.   Std.Err.           t         P>|t|
+const  111.703608   0.728741  153.283015  0.000000e+00
+x1     447.067853  39.914785   11.200558  1.484604e-28
+x2    -478.315806  39.914785  -11.983424  2.355831e-32
+x3    -125.521686  39.914785   -3.144742  1.678622e-03
+x4      77.911181  39.914785    1.951938  5.103865e-02
+------
+Coefficients of raw polynomials upto 4 degrees
+                  Coef.   Std.Err.         t     P>|t|
+Intercept   -184.154180  60.040377 -3.067172  0.002180
+age           21.245521   5.886748  3.609042  0.000312
+I(age ** 2)   -0.563859   0.206108 -2.735743  0.006261
+I(age ** 3)    0.006811   0.003066  2.221409  0.026398
+I(age ** 4)   -0.000032   0.000016 -1.951938  0.051039
+------
+Orthogonal polynomials and raw polynomials fitted values nearly equal:
+True
+------
+ANOVA on nested models upto 5 degrees
+   df_resid           ssr  df_diff        ss_diff           F        Pr(>F)
+0    2998.0  5.022216e+06      0.0            NaN         NaN           NaN
+1    2997.0  4.793430e+06      1.0  228786.010128  143.593107  2.363850e-32
+2    2996.0  4.777674e+06      1.0   15755.693664    9.888756  1.679202e-03
+3    2995.0  4.771604e+06      1.0    6070.152124    3.809813  5.104620e-02
+4    2994.0  4.770322e+06      1.0    1282.563017    0.804976  3.696820e-01
+------
+#+end_example
+
+Next we consider the task of predicting whether an individual earns more than
+$250,000 per year.  The probability of wage greater than 250K is directly
+obtained from the =predict= method on =statsmodels= fit object.  However, for
+logit models, =statsmodels= does not provide confidence intervals.  We use the
+formula for confidence intervals.  
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  from sklearn.preprocessing import PolynomialFeatures
+  import numpy as np
+  import pandas as pd
+  import matplotlib.pyplot as plt
+
+  wage = datasets.get_rdataset('Wage', 'ISLR').data
+
+  # Create dummy variable for wage > 250K
+  wage['wage_gt250K'] = wage['wage'].apply(lambda x: 1 if x > 250 else 0)
+
+  model = smf.logit('wage_gt250K ~ age + I(age ** 2) + I(age ** 3) + I(age ** 4)',
+		    data=wage)
+  fit = model.fit()
+
+  # Predicted probability for plotting
+  res_df = pd.DataFrame({'age': np.linspace(wage['age'].min(),
+					     wage['age'].max())})
+  res_df['prob_wage_gt250'] = fit.predict(exog=res_df)
+
+  # Create X matrix for estimating confidence intervals
+  # Based on a suggestion from David Dale on stackoverflow
+  poly = PolynomialFeatures(degree=4)
+  X_mat = poly.fit_transform(res_df['age'][:, np.newaxis])
+
+  cov_beta = fit.cov_params()
+  predict_var = np.diag(np.dot(X_mat, np.dot(cov_beta, X_mat.T)))
+  predict_error = np.sqrt(predict_var)
+  Xb = np.dot(X_mat, fit.params)
+
+  predict_upper = Xb + 1.96 * predict_error
+  predict_lower = Xb - 1.96 * predict_error
+  res_df['prob_upper'] = np.exp(predict_upper) / (1 + np.exp(predict_upper))
+  res_df['prob_lower'] = np.exp(predict_lower) / (1 + np.exp(predict_lower))
+
+  fig = plt.figure()
+  ax = fig.add_subplot(111)
+  ax.scatter(wage['age'], wage['wage_gt250K']/2, marker='|', color='grey',
+	     alpha=0.5)
+  res_df.plot(x='age', y='prob_wage_gt250', c='b', ax=ax)
+  res_df.plot(x='age', y='prob_upper', c='r', linestyle='--', ax=ax)
+  res_df.plot(x='age', y='prob_lower', c='r', linestyle='-.', ax=ax)
+  ax.set_xlabel('Age')
+  ax.set_ylabel('Prob(Wage > 250 | Age)')
+#+END_SRC
+
+#+RESULTS:
+: Optimization terminated successfully.
+:          Current function value: 0.116870
+:          Iterations 12
+
+We now fit a step function of =age=. 
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import statsmodels.formula.api as smf
+  import pandas as pd
+
+  wage = datasets.get_rdataset('Wage', 'ISLR').data
+  wage['age_grp'] = pd.cut(wage['age'], bins=[17, 33.5, 49, 64.5, 81],
+			   labels=['17to33', '33to49', '49to64', '64to80'])
+
+  step_model = smf.ols('wage ~ age_grp', data=wage)
+  step_fit = step_model.fit()
+
+  print('Coefficients of age groups')
+  print(step_fit.summary2().tables[1].iloc[:, :4])
+#+END_SRC
+
+#+RESULTS:
+: Coefficients of age groups
+:                        Coef.  Std.Err.          t         P>|t|
+: Intercept          94.158392  1.476069  63.789970  0.000000e+00
+: age_grp[T.33to49]  24.053491  1.829431  13.148074  1.982315e-38
+: age_grp[T.49to64]  23.664559  2.067958  11.443444  1.040750e-29
+: age_grp[T.64to80]   7.640592  4.987424   1.531972  1.256350e-01
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
