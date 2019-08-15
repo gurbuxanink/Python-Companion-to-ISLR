@@ -8,6 +8,7 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import PolynomialFeatures
 
 wage = datasets.get_rdataset('Wage', 'ISLR').data
 
@@ -40,11 +41,26 @@ res250_df = pd.DataFrame({'age': np.linspace(wage['age'].min(),
                                              wage['age'].max())})
 res250_df['prob_gt250'] = fit_250.predict(res250_df)
 
+# Estimate confidence intervals from the formula
+poly = PolynomialFeatures(degree=4)
+X_mat = poly.fit_transform(res250_df['age'][:, np.newaxis])
+cov_beta = fit_250.cov_params()
+predict_var = np.diag(np.dot(X_mat, np.dot(cov_beta, X_mat.T)))
+predict_error = np.sqrt(predict_var)
+Xb = np.dot(X_mat, fit_250.params)
+
+predict_upper = Xb + 1.96 * predict_error
+predict_lower = Xb - 1.96 * predict_error
+res250_df['prob_lower'] = np.exp(predict_lower) / (1 + np.exp(predict_lower))
+res250_df['prob_upper'] = np.exp(predict_upper) / (1 + np.exp(predict_upper))
+
 ax2 = fig.add_subplot(122)
-res250_df.plot(x='age', y='prob_gt250', ax=ax2)
-ax2.scatter(wage['age'], 0.2 * wage['wage_gt250'], marker='|', alpha=0.5,
+ax2.scatter(wage['age'], 0.5 * wage['wage_gt250'], marker='|', alpha=0.5,
             color='grey')
-ax2.set_yticks([0, 0.05, 0.1, 0.15, 0.2])
+res250_df.plot(x='age', y='prob_gt250', c='k', ax=ax2)
+res250_df.plot(x='age', y='prob_lower', c='r', linestyle='--', ax=ax2)
+res250_df.plot(x='age', y='prob_upper', c='r', linestyle='-.', ax=ax2)
+ax2.set_yticks([0, 0.2, 0.4, 0.6])
 ax2.set_ylabel('Prob(Wage > 250 | Age)')
 ax2.set_xlabel('Age')
 
