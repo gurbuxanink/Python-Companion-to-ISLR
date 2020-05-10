@@ -5,7 +5,7 @@
 #+LATEX_HEADER: \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 #+LATEX_HEADER: \fancyhead[CO,CE]{\rightmark}
 #+LATEX_HEADER: \lstset{keywordstyle=\color{blue}\bfseries, commentstyle=\color{purple}\slshape, showstringspaces=false, breaklines=true, breakwhitespace=false, stringstyle=\color{red}, basicstyle=\fontfamily{lmtt}\selectfont\footnotesize, procnamekeys={def,class}, frame=lines, tabsize=2, keepspaces=false}
-#+property: header-args :eval never-export
+#+PROPERTY: header-args :eval never-export
 
 * Introduction
 
@@ -2253,7 +2253,6 @@ strong multicollinearity or other numerical problems.
 #+LATEX: \FloatBarrier
 
 * Classification
-
 ** An Overview of Classification
 
 In figure [[fig:classificationFig1]], we have plotted annual =income= and monthly
@@ -2282,7 +2281,6 @@ binary =default= variable; the second is a similar plot for =income=.
 #+CAPTION: The =Default= data set.  Left: The annual income and monthly credit card balances of a number of individuals.  The individuals who defaulted on their credit card debt are shown in brown, and those who did not default are shown in blue.  Center: Boxplots of =balance= as a function of =default= status.  Right: Boxplots of =income= as a function of =default= status.
 #+RESULTS: fig4_1plot
 [[file:figures/fig4_1.png]]
-
 
 ** Why Not Linear Regression?
 
@@ -5696,6 +5694,52 @@ We now fit a step function of =age=.
 : age_grp[T.33to49]  24.053491  1.829431  13.148074  1.982315e-38
 : age_grp[T.49to64]  23.664559  2.067958  11.443444  1.040750e-29
 : age_grp[T.64to80]   7.640592  4.987424   1.531972  1.256350e-01
+
+* Tree-Based Models
+** The Basics of Decision Trees
+*** Regression Trees
+Figure [[fig:treeMethodsFig1]] shows a regression tree fit to =Hitters= data.  We
+predict log of =Salary= based on =Years= (column 0 of =X= matrix) and =Hits=
+(column 1).  The figure consists of a series of splitting rules.  The top split
+assigns observations having =Years < 4.5= to the left branch.  Although this
+group is further subidivided into two groups (=Hits < 15.5= and =Hits > 15.5=),
+almost all the players are in the second group (88 out of 90).   Players with
+=Years > 4.5= are assigned to the right branch, and then the group is further
+subdivided by =Hits=.  
+#+NAME: fig8_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig8_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  from statsmodels import datasets
+  from sklearn.tree import DecisionTreeRegressor, plot_tree
+  import numpy as np
+  # import pandas as pd
+
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+
+  hitters_use = hitters[['Hits', 'Years', 'Salary']].copy()
+  hitters_use.dropna(how='any', inplace=True)
+
+  tree = DecisionTreeRegressor(max_depth=2)
+  X = hitters_use[['Years', 'Hits']]
+  y = np.log(hitters_use['Salary'])
+
+  tree.fit(X, y)
+
+  fig, ax = plt.subplots()
+  plot_tree(tree, ax=ax)
+  fig.savefig(fname)
+
+  return fname
+#+END_SRC
+
+#+NAME: fig:treeMethodsFig1
+#+CAPTION: For the =Hitters= data, a regression tree for producing the log salary of a baseball player, based on the number of years that he has played in the major leagues and the number of hits that he made in the previous year.  
+#+RESULTS: fig8_1plot
+[[file:figures/fig8_1.png]]
+
 
 * Footnotes
 
