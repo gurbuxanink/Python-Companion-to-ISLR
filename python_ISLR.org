@@ -5706,6 +5706,7 @@ group is further subidivided into two groups (=Hits < 15.5= and =Hits > 15.5=),
 almost all the players are in the second group (88 out of 90).   Players with
 =Years > 4.5= are assigned to the right branch, and then the group is further
 subdivided by =Hits=.  
+
 #+NAME: fig8_1plot
 #+BEGIN_SRC python :exports results :results file :var fname="figures/fig8_1.png"
   import matplotlib
@@ -5740,6 +5741,53 @@ subdivided by =Hits=.
 #+RESULTS: fig8_1plot
 [[file:figures/fig8_1.png]]
 
+
+Overall, the tree segments the players into four regions of predictor space:
+$R_{1}=\{X | Years < 4.5, Hits < 15.5\}$, $R_{2}=\{X | Years < 4.5, Hits > 15.5\}$,
+$R_{3}=\{X | Years > 4.5, Hits < 117.5\}$, and $R_{4}=\{X | Years > 4.5, Hits >
+117.5\}$.  Figure [[fig:treeMethodsFig2]] illustrates the regions as a function of
+=Years= and =Hits=. 
+
+#+NAME: fig8_2plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig8_2.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  from statsmodels import datasets
+  from sklearn.tree import DecisionTreeRegressor
+  import numpy as np
+  plt.style.use('seaborn-whitegrid')
+
+  hitters = datasets.get_rdataset('Hitters', 'ISLR').data
+
+  hitters_use = hitters[['Hits', 'Years', 'Salary']].copy()
+  hitters_use.dropna(how='any', inplace=True)
+
+  tree = DecisionTreeRegressor(max_depth=2)
+  X = hitters_use[['Years', 'Hits']]
+  y = np.log(hitters_use['Salary'])
+
+  tree.fit(X, y)
+
+  xx = np.linspace(hitters_use['Years'].min(), hitters_use['Years'].max())
+  yy = np.linspace(hitters_use['Hits'].min(), hitters_use['Hits'].max())
+  x_grid, y_grid = np.meshgrid(xx, yy)
+  zz = tree.predict(np.vstack((x_grid.ravel(), y_grid.ravel())).T)
+  z_grid = zz.reshape(x_grid.shape)
+
+  fig, ax = plt.subplots()
+
+  ax.contour(x_grid, y_grid, z_grid, 2, colors='black', alpha=0.7)
+  hitters_use.plot(x='Years', y='Hits', kind='scatter', alpha=0.7, ax=ax)
+  fig.savefig(fname)
+
+  return fname
+#+END_SRC
+
+#+NAME: fig:treeMethodsFig2
+#+CAPTION: The four-region partition for the =Hitters= data set from the regression tree in Figure [[fig:treeMethodsFig1]].
+#+RESULTS: fig8_2plot
+[[file:figures/fig8_2.png]]
 
 * Footnotes
 
