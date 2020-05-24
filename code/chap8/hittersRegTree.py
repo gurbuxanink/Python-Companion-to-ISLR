@@ -20,7 +20,7 @@ y = np.log(hitters_use['Salary'])
 tree.fit(X, y)
 
 fig, ax = plt.subplots()
-plot_tree(tree, ax=ax)
+plot_tree(tree, feature_names=['Hits', 'Years'], ax=ax)
 
 # Plot decision tree regions and training data
 xx = np.linspace(hitters_use['Years'].min(), hitters_use['Years'].max())
