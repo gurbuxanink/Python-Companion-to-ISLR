@@ -5742,6 +5742,8 @@ subdivided by =Hits=.
 [[file:figures/fig8_1.png]]
 
 
+#+LATEX: \FloatBarrier
+
 Overall, the tree segments the players into four regions of predictor space:
 $R_{1}=\{X | Years < 4.5, Hits < 15.5\}$, $R_{2}=\{X | Years < 4.5, Hits > 15.5\}$,
 $R_{3}=\{X | Years > 4.5, Hits < 117.5\}$, and $R_{4}=\{X | Years > 4.5, Hits >
@@ -5788,6 +5790,28 @@ $R_{3}=\{X | Years > 4.5, Hits < 117.5\}$, and $R_{4}=\{X | Years > 4.5, Hits >
 #+CAPTION: The four-region partition for the =Hitters= data set from the regression tree in Figure [[fig:treeMethodsFig1]].
 #+RESULTS: fig8_2plot
 [[file:figures/fig8_2.png]]
+
+#+LATEX: \FloatBarrier
+
+Figure [[fig:treeMethodsfig3]] shows a five-region example of prediction via
+stratification of the feature space. 
+
+#+NAME: fig8_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig8_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap8')
+
+  from treePartition import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:treeMethodsfig3
+#+CAPTION: Top Left: A partition of two-dimensional space that could not result from recursive binary splitting. Top Right: The output of recursive binary splitting on a two-dimensional example.  Bottom Left: A tree corresponding to the partition on the top right panel.  Bottom Right: A perspective plot of the prediction surface corresponding to that tree. 
+#+RESULTS: fig8_3plot
+[[file:figures/fig8_3.png]]
 
 * Footnotes
 
