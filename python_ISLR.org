@@ -5701,9 +5701,7 @@ We now fit a step function of =age=.
 Figure [[fig:treeMethodsFig1]] shows a regression tree fit to =Hitters= data.  We
 predict log of =Salary= based on =Years= (column 0 of =X= matrix) and =Hits=
 (column 1).  The figure consists of a series of splitting rules.  The top split
-assigns observations having =Years < 4.5= to the left branch.  Although this
-group is further subidivided into two groups (=Hits < 15.5= and =Hits > 15.5=),
-almost all the players are in the second group (88 out of 90).   Players with
+assigns observations having =Years < 4.5= to the left branch.  Players with
 =Years > 4.5= are assigned to the right branch, and then the group is further
 subdivided by =Hits=.  
 
@@ -5723,14 +5721,14 @@ subdivided by =Hits=.
   hitters_use = hitters[['Hits', 'Years', 'Salary']].copy()
   hitters_use.dropna(how='any', inplace=True)
 
-  tree = DecisionTreeRegressor(max_depth=2)
+  tree = DecisionTreeRegressor(max_leaf_nodes=3)
   X = hitters_use[['Years', 'Hits']]
   y = np.log(hitters_use['Salary'])
 
   tree.fit(X, y)
 
   fig, ax = plt.subplots()
-  plot_tree(tree, ax=ax)
+  plot_tree(tree, feature_names=['Years', 'Hits'], ax=ax)
   fig.savefig(fname)
 
   return fname
