@@ -13,7 +13,7 @@ hitters = datasets.get_rdataset('Hitters', 'ISLR').data
 hitters_use = hitters[['Hits', 'Years', 'Salary']].copy()
 hitters_use.dropna(how='any', inplace=True)
 
-tree = DecisionTreeRegressor(max_depth=2)
+tree = DecisionTreeRegressor(max_leaf_nodes=3)
 X = hitters_use[['Hits', 'Years']]
 y = np.log(hitters_use['Salary'])
 
