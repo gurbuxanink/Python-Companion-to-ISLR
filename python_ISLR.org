@@ -5810,7 +5810,175 @@ stratification of the feature space.
 #+CAPTION: Top Left: A partition of two-dimensional space that could not result from recursive binary splitting. Top Right: The output of recursive binary splitting on a two-dimensional example.  Bottom Left: A tree corresponding to the partition on the top right panel.  Bottom Right: A perspective plot of the prediction surface corresponding to that tree. 
 #+RESULTS: fig8_3plot
 [[file:figures/fig8_3.png]]
+** Bagging, Random Forests, Boosting
+** Lab: Decision Trees
+*** Fitting Classification Trees
+In =scikit-learn= library, =tree= module implements classification and
+regression trees.  
 
+We first use classification trees to analyze the =Carseats= data set.  In these
+data, =Sales= is a continuous variable, and so we begin by recoding it as a binary
+variable.  
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  from sklearn.tree import DecisionTreeClassifier, export_text, plot_tree
+  from sklearn.model_selection import train_test_split, GridSearchCV
+
+  import pandas as pd
+
+  Carseats = datasets.get_rdataset('Carseats', 'ISLR').data
+
+  Carseats['High Sales'] = Carseats['Sales'].apply(
+      lambda x: 'Yes' if x > 8 else 'No')
+
+  # Create dummy variables for qualitative data
+  X_numeric = Carseats[['CompPrice', 'Income', 'Advertising', 'Population',
+			'Price', 'Age', 'Education']]
+  X_cat = Carseats[['ShelveLoc', 'Urban', 'US']]
+  X_dummies = pd.get_dummies(X_cat, drop_first=True)
+  X = pd.concat([X_numeric, X_dummies], axis=1)
+  y = Carseats['High Sales']
+
+  # Fit model to all data
+  tree = DecisionTreeClassifier(ccp_alpha=0.02)
+  tree.fit(X, y)
+
+  print('Decision tree in text')
+  print(export_text(tree, feature_names=X.columns.to_list()))
+
+  # Split data between train and test sets
+  # Fit model to training data, then print prediction accuracy on test data
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5,
+						      random_state=0)
+
+  model = DecisionTreeClassifier()
+  model.fit(X_train, y_train)
+
+  res_crosstab = pd.crosstab(y_test, model.predict(X_test))
+  res_crosstab.columns.name = 'High Sales Predict'
+  print('Prediction accuracy on test data')
+  print(res_crosstab)
+  print(str(round((96 + 48) / X_test.shape[0], 2)), 'of predictions are correct')
+
+  # Use grid search to find optimal level of tree complexity
+  param_grid = {'ccp_alpha': np.linspace(0, 0.02, 11)}
+  grid = GridSearchCV(DecisionTreeClassifier(), param_grid, cv=5,
+		      return_train_score=True)
+  grid.fit(X, y)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Decision tree in text
+|--- ShelveLoc_Good <= 0.50
+|   |--- Price <= 92.50
+|   |   |--- class: Yes
+|   |--- Price >  92.50
+|   |   |--- Advertising <= 13.50
+|   |   |   |--- class: No
+|   |   |--- Advertising >  13.50
+|   |   |   |--- class: Yes
+|--- ShelveLoc_Good >  0.50
+|   |--- class: Yes
+
+Prediction accuracy on test data
+High Sales Predict  No  Yes
+High Sales                 
+No                  97   21
+Yes                 30   52
+0.72  of predictions are correct
+#+end_example
+*** Fitting Regression Trees
+Here we fit a regression tree to the =Boston= data set.  First we create a
+training set, and fit the tree to the training data. 
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  from sklearn.model_selection import train_test_split, GridSearchCV
+  from sklearn.tree import DecisionTreeRegressor, export_text
+  import pandas as pd
+  import numpy as np
+
+  Boston = datasets.get_rdataset('Boston', package='MASS').data
+
+  X = Boston.drop(columns='medv')
+  y = Boston['medv']
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5,
+						      random_state=0)
+
+  tree = DecisionTreeRegressor(max_leaf_nodes=40, random_state=0)
+  tree.fit(X_train, y_train)
+
+  resid_mean_dev = np.mean(np.abs(y_test - tree.predict(X_test)))
+  resid_dist = pd.Series(np.quantile(y_test - tree.predict(X_test),
+				     [0, 0.25, 0.5, 0.75, 1]),
+			 index=['Min', '1st Qu', 'Median', '3rd Qu', 'Max'])
+
+  print('Residual mean deviance:', str(round(resid_mean_dev, 2)))
+  print('Distribution of residuals:')
+  print(resid_dist)
+  print('Mean squared error:', str(round(np.std(y_test - tree.predict(X_test)),
+					 2)))
+  print('------')
+
+  # Use grid search to find best tree size
+  # Depending upon starting point, tree size can be very different
+  params_grid = {'max_leaf_nodes': np.arange(2, 21)}
+  grid = GridSearchCV(DecisionTreeRegressor(random_state=0),
+		      param_grid=params_grid, cv=5)
+
+  grid.fit(X_train, y_train)
+
+  print('Best fitted tree')
+  print(export_text(grid.best_estimator_, feature_names=X.columns.to_list()))
+
+  print('Mean squared error:',
+	str(np.round(np.std(y_test - grid.best_estimator_.predict(X_test)), 2)))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Residual mean deviance: 3.07
+Distribution of residuals:
+Min      -16.675000
+1st Qu    -2.118519
+Median    -0.400000
+3rd Qu     1.466667
+Max       35.500000
+dtype: float64
+Mean squared error: 5.06
+------
+Best fitted tree
+|--- lstat <= 7.81
+|   |--- rm <= 7.43
+|   |   |--- dis <= 1.48
+|   |   |   |--- value: [50.00]
+|   |   |--- dis >  1.48
+|   |   |   |--- rm <= 6.56
+|   |   |   |   |--- value: [23.75]
+|   |   |   |--- rm >  6.56
+|   |   |   |   |--- value: [30.67]
+|   |--- rm >  7.43
+|   |   |--- ptratio <= 15.40
+|   |   |   |--- value: [48.64]
+|   |   |--- ptratio >  15.40
+|   |   |   |--- value: [41.26]
+|--- lstat >  7.81
+|   |--- lstat <= 15.00
+|   |   |--- rm <= 6.53
+|   |   |   |--- value: [20.78]
+|   |   |--- rm >  6.53
+|   |   |   |--- value: [26.02]
+|   |--- lstat >  15.00
+|   |   |--- dis <= 1.92
+|   |   |   |--- value: [11.67]
+|   |   |--- dis >  1.92
+|   |   |   |--- value: [16.83]
+
+Mean squared error: 4.89
+#+end_example
+*** Bagging and Random Forests
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
