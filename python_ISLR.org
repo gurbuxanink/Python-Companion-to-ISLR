@@ -5810,6 +5810,33 @@ stratification of the feature space.
 #+CAPTION: Top Left: A partition of two-dimensional space that could not result from recursive binary splitting. Top Right: The output of recursive binary splitting on a two-dimensional example.  Bottom Left: A tree corresponding to the partition on the top right panel.  Bottom Right: A perspective plot of the prediction surface corresponding to that tree. 
 #+RESULTS: fig8_3plot
 [[file:figures/fig8_3.png]]
+*** Classification Trees
+*** Trees versus Linear Models
+
+Figure [[fig:treeMethodsFig7]] is an example of when a linear model or a tree
+performs better.  In the top row, the relationship between the features and
+responses is linear.  A linear regression works well.  In the bottom row, the
+relationship between the features and the responses is non-linear.  A decision
+tree outperforms linear regression.  
+
+#+NAME: fig8_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig8_7.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap8')
+
+  from treeVsLinModel import fig
+  plt.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:treeMethodsFig7
+#+CAPTION: Top Row: A two-dimensional classification example in which the true decision boundary is linear, and is indicated by the shaded regions.  A classical approach that assumes a linear boundary (left) will outperform a decision tree that performs splits parallel to the axes (right).  Bottom Row: Here the true decision boundary is non-linear.  A linear model is unable to capture the true decision boundary (left), whereas a decision tree is successful (right).
+#+RESULTS: fig8_7plot
+[[file:figures/fig8_7.png]]
+
 ** Bagging, Random Forests, Boosting
 ** Lab: Decision Trees
 *** Fitting Classification Trees
