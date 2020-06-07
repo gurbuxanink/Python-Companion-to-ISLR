@@ -5810,7 +5810,10 @@ stratification of the feature space.
 #+CAPTION: Top Left: A partition of two-dimensional space that could not result from recursive binary splitting. Top Right: The output of recursive binary splitting on a two-dimensional example.  Bottom Left: A tree corresponding to the partition on the top right panel.  Bottom Right: A perspective plot of the prediction surface corresponding to that tree. 
 #+RESULTS: fig8_3plot
 [[file:figures/fig8_3.png]]
+
+#+LATEX: \FloatBarrier
 *** Classification Trees
+
 *** Trees versus Linear Models
 
 Figure [[fig:treeMethodsFig7]] is an example of when a linear model or a tree
@@ -5837,7 +5840,34 @@ tree outperforms linear regression.
 #+RESULTS: fig8_7plot
 [[file:figures/fig8_7.png]]
 
+#+LATEX: \FloatBarrier
 ** Bagging, Random Forests, Boosting
+Figure [[fig:treeMethodsFig9]] is a graphical representation of /variable
+importances/ in the =Heart= data.  We see the mean decrease in Gini index for each variable
+relative to the largest.  The variables with the largest mean decrease in Gini
+index are =Ca=, =Thal=, =HR=, and =Oldpeak=.  When a categorical variable has
+more than two values, it appears in the figure more than once.  For example,
+=Thal= has values =normal=, =reversable=, and =fixed=.  In the figure, we see
+=Thal_normal= and =Thal_reversable=. 
+
+#+NAME: fig8_9plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig8_9.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  import sys
+  sys.path.append('code/chap8')
+
+  from bagging import feature_import_fig
+  feature_import_fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:treeMethodsFig9
+#+CAPTION: A variable importance plot for the =Heart= data. Variable importance is computed using the mean decrease in Gini index and expressed relative to the maximum.
+#+RESULTS: fig8_9plot
+[[file:figures/fig8_9.png]]
+
 ** Lab: Decision Trees
 *** Fitting Classification Trees
 In =scikit-learn= library, =tree= module implements classification and
