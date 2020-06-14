@@ -6102,19 +6102,19 @@ RandomForestRegressor model
 Mean of squared residuals: 16.73
 ------
 Feature importance of variables
-rm         41.649501
-lstat      40.750211
-dis         4.328003
-crim        4.154470
-ptratio     2.121896
-tax         1.801769
-nox         1.583583
-age         1.238520
-black       1.100157
-indus       0.686457
-rad         0.408455
-zn          0.111934
-chas        0.065046
+rm         41.65
+lstat      40.75
+dis         4.33
+crim        4.15
+ptratio     2.12
+tax         1.80
+nox         1.58
+age         1.24
+black       1.10
+indus       0.69
+rad         0.41
+zn          0.11
+chas        0.07
 dtype: float64
 #+end_example
 
