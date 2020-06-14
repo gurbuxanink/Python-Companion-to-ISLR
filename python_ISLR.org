@@ -6036,6 +6036,88 @@ Best fitted tree
 Mean squared error: 4.89
 #+end_example
 *** Bagging and Random Forests
+#+BEGIN_SRC python :exports results :results output
+  from statsmodels import datasets
+  from sklearn.ensemble import RandomForestRegressor, BaggingRegressor
+  from sklearn.model_selection import train_test_split
+  from sklearn.tree import DecisionTreeRegressor
+  import pandas as pd
+  import numpy as np
+  import matplotlib.pyplot as plt
+  plt.style.use('seaborn-whitegrid')
+
+  Boston = datasets.get_rdataset('Boston', package='MASS').data
+
+  X = Boston.drop(columns='medv').copy()
+  y = Boston['medv'].copy()
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+  bag = BaggingRegressor(random_state=0)
+  bag.fit(X_train, y_train)
+
+  print('BaggingRegressor model')
+  print('Model performance on training data')
+  print('Mean of squared residuals: %0.2f' %
+	np.mean((y_train - bag.predict(X_train)) ** 2))
+  print('Percent variance explained : %0.2f' % bag.score(X_train, y_train))
+
+  print('------')
+  print('Model performance on test data')
+  print('Percent variance explained: %0.2f' %
+	np.mean((y_test - bag.predict(X_test)) ** 2))
+
+  # plt.scatter(y_test, bag.predict(X_test), alpha=0.7)
+  # plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], linestyle='--',
+  # 	 alpha=0.7)
+  # plt.gca().set(xlabel='True price', ylabel='Predicted price')
+
+  forest = RandomForestRegressor(random_state=0)
+  forest.fit(X_train, y_train)
+
+  print('------')
+  print('RandomForestRegressor model')
+  print('Mean of squared residuals: %0.2f' %
+	np.mean((y_test - forest.predict(X_test)) ** 2))
+
+  feature_imp = pd.Series(forest.feature_importances_, index=X.columns.to_list())
+  feature_imp.sort_values(ascending=False, inplace=True)
+
+  print('------')
+  print('Feature importance of variables')
+  print((feature_imp * 100).round(2))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+BaggingRegressor model
+Model performance on training data
+Mean of squared residuals: 2.49
+Percent variance explained : 0.97
+------
+Model performance on test data
+Percent variance explained: 22.79
+------
+RandomForestRegressor model
+Mean of squared residuals: 16.73
+------
+Feature importance of variables
+rm         41.649501
+lstat      40.750211
+dis         4.328003
+crim        4.154470
+ptratio     2.121896
+tax         1.801769
+nox         1.583583
+age         1.238520
+black       1.100157
+indus       0.686457
+rad         0.408455
+zn          0.111934
+chas        0.065046
+dtype: float64
+#+end_example
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
