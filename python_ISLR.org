@@ -6036,7 +6036,7 @@ Best fitted tree
 Mean squared error: 4.89
 #+end_example
 *** Bagging and Random Forests
-#+BEGIN_SRC python :exports results :results output
+#+BEGIN_SRC python :exports both :results output
   from statsmodels import datasets
   from sklearn.ensemble import RandomForestRegressor, BaggingRegressor
   from sklearn.model_selection import train_test_split
@@ -6060,7 +6060,7 @@ Mean squared error: 4.89
   print('Model performance on training data')
   print('Mean of squared residuals: %0.2f' %
 	np.mean((y_train - bag.predict(X_train)) ** 2))
-  print('Percent variance explained : %0.2f' % bag.score(X_train, y_train))
+  print('Percent variance explained: %0.2f' % bag.score(X_train, y_train))
 
   print('------')
   print('Model performance on test data')
@@ -6093,7 +6093,7 @@ Mean squared error: 4.89
 BaggingRegressor model
 Model performance on training data
 Mean of squared residuals: 2.49
-Percent variance explained : 0.97
+Percent variance explained: 0.97
 ------
 Model performance on test data
 Percent variance explained: 22.79
@@ -6116,6 +6116,74 @@ rad         0.41
 zn          0.11
 chas        0.07
 dtype: float64
+#+end_example
+*** Boosting
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels import datasets
+  import numpy as np
+  from sklearn.ensemble import AdaBoostRegressor
+  from sklearn.model_selection import train_test_split
+  from sklearn.tree import DecisionTreeRegressor
+  import pandas as pd
+
+  Boston = datasets.get_rdataset('Boston', package='MASS').data
+
+  X = Boston.drop(columns='medv').copy()
+  y = Boston['medv'].copy()
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+  tree = DecisionTreeRegressor(max_depth=4)
+  boost = AdaBoostRegressor(tree, n_estimators=5000, random_state=0)
+
+  boost.fit(X_train, y_train)
+
+  feature_imp = pd.Series(boost.feature_importances_, index=X_train.columns)
+  feature_imp.sort_values(ascending=False, inplace=True)
+
+  print('AdaBoostRegressor model')
+  print('Feature importances')
+  print((feature_imp * 100).round(2))
+  print('------')
+
+  print('Model performance on training data')
+  print('Mean of squared residuals: %0.2f' %
+	np.mean((y_train - boost.predict(X_train)) ** 2))
+  print('Percent of variance explained: %0.2f' % boost.score(X_train, y_train))
+  print('------')
+
+  print('Model performance on test data')
+  print('Mean of squared residuals: %0.2f' %
+	np.mean((y_test - boost.predict(X_test)) ** 2))
+  print('Percent of variance explained: %0.2f' % boost.score(X_test, y_test))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+AdaBoostRegressor model
+Feature importances
+lstat      41.10
+rm         31.69
+dis         7.42
+tax         4.69
+ptratio     4.44
+nox         2.32
+crim        2.19
+black       1.81
+age         1.63
+indus       1.60
+rad         0.57
+zn          0.27
+chas        0.26
+dtype: float64
+------
+Model performance on training data
+Mean of squared residuals: 3.37
+Percent of variance explained: 0.96
+------
+Model performance on test data
+Mean of squared residuals: 21.91
+Percent of variance explained: 0.73
 #+end_example
 
 * Footnotes
