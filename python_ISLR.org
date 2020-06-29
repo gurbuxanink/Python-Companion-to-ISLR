@@ -6185,7 +6185,46 @@ Model performance on test data
 Mean of squared residuals: 21.91
 Percent of variance explained: 0.73
 #+end_example
+* Support Vector Machines
+** Maximal Margin Classifier
+*** What is a Hyperplane?
 
+Figure [[fig:svmFig1]] shows a hyperplane in two-dimensional space.
+
+#+NAME: fig9_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import numpy as np
+  import matplotlib.pyplot as plt
+
+
+  def f_plane(x1, a=1, b1=2, b2=3):
+      return (-a - b1 * x1) / b2
+
+  x1 = np.linspace(-1.5, 1.5)
+
+  x1_vec = np.linspace(-1.5, 1.5)
+  x2_vec = np.linspace(-1.5, 1.5)
+  x1_grid, x2_grid = np.meshgrid(x1_vec, x2_vec)
+  y_cat = x2_grid.ravel() > f_plane(x1_grid.ravel())
+  y_cat = y_cat.astype(int)
+
+  y_markers = np.array(['x', 's'])[y_cat]
+  fig, ax = plt.subplots()
+  ax.plot(x1, f_plane(x1))
+  ax.scatter(x1_grid.ravel(), x2_grid.ravel(), c=y_cat, cmap=plt.cm.get_cmap('RdBu', 2),
+	     marker='x', s=3, alpha=0.7)
+  fig.savefig(fname)
+
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig1
+#+CAPTION: The hyperplane $1 + 2X_1 + 3X_2 = 0$ is shown.  The blue region is the set of points for which $1 + 2X_1 + 3X_2 > 0$, and the red region is the set of points for which $1 + 2X_1 + 3X_2 < 0$.
+#+RESULTS: fig9_1plot
+[[file:figures/fig9_1.png]]
+*** Classification Using a Separating Hyperplane
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
