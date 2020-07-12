@@ -6224,8 +6224,10 @@ Figure [[fig:svmFig1]] shows a hyperplane in two-dimensional space.
 #+CAPTION: The hyperplane $1 + 2X_1 + 3X_2 = 0$ is shown.  The blue region is the set of points for which $1 + 2X_1 + 3X_2 > 0$, and the red region is the set of points for which $1 + 2X_1 + 3X_2 < 0$.
 #+RESULTS: fig9_1plot
 [[file:figures/fig9_1.png]]
+
 *** Classification Using a Separating Hyperplane
 Figure [[fig:svmFig2]] shows an example of a separating hyperplane classifier.
+
 #+NAME: fig9_2plot
 #+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_2.png"
   import matplotlib.pyplot as plt
@@ -6251,6 +6253,8 @@ Figure [[fig:svmFig2]] shows an example of a separating hyperplane classifier.
   x_grid, y_grid = np.meshgrid(x_fit, y_fit)
   z_grid = svc.predict(np.vstack([x_grid.ravel(), y_grid.ravel()]).T)
   z_grid = z_grid.reshape(x_grid.shape)
+  # z_grid = svc.decision_function(np.vstack([x_grid.ravel(), y_grid.ravel()]).T)
+  # z_grid = z_grid.reshape(x_grid.shape)
 
   ax[1].scatter(x_grid.ravel(), y_grid.ravel(), c=z_grid.ravel(),
 		cmap=plt.cm.get_cmap('RdBu', 2), marker='.', s=5, alpha=0.6,
@@ -6273,6 +6277,7 @@ Figure [[fig:svmFig2]] shows an example of a separating hyperplane classifier.
 #+RESULTS: fig9_2plot
 [[file:figures/fig9_2.png]]
 
+*** The Maximal Margin Classifier
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
