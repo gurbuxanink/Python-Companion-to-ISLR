@@ -6225,6 +6225,54 @@ Figure [[fig:svmFig1]] shows a hyperplane in two-dimensional space.
 #+RESULTS: fig9_1plot
 [[file:figures/fig9_1.png]]
 *** Classification Using a Separating Hyperplane
+Figure [[fig:svmFig2]] shows an example of a separating hyperplane classifier.
+#+NAME: fig9_2plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_2.png"
+  import matplotlib.pyplot as plt
+  import numpy as np
+  from sklearn.datasets import make_blobs
+  from sklearn.svm import SVC
+
+  X, y = make_blobs(centers=2, cluster_std=0.6, random_state=0)
+
+  x_fit = np.linspace(-0.5, 3.5)
+
+  fig, ax = plt.subplots(1, 2)
+
+  for m, b in [(0.2, 2), (0.6, 1.7), (-0.2, 2.9)]:
+      y_fit = m * x_fit + b
+      ax[0].plot(x_fit, y_fit, linestyle='--', color='gray')
+
+
+  svc = SVC(kernel='linear')
+  svc.fit(X, y)
+
+  y_fit = np.linspace(-0.5, 5.5)
+  x_grid, y_grid = np.meshgrid(x_fit, y_fit)
+  z_grid = svc.predict(np.vstack([x_grid.ravel(), y_grid.ravel()]).T)
+  z_grid = z_grid.reshape(x_grid.shape)
+
+  ax[1].scatter(x_grid.ravel(), y_grid.ravel(), c=z_grid.ravel(),
+		cmap=plt.cm.get_cmap('RdBu', 2), marker='.', s=5, alpha=0.6,
+		zorder=3)
+  ax[1].contour(x_grid, y_grid, z_grid, levels=[0.5], colors='black', alpha=0.7)
+
+  for axi in ax:
+      axi.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap('RdBu', 2),
+		  alpha=0.7)
+      axi.set(xlabel=r'$X_1$', ylabel=r'$X_2$', xlim=[-0.5, 3.5],
+	      ylim=[-0.5, 5.5])
+
+  fig.tight_layout()
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig2
+#+CAPTION: Left: There are two classes of observations, shown in red and blue, each of which has measurements on two variables.  Three separating hyperplanes, out of many possible, are shown in gray.  Right: A separating hyperplane is shown in black.  The red and blue grid indicates the decision rule made by a classifier based on this separating hyperplane: a test observation that falls in the red portion of the grid will be assigned to the red class.  A test observation that falls into the blue portion of the grid will be assigned to the blue class.
+#+RESULTS: fig9_2plot
+[[file:figures/fig9_2.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
