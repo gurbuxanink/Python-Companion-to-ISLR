@@ -6395,7 +6395,32 @@ leads to a dramatic change in the maximal margin hyperplane.
 #+RESULTS: fig9_5plot
 [[file:figures/fig9_5.png]]
 
+Figure [[fig:svmFig6]] is an example of a /support vector classifier/.  Most of the
+observations are on the correct side of the margin.  However, a small subset of
+observations are on the wrong side of the margin.  
+
+#+NAME: fig9_6plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_6.png"
+  import matplotlib
+  matplotlib.use('Agg')
+
+  import sys
+  sys.path.append('code/chap9')
+
+  from svc_small_data import fig
+
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig6
+#+CAPTION: Left: A support vector classifier was fit to a small data set.  The hyperplane is shown as a solid line and the margins are shown as dashed lines.  Blue observations: Observations 1, 4, 7 are on the correct side of the margin.  Observation 6 is on the margin.  Observation 8 is on the wrong side of the margin.  Observation 11 is on the wrong side of the hyperplane.  Red observations: Observations 2, 10 are on the right side of the margin.  Observationsn 0, 9 are on the margin.  Observations 3, 5 are on the wrong side of the margin.  No observation is on the wrong side of the hyperplane.  Righ: Same as right panel, with three additional points 12, 13, and 14.  Observation 13 is on the wrong side of hyperplane.  Now observation 8 is also on the wrong side of the hyperplane.
+#+RESULTS: fig9_6plot
+[[file:figures/fig9_6.png]]
+
+#+LATEX: \FloatBarrier
 *** Details of the Support Vector Classifier
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
