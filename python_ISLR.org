@@ -6333,6 +6333,69 @@ classes.  There is no maximal margin classifier.
 [[file:figures/fig9_4.png]]
 
 ** Support Vector Classifiers
+
+*** Overview of the Support Vector Classifier
+In figures [[fig:svmFig5]], addition of a single observation in the right hand panel
+leads to a dramatic change in the maximal margin hyperplane.  
+
+#+NAME: fig9_5plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_5.png"
+  import numpy as np
+  import matplotlib
+  import matplotlib.pyplot as plt
+  from sklearn.svm import SVC
+  from sklearn.datasets import make_blobs
+  matplotlib.use('Agg')
+
+  X, y = make_blobs(n_samples=20, n_features=2, centers=2, cluster_std=1.0,
+		    random_state=0)
+
+  X = np.vstack([X[:16], X[18:], X[17]])
+  y = np.hstack([y[:16], y[18:], y[17]])
+
+  x1_min, x2_min = X.min(axis=0)
+  x1_max, x2_max = X.max(axis=0)
+  x1_array = np.linspace(x1_min, x1_max)
+  x2_array = np.linspace(x2_min, x2_max)
+  x1_grid, x2_grid = np.meshgrid(x1_array, x2_array)
+  X_array = np.vstack([x1_grid.ravel(), x2_grid.ravel()]).T
+
+  svc1 = SVC(kernel='linear')
+  svc1.fit(X[:-1], y[:-1])
+  z1 = svc1.decision_function(X_array)
+  z1_grid = z1.reshape(x1_grid.shape)
+
+  svc = SVC(kernel='linear')
+  svc.fit(X, y)
+  z = svc.decision_function(X_array)
+  z_grid = z.reshape(x1_grid.shape)
+
+  fig, ax = plt.subplots(1, 2)
+
+  ax[0].scatter(X[:-1, 0], X[:-1, 1], c=y[:-1], cmap=plt.cm.get_cmap('RdBu', 2),
+		alpha=0.7)
+  ax[0].contour(x1_grid, x2_grid, z1_grid, levels=[0], colors='gray')
+
+  ax[1].scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap('RdBu', 2),
+		alpha=0.7)
+  ax[1].scatter(X[-1, 0], X[-1, 1], marker='x', s=75, c='black', alpha=0.7)
+  ax[1].contour(x1_grid, x2_grid, z_grid, levels=[0], colors='gray')
+  ax[1].contour(x1_grid, x2_grid, z1_grid, levels=[0], linestyles=['--'], colors='gray')
+
+  for axi in ax:
+      axi.set(xlabel=r'$X_1$', ylabel=r'$X_2$')
+
+  fig.tight_layout()
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig5
+#+CAPTION: Left: Two classes of observations are shown in blue and in red, along with the maximal margin hyperplane.  Right: An additional blue observation (marked with `x') has been added, leading to a dramatic shift in the maximal margin hyperplane shown as a solid line.  The dashed line indicates the maximal margin hyperplane that was obtained in the absence of this additional point.
+#+RESULTS: fig9_5plot
+[[file:figures/fig9_5.png]]
+
+*** Details of the Support Vector Classifier
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
