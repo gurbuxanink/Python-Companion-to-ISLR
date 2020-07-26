@@ -1,5 +1,7 @@
 # A class for straight line
 import numpy as np
+import matplotlib.pyplot as plt
+plt.style.use('seaborn-whitegrid')
 
 
 class line(object):
@@ -26,6 +28,11 @@ class line(object):
         self.slope = (y2 - y1) / (x2 - x1)
         self.intercept = y2 - self.slope * x2
 
+    def __str__(self):
+        '''Returns slope and intercept'''
+        return 'slope: ' + str(self.slope) + ', intercept: ' + \
+            str(self.intercept)
+
     @property
     def slope_(self):
         return self.slope
@@ -47,3 +54,11 @@ class line(object):
         x = -(b1 - b2) / (m1 - m2)
         y = self.get_y(x)
         return [x, y]
+
+    def plot_line(self, x_range, ax=None, **kwargs):
+        '''x_range is tuple of (x_min, x_max)'''
+        x_array = np.linspace(x_range[0], x_range[1])
+        y_array = self.get_y(x_array)
+        if ax is None:
+            ax = plt.gca()
+        ax.plot(x_array, y_array, **kwargs)
