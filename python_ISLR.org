@@ -6420,6 +6420,49 @@ observations are on the wrong side of the margin.
 
 #+LATEX: \FloatBarrier
 *** Details of the Support Vector Classifier
+Figure [[fig:svmFig7]] illustrates the width of margin for different values of
+regularization parameter $C$.  
+
+#+NAME: fig9_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_7.png"
+  import matplotlib
+  matplotlib.use('Agg')
+
+  import sys
+  sys.path.append('code/chap9')
+
+  from svc_margin import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig7
+#+CAPTION: A support vector classifier was fit using four different values of the regularization parameter $C$ (which is different from $C$, the non-negative tuning parameter, described in the book).  The strenght of the regularization is inversely proportional to $C$.  When $C$ is small, there is a high tolerance for observations being on the wrong side of the margin.  Therefore, the margin is wide.  As $C$ increases, the tolerance for observations being on the wrong side of the margin decreases.  Therefore, the margin narrows.  
+#+RESULTS: fig9_7plot
+[[file:figures/fig9_7.png]]
+#+LATEX: \FloatBarrier
+** Support Vector Machines
+*** Classification with Non-linear Decision Boundaries 
+In figure [[fig:svmFig8]] consider the data shown in the left panel.  It is clear
+that a support vector classifier or any linear classifier will perform poorly
+here.  Indeed, the support vector classifier shown in the right panel is
+useless here. 
+#+NAME: fig9_8plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_8.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap9')
+
+  from svc_nonlinear import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig8
+#+CAPTION: Left: The observations fall into two classes, with a non-linear boundary between them.  Right: The support vector classifier seeks a linear boundary, and consequently performs poorly.
+#+RESULTS: fig9_8plot
+[[file:figures/fig9_8.png]]
 
 * Footnotes
 
