@@ -26,8 +26,8 @@ for i, c in enumerate(c_vals):
 
     axi.scatter(X[:, 0], X[:, 1], c=y,
                 cmap=plt.cm.get_cmap('RdBu', 2), alpha=0.7)
-    axi.contour(x1_grid, x2_grid, z_grid,
-                levels=[-1, 0, 1], linestyles=['--', '-', '--'], colors='black', alpha=0.7)
-    axi.set(xlabel=r'$X_1$', ylabel=r'$X_2$', title=r'$C = $' + str(c))
+    axi.contour(x1_grid, x2_grid, z_grid, levels=[-1, 0, 1],
+                linestyles=['--', '-', '--'], colors='black', alpha=0.7)
+    axi.set(xlabel=r'$X_1$', ylabel=r'$X_2$', title=r'$C = ' + str(c) + '$')
 
 fig.tight_layout()
