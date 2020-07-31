@@ -6463,6 +6463,31 @@ useless here.
 #+CAPTION: Left: The observations fall into two classes, with a non-linear boundary between them.  Right: The support vector classifier seeks a linear boundary, and consequently performs poorly.
 #+RESULTS: fig9_8plot
 [[file:figures/fig9_8.png]]
+*** The Support Vector Machine
+*** An Application to the Heart Disease Data
+In figure [[fig:svmFig10]], the left-hand panel displays ROC curves for training set
+predictions for both LDA and the support vector classifier.  The right-hand
+panel displays ROC curves for SVMs using a radial kernel, with two values of
+$\gamma$. As $\gamma$ increases and the fit becomes more non-linear, the ROC improves.
+#+NAME: fig9_10plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_10.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap9')
+
+  from roc_heart import svc_roc_train, lda_roc_train, svm_rocs_train
+  from roc_heart import roc_plot
+
+  roc_fig = roc_plot(lda_roc_train, svc_roc_train, svm_rocs_train)
+  roc_fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig10
+#+CAPTION: ROC curves for =Heart= data training set.  Left: The support vector classifier and LDA are compared.  Right: The support vector classifier is compared to an SVM using radial basis kernel with $\gamma = 0.005$ and $\gamma = 0.001$.
+#+RESULTS: fig9_10plot
+[[file:figures/fig9_10.png]]
 
 * Footnotes
 
