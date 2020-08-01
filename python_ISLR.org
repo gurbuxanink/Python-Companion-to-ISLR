@@ -6463,7 +6463,34 @@ useless here.
 #+CAPTION: Left: The observations fall into two classes, with a non-linear boundary between them.  Right: The support vector classifier seeks a linear boundary, and consequently performs poorly.
 #+RESULTS: fig9_8plot
 [[file:figures/fig9_8.png]]
+
+#+LATEX: \FloatBarrier
 *** The Support Vector Machine
+In figure [[fig:svmFig9]], the left-hand panel shows an example of SVM with a
+polynomial kernel applied the non-linear data from figure [[fig:svmFig8]].  The fit
+is an improvement over the linear support vector classifier.  The right-hannd
+panel show an example of an SVM with a radial kernel on this non-linear data.
+SVM does the best job of separating the two classes.
+
+#+NAME: fig9_9plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_9.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap9')
+
+  from svm_nonlinear import fig
+
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig9
+#+CAPTION: Left: An SVM with a polynomial kernel of degree 3 is applied to the non-linear data from figure [[fig:svmFig8]], resulting in a more appropriate decision rule.  Right: An SVM with a radial kernel is applied.  In this example, radial kernel is the most capable of capturing the decision boundary.
+#+RESULTS: fig9_9plot
+[[file:figures/fig9_9.png]]
+
+#+LATEX: \FloatBarrier
 *** An Application to the Heart Disease Data
 In figure [[fig:svmFig10]], the left-hand panel displays ROC curves for training set
 predictions for both LDA and the support vector classifier.  The right-hand
@@ -6514,7 +6541,11 @@ to improve model performance.
 #+CAPTION: ROC curves for test set of the =Heart= data.  Left: The support vector classifier and LDA are compared.  Right: The support vector classifier is compared to an SVM using radial basis kernel with $\gamma = 0.005$ and $\gamma = 0.001$.
 #+RESULTS: fig9_11plot
 [[file:figures/fig9_11.png]]
-
+#+LATEX: \FloatBarrier
+** SVMs with More than Two Classes
+*** One-Versus-One Classification
+*** One-Versus-All Classification
+** Relationship with Logistic Regression
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
