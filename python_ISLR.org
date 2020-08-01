@@ -6489,6 +6489,32 @@ $\gamma$. As $\gamma$ increases and the fit becomes more non-linear, the ROC imp
 #+RESULTS: fig9_10plot
 [[file:figures/fig9_10.png]]
 
+Figure [[fig:svmFig11]] compares ROC curves on test observations.  Using default
+settings for all parameters other than $\gamma$, SVM model performance is worse
+than support vector classifier model performance.  In the code, there is a
+commented section which shows how model parameters $C$ and $\gamma$ can be tuned
+to improve model performance. 
+
+#+NAME: fig9_11plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig9_11.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap9')
+
+  from roc_heart import svc_roc_test, lda_roc_test, svm_rocs_test
+  from roc_heart import roc_plot
+
+  roc_fig = roc_plot(lda_roc_test, svc_roc_test, svm_rocs_test)
+  roc_fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:svmFig11
+#+CAPTION: ROC curves for test set of the =Heart= data.  Left: The support vector classifier and LDA are compared.  Right: The support vector classifier is compared to an SVM using radial basis kernel with $\gamma = 0.005$ and $\gamma = 0.001$.
+#+RESULTS: fig9_11plot
+[[file:figures/fig9_11.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
