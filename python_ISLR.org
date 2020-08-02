@@ -6546,6 +6546,212 @@ to improve model performance.
 *** One-Versus-One Classification
 *** One-Versus-All Classification
 ** Relationship with Logistic Regression
+** Lab: Support Vector Machines
+We use =svm= module of =sklearn= library to demonstrate the support vector
+classifier and the SVM.
+*** Support Vector Classifier
+To fit a support vector classifier, we use =SVC= function with the argument
+=kernel= set to ='linear'=.
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  import pandas as pd
+  import matplotlib.pyplot as plt
+  import rpy2.robjects as robjects
+  import sys
+  from sklearn.svm import SVC
+  from sklearn.model_selection import GridSearchCV
+  from sklearn.metrics import confusion_matrix
+  plt.style.use('seaborn-whitegrid')
+  sys.path.append('code/chap9')
+
+  from svm_funcs import svm_model_plot
+  # To replicate results, get data from R
+  X = robjects.r('''set.seed(1); x <- matrix(rnorm(20 * 2))''')
+  X = np.array(X).reshape((20, 2), order='F')
+  y = np.concatenate([np.ones(10) * -1, np.ones(10)])
+  y = y.astype(int)
+  X[y == 1, :] += 1
+
+  # Plot shows classes are not linearly separable
+  plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap('RdBu', 2), alpha=0.7)
+
+  # Fit support vector classifier
+  svc = SVC(C=10, kernel='linear')
+  svc.fit(X, y)
+
+  svm_model_plot(svc, X, y)
+
+  # Support vector indices
+  # Remember python count begins at 0; R count begins at 1
+  print('Support vector indices:', svc.support_)
+
+  print('Parameters of support vector classifier:')
+  # print(svc.get_params())
+  for param_name in ['C', 'kernel']:
+      print('  ', param_name, ':', svc.get_params()[param_name])
+  print('Number of support vectors:', svc.n_support_)
+  print('Number of classes:', svc.n_features_in_)
+  print('Classes:', svc.classes_)
+  print('------')
+
+  # Use smaller value of cost to obtain larger number of support vectors
+  svc = SVC(C=0.1, kernel='linear')
+  svc.fit(X, y)
+  svm_model_plot(svc, X, y)
+  print('Suport vector indices:', svc.support_)
+  print('------')
+
+  # Use grid search to find the value of cost parameter C for best fit
+  param_grid = {'C': [0.001, 0.01, 0.1, 1, 5, 10, 100]}
+  svc = SVC(kernel='linear')
+  grid = GridSearchCV(svc, param_grid=param_grid, cv=10)
+  grid.fit(X, y)
+
+  grid_res = pd.DataFrame(grid.cv_results_['params'])
+  grid_res['score'] = grid.cv_results_['mean_test_score']
+
+  print('Best parameter:', grid.best_params_)
+  print('Performance results:')
+  print(grid_res)
+  print('------')
+
+  # Generate test data set
+  # First run code in book so that test set is identical to that used in the book
+  # This does not produce results identical to those shown in the book
+  # test_data = robjects.r('''
+  # get_x_test <- function(){
+  #   x <- matrix(rnorm(20 * 2), ncol = 2)
+  #   y <- c(rep(-1, 10), rep(1, 10))
+  #   x[y == 1, ] <- x[y == 1, ] + 1
+  #   dat <- data.frame(x = x, y = as.factor(y))
+  #   library(e1071)
+  #   svmfit <- svm(y ~ ., data = dat, kernel = 'linear', cost = 10, scale = FALSE)
+  #     set.seed(1)
+  #   tune.out <- tune(svm, y ~ ., data = dat, kernel = 'linear',
+  #     ranges = list(cost = c(0.001, 0.01, 0.1, 1, 5, 10, 100)))
+  #   x_test <- matrix(rnorm(20 * 2))
+  #   y_test <- sample(c(-1, 1), 20, rep = TRUE)
+  #   c(x_test, y_test)
+  # }
+  # get_x_test()
+  # ''')
+  # test_data = np.array(test_data)
+  # X_test = test_data[:20 * 2]
+  # X_test = np.array(X_test).reshape((20, 2), order='F')
+  # y_test = test_data[20 * 2:]
+  # y_test = np.array(y_test).astype(int)
+  # X_test[y_test == 1, :] += 1
+
+  np.random.seed(11)
+  X_test = np.random.normal(size=[20, 2])
+  y_test = np.random.choice([-1, 1], size=20, replace=True)
+  X_test[y_test == 1, :] += 1
+
+  model = grid.best_estimator_
+  y_predict = model.predict(X_test)
+
+  res_df = pd.DataFrame(confusion_matrix(y_test, y_predict), columns=[-1, 1],
+			index=[-1, 1])
+  res_df.columns.name = 'Predict'
+  res_df.index.name = 'True'
+
+  print('Prediction on test data with best model (C=0.1):')
+  print(res_df)
+  print('------')
+
+  # Fit support vector classifier with C = 0.01, then predict on test data
+  svc = SVC(C=0.01, kernel='linear')
+  svc.fit(X, y)
+  y_predict = svc.predict(X_test)
+  res_df_new = pd.DataFrame(confusion_matrix(y_test, y_predict), columns=[-1, 1],
+			    index=[-1, 1])
+  res_df_new.columns.name = 'Predict'
+  res_df_new.index.name = 'True'
+
+  print('Prediction on test data with model using C = 0.01:')
+  print(res_df_new)
+  print('------')
+
+  # Separate the two classes so that they are linearly separable
+  X[y == 1, :] += 0.5
+  plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap('RdBu', 2), alpha=0.7)
+
+  X_test[y_test == 1, :] += 0.5
+
+  # Fit a support vector classifier with a high value of cost
+  svc = SVC(C=1e5, kernel='linear')
+  svc.fit(X, y)
+  svm_model_plot(svc, X, y)
+
+  print('Cost parameter:', svc.get_params()['C'])
+  print('Number of support vectors:', svc.n_support_)
+  print('Fraction of training observations correctly predicted:',
+	svc.score(X, y))
+  print('Fraction of testing observations correctly predicted:',
+	svc.score(X_test, y_test))
+  print('------')
+
+  # Refit model with smaller value of cost parameter
+  svc = SVC(C=1, kernel='linear')
+  svc.fit(X, y)
+  svm_model_plot(svc, X, y)
+
+  print('Cost parameter:', svc.get_params()['C'])
+  print('Number of support vectors:', svc.n_support_)
+  print('Fraction of training observations correctly predicted:',
+	svc.score(X, y))
+  print('Fraction of testing observations correctly predicted:',
+	svc.score(X_test, y_test))
+  print('------')
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Support vector indices: [ 0  1  4  6 13 15 16]
+Parameters of support vector classifier:
+   C : 10
+   kernel : linear
+Number of support vectors: [4 3]
+Number of classes: 2
+Classes: [-1  1]
+------
+Suport vector indices: [ 0  1  2  3  4  6  8  9 11 12 13 14 15 16 17 19]
+------
+Best parameter: {'C': 0.1}
+Performance results:
+         C  score
+0    0.001   0.75
+1    0.010   0.75
+2    0.100   0.95
+3    1.000   0.90
+4    5.000   0.85
+5   10.000   0.85
+6  100.000   0.85
+------
+Prediction on test data with best model (C=0.1):
+Predict  -1   1
+True           
+-1       11   2
+ 1        2   5
+------
+Prediction on test data with model using C = 0.01:
+Predict  -1   1
+True           
+-1       12   1
+ 1        4   3
+------
+Cost parameter: 100000.0
+Number of support vectors: [1 2]
+Fraction of training observations correctly predicted: 1.0
+Fraction of testing observations correctly predicted: 0.9
+------
+Cost parameter: 1
+Number of support vectors: [3 4]
+Fraction of training observations correctly predicted: 0.95
+Fraction of testing observations correctly predicted: 0.9
+------
+#+end_example
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
