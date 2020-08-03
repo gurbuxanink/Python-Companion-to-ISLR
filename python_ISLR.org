@@ -6751,6 +6751,103 @@ Fraction of training observations correctly predicted: 0.95
 Fraction of testing observations correctly predicted: 0.9
 ------
 #+end_example
+*** Support Vector Machine
+In order to fit an SVM using a non-linear kernel, we once again use the =SVC=
+function.  We now set the parameter =kernel= to ='rbf'=.  
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  import rpy2.robjects as robjects
+  import sys
+  import matplotlib.pyplot as plt
+  import pandas as pd
+  from sklearn.model_selection import train_test_split, GridSearchCV
+  from sklearn.svm import SVC
+
+  sys.path.append('code/chap9')
+
+  from svm_funcs import svm_model_plot
+
+  # To replicate results, get data from R
+  X = robjects.r('''set.seed(1); x <- matrix(rnorm(200 * 2), ncol = 2)''')
+  X = np.array(X).reshape(200, 2)
+  X[:100, :] += 2
+  X[100:150, :] -= 2
+  y = np.concatenate([np.ones(150), np.ones(50) * 2])
+
+  plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap('RdBu', 2), alpha=0.7)
+
+  # Split data between train and test sets
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=100,
+						      random_state=0)
+
+  # Fit training data set with a radial kernel
+  svm = SVC(kernel='rbf')
+  svm.fit(X_train, y_train)
+
+  svm_model_plot(svm, X_train, y_train)
+
+  print('SVM model fit with cost parameter:', svm.get_params()['C'])
+  print('Number of support vectors:', svm.n_support_)
+  print('Fraction of accurate predictions on training data:',
+	svm.score(X_train, y_train))
+  print('Fraction of accurate predictions on test data:',
+	svm.score(X_test, y_test))
+  print('------')
+
+  # Fit training data set with a high value for cost parameter
+  svm = SVC(C=1e5, kernel='rbf')
+  svm.fit(X_train, y_train)
+
+  svm_model_plot(svm, X_train, y_train)
+
+  print('SVM model fit with cost parameter:', svm.get_params()['C'])
+  print('Number of support vectors:', svm.n_support_)
+  print('Fraction of accurate predictions on training data:',
+	svm.score(X_train, y_train))
+  print('Fraction of accurate predictions on test data:',
+	svm.score(X_test, y_test))
+  print('------')
+
+  # Find best values of C and gamma using grid search
+  param_grid = {'C': [0.1, 1, 5], 'gamma': [0.1, 0.5, 1]}
+  svm = SVC(kernel='rbf')
+  grid = GridSearchCV(svm, param_grid=param_grid)
+  grid.fit(X_train, y_train)
+
+  res_df = pd.DataFrame(grid.cv_results_['params'])
+  res_df['test_score'] = grid.cv_results_['mean_test_score']
+
+  print('Grid search results:')
+  print(res_df)
+  print('Fraction of accurate predictions on test data:',
+	grid.best_estimator_.score(X_test, y_test))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+SVM model fit with cost parameter: 1.0
+Number of support vectors: [15 14]
+Fraction of accurate predictions on training data: 0.92
+Fraction of accurate predictions on test data: 0.85
+------
+SVM model fit with cost parameter: 100000.0
+Number of support vectors: [11  8]
+Fraction of accurate predictions on training data: 0.99
+Fraction of accurate predictions on test data: 0.8
+------
+Grid search results:
+     C  gamma  test_score
+0  0.1    0.1        0.75
+1  0.1    0.5        0.74
+2  0.1    1.0        0.75
+3  1.0    0.1        0.92
+4  1.0    0.5        0.93
+5  1.0    1.0        0.92
+6  5.0    0.1        0.92
+7  5.0    0.5        0.92
+8  5.0    1.0        0.88
+Fraction of accurate predictions on test data: 0.86
+#+end_example
 
 * Footnotes
 
