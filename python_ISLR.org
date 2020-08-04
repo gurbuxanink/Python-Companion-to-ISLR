@@ -6848,7 +6848,35 @@ Grid search results:
 8  5.0    1.0        0.88
 Fraction of accurate predictions on test data: 0.86
 #+end_example
+*** ROC Curves
+In =sklearn= library, =metrics= module provides functions =roc_curve= and
+=plot_roc_curve=.
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  import matplotlib.pyplot as plt
+  import rpy2.robjects as robjects
+  from sklearn.svm import SVC
+  from sklearn.metrics import plot_roc_curve
+  from sklearn.model_selection import train_test_split
 
+  X = robjects.r('''set.seed(1); x <- matrix(rnorm(200 * 2), ncol = 2)''')
+  X = np.array(X, order='F')
+  X[:100, :] += 2
+  X[100:150, :] -= 2
+  y = np.concatenate([np.ones(150), np.ones(50) * 2])
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+  svm = SVC(probability=True, random_state=0)
+  svm.fit(X_train, y_train)
+
+  fig, ax = plt.subplots()
+  plot_roc_curve(svm, X_train, y_train, label='Training data', ax=ax)
+  plot_roc_curve(svm, X_test, y_test, label='Test data', linestyle='--', ax=ax)
+#+END_SRC
+
+#+RESULTS:
+*** SVM with Multiple Classes
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
