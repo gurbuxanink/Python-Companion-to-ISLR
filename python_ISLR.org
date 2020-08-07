@@ -6877,6 +6877,102 @@ In =sklearn= library, =metrics= module provides functions =roc_curve= and
 
 #+RESULTS:
 *** SVM with Multiple Classes
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from sklearn.svm import SVC
+  from sklearn.model_selection import train_test_split
+
+  np.random.seed(0)
+  X = np.random.normal(size=[200, 2])
+  X[:100, :] += 2
+  X[100:150, :] -= 2
+  y = np.concatenate([np.ones(150), np.ones(50) * 2])
+
+  X = np.vstack([X, np.random.normal(size=[50, 2])])
+  y = np.concatenate([y, np.zeros(50)])
+  y = y.astype(int)
+  X[y == 0, 1] += 2
+
+  plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap('viridis', 3),
+	      alpha=0.7)
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+  svm = SVC()
+  svm.fit(X_train, y_train)
+
+  print('In training data, fraction of observations correctly classified:',
+	round(svm.score(X_train, y_train), 2))
+  print('In test data, fraction of observations correctly classified:',
+	round(svm.score(X_test, y_test), 2))
+#+END_SRC
+
+#+RESULTS:
+: In training data, fraction of observations correctly classified: 0.81
+: In test data, fraction of observations correctly classified: 0.84
+*** Application to Gene Expression Data
+#+BEGIN_SRC python :exports both :results output
+  import numpy as np
+  from statsmodels.datasets import get_rdataset
+
+  khan = get_rdataset('Khan', 'ISLR')
+#+END_SRC
+#+LATEX: \FloatBarrier
+* Unsupervised Learning
+** The Challenge of Unsupervised Learning
+** Principal Component Analysis
+*** What are Principal Components?
+
+We first normalize =USArrests= data so that every variable has mean 0 and
+standard deviation 1. Then we perform PCA on the normalized data set.  Table
+[[tab:unsup_learnTab1]] shows loadings of the first two principal components.
+Figure [[fig:unsup_learnFig1]] plots the first two principal components of these
+data.  The figure represents both the principal component scores and the loading
+vectors in a single /biplot/ display.
+
+#+NAME: us_arrests_pca
+#+BEGIN_SRC python :exports results :results table
+  import sys
+  sys.path.append('code/chap10')
+  sys.path.append('code/general')
+  from arrest_pca import pca_res
+  from myFuncs import dfToList
+
+  pca_res.index.name = ''
+  return dfToList(pca_res.round(7))
+#+END_SRC
+
+#+NAME: tab:unsup_learnTab1
+#+CAPTION: The principal component loading factors, \phi_1 and \phi_2, for the =USArrests= data.  These are also displayed in figure [[fig:unsup_learnFig1]].
+#+RESULTS: us_arrests_pca
+|          |       PC1 |        PC2 |
+|----------+-----------+------------|
+| Murder   | 0.5358995 |  0.4181809 |
+| Assault  | 0.5831836 |  0.1879856 |
+| UrbanPop | 0.2781909 | -0.8728062 |
+| Rape     | 0.5434321 | -0.1673186 |
+
+#+NAME: fig10_1plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_1.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from arrest_pca import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig1
+#+CAPTION: The first two principal components for the =USArrests= data.  The blue state names represent the scores for the first two principal components.  The red arrows indicate the first two principal components loading vectors. This figure is known as a biplot, because it displays both the principal component scores and the principal component loadings.
+#+RESULTS: fig10_1plot
+[[file:figures/fig10_1.png]]
+
+#+LATEX: \FloatBarrier
+*** Another Interpretation of Principal Components
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
