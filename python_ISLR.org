@@ -6914,10 +6914,99 @@ In =sklearn= library, =metrics= module provides functions =roc_curve= and
 *** Application to Gene Expression Data
 #+BEGIN_SRC python :exports both :results output
   import numpy as np
-  from statsmodels.datasets import get_rdataset
+  import pandas as pd
+  from rpy2 import robjects
+  from sklearn.svm import SVC
+  from sklearn.metrics import confusion_matrix
 
-  khan = get_rdataset('Khan', 'ISLR')
+  khan = {}
+  khan['xtrain'] = robjects.r('library(ISLR); Khan$xtrain')
+  khan['xtest'] = robjects.r('Khan$xtest')
+  khan['ytrain'] = robjects.r('Khan$ytrain')
+  khan['ytest'] = robjects.r('Khan$ytest')
+
+  X_train = np.array(khan['xtrain'])
+  X_test = np.array(khan['xtest'])
+  y_train = np.array(khan['ytrain']).astype(int)
+  y_test = np.array(khan['ytest']).astype(int)
+
+  print('Shape of training data:', X_train.shape)
+  print(y_train.shape)
+  print('Shape of test data:', X_test.shape)
+  print(y_test.shape)
+
+  print('Count of tissue sample types in training data:')
+  print(pd.value_counts(y_train).sort_index())
+  print('In test data:')
+  print(pd.value_counts(y_test).sort_index())
+  print('------')
+
+  # Fit linear kernel model
+  svc = SVC(kernel='linear')
+  svc.fit(X_train, y_train)
+
+  y_predict_train = svc.predict(X_train)
+  train_confusion = pd.DataFrame(confusion_matrix(y_train, y_predict_train))
+  y_predict_test = svc.predict(X_test)
+  test_confusion = pd.DataFrame(confusion_matrix(y_test, y_predict_test))
+  for df in [train_confusion, test_confusion]:
+      df.columns = [1, 2, 3, 4]
+      df.index = [1, 2, 3, 4]
+      df.columns.name = 'Predicted'
+      df.index.name = 'True'
+
+  print('Number of support vectors:', svc.n_support_)
+  print('Fraction of correct predictions on training data:',
+	svc.score(X_train, y_train))
+  print('Confusion matrix on training data:')
+  print(train_confusion)
+  print('------')
+
+  print('Fraction of correct predictions on test data:',
+	svc.score(X_test, y_test))
+  print('Confusion matrix on test data:')
+  print(test_confusion)
 #+END_SRC
+
+#+RESULTS:
+#+begin_example
+Shape of training data: (63, 2308)
+(63,)
+Shape of test data: (20, 2308)
+(20,)
+Count of tissue sample types in training data:
+1     8
+2    23
+3    12
+4    20
+dtype: int64
+In test data:
+1    3
+2    6
+3    6
+4    5
+dtype: int64
+------
+Number of support vectors: [ 7 18  9 20]
+Fraction of correct predictions on training data: 1.0
+Confusion matrix on training data:
+Predicted  1   2   3   4
+True                    
+1          8   0   0   0
+2          0  23   0   0
+3          0   0  12   0
+4          0   0   0  20
+------
+Fraction of correct predictions on test data: 0.9
+Confusion matrix on test data:
+Predicted  1  2  3  4
+True                 
+1          3  0  0  0
+2          0  6  0  0
+3          0  2  4  0
+4          0  0  0  5
+#+end_example
+
 #+LATEX: \FloatBarrier
 * Unsupervised Learning
 ** The Challenge of Unsupervised Learning
