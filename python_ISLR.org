@@ -7061,6 +7061,30 @@ vectors in a single /biplot/ display.
 
 #+LATEX: \FloatBarrier
 *** Another Interpretation of Principal Components
+*** More on PCA
+In figure [[fig:unsup_learnFig3]], the left-hand panel is the same as figure
+[[fig:unsup_learnFig1]], where each variable was first scaled to have mean zero and standard
+deviation one, then principal component analysis was performed. The right-hand
+panel displays the first two principal components on the raw data.  Since
+variables were not scaled to have standard deviation one, the first principal
+component places almost all of its weight on =Assault=, while the second
+principal component places almost all of its weight on =UrbanPop=. 
+#+NAME: fig10_3plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_3.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from arrest_pca import fig_raw
+  fig_raw.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig3
+#+CAPTION: Two principal component biplots for =USArrests= data.  Left: Same as figure [[fig:unsup_learnFig1]], with variables scaled to have unit standard deviations.  Right: Principal components using unscaled data.  =Assault= has by far the largest loading on the first principal component because it has the largest variance among the four variables.  In general, it is recommended to scale variables to have standard deviation one.
+#+RESULTS: fig10_3plot
+[[file:figures/fig10_3.png]]
 
 * Footnotes
 
