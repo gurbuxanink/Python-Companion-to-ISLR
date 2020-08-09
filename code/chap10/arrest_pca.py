@@ -1,5 +1,5 @@
 # arrest_pca.py
-# Code to create table 10.1, figures 10.1 and 10.3
+# Code to create table 10.1, figures 10.1, 10.3, and 10.4
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -73,3 +73,21 @@ for axi in fig_raw.axes:
     axi.set(xlabel='First Component', ylabel='Second Component')
     axi.axis('equal')
 fig_raw.tight_layout()
+
+# Scree plot with all four princpal components
+pca_all = PCA()
+pca_all.fit(us_arrests_normalized)
+
+fig_scree = plt.figure(figsize=(8, 4))
+ax1 = fig_scree.add_subplot(1, 2, 1)
+ax1.plot([1, 2, 3, 4], pca_all.explained_variance_ratio_, marker='o')
+ax1.set(ylabel='Proportion of Variance Explained')
+
+ax2 = fig_scree.add_subplot(1, 2, 2)
+ax2.plot([1, 2, 3, 4], pca_all.explained_variance_ratio_.cumsum(), marker='o')
+ax2.set(ylabel='Cumulative Proportion of Variance Explained')
+
+for axi in [ax1, ax2]:
+    axi.set(xlabel='Principal Component')
+
+fig_scree.tight_layout()
