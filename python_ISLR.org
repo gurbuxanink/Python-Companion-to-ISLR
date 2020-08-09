@@ -7107,6 +7107,71 @@ right-hand panel shows the cumulative PVE.
 #+CAPTION: Left: A scree plot depicting the proportion of variance explained by each of the four principal components in the =USArrests= data.  Right: The cumulative proportion of variance explained by the four principal components.
 #+RESULTS: fig10_4plot
 [[file:figures/fig10_4.png]]
+#+LATEX: \FloatBarrier
+** Clustering Methods
+*** K-Means Clustering
+Figure [[fig:unsup_learnFig5]] shows the results obtained from performing /K/-means
+clustering on a simulated example consisting of 60 observations in two
+dimensions.  Three different values of $K$ are used.
+#+NAME: fig10_5plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_5.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from km_cluster import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig5
+#+CAPTION: A simulated data set with 60 observations in two-dimensional space.  Panels show the results of applying /K/-means clustering with different values of $K$, the number of clusters. The color of each observation indicates the cluster to which it was assigned using the /K/-means clustering algorithm.  Since there is no ordering of clusters, the cluster coloring is arbitrary.  The cluster labels are the outputs of the clustering procedure.
+#+RESULTS: fig10_5plot
+[[file:figures/fig10_5.png]]
+
+#+LATEX: \FloatBarrier
+Figure [[fig:unsup_learnFig6]] shows the progression of the /K/-Means Clustering
+Algorithm on the toy example from figure [[fig:unsup_learnFig5]]. 
+
+#+NAME: fig10_6plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_6.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from km_cluster import fig_kmeans_steps
+  fig_kmeans_steps.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig6
+#+CAPTION: The progress of /K/-means algorithm on the example of figure [[fig:unsup_learnFig5]] with $K = 3$.  Top left: The observations are shown.  Top center: In Step 1 of the algorithm, each observation is randomly assigned to a cluster.  Top right: In Step 2(a), the cluster centroids are computed.  These are shown as $\times$.  Since the clusters were chosen at random, initially centroids are almost overlapping.  Bottom left: In Step 2(b), each observation is assigned to the nearest centroid.  Bottom center: Step 2(a) is once again performed, leading to new cluster centroids.  Bottom right: The results obtained after five iterations.
+#+RESULTS: fig10_6plot
+[[file:figures/fig10_6.png]]
+
+#+LATEX: \FloatBarrier
+Figure [[fig:unsup_learnFig7]] shows the local optima obtained by running /K/-means
+clustering six times using six different initial cluster assignments, using toy data
+from figure [[fig:unsup_learnFig5]]. 
+
+#+NAME: fig10_7plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_7.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from km_cluster import fig_kmeans_seeds
+  fig_kmeans_seeds.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig7
+#+CAPTION: /K/-means clustering performed six times on the data from figure [[fig:unsup_learnFig5]] with $K = 3$, each time with a different random assignment of the observations in Step 1 of the /K/-means algorithm.  Above each plot is the value of the objective (sum of squares of distances from centroids).  Three different local optima were obtained, one of which resulted in a smaller value of the objective and provides better separation between the clusters.  Those labeled in red all achieved the same best solution.
+#+RESULTS: fig10_7plot
+[[file:figures/fig10_7.png]]
 
 * Footnotes
 
