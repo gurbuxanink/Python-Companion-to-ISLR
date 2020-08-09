@@ -107,6 +107,7 @@ ax6.set(title='Final Results')
 fig_kmeans_steps.tight_layout()
 
 # Plot K-means clustering results with different starting points
+# Figure 10.7
 fig_kmeans_seeds, ax = plt.subplots(2, 3)
 my_seeds = [0, 21, 33, 45, 56, 67]
 cluster_res_list = [find_clusters(X, 3, in_seed) for in_seed in my_seeds]
