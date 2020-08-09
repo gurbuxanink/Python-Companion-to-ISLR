@@ -7086,6 +7086,28 @@ principal component places almost all of its weight on =UrbanPop=.
 #+RESULTS: fig10_3plot
 [[file:figures/fig10_3.png]]
 
+#+LATEX: \FloatBarrier
+In Figure [[fig:unsup_learnFig4]], the left-hand panel shows the proportion of
+variance explained (PVE) by each principal component of =USArrests= data.  The
+right-hand panel shows the cumulative PVE.
+
+#+NAME: fig10_4plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_4.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from arrest_pca import fig_scree
+  fig_scree.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig4
+#+CAPTION: Left: A scree plot depicting the proportion of variance explained by each of the four principal components in the =USArrests= data.  Right: The cumulative proportion of variance explained by the four principal components.
+#+RESULTS: fig10_4plot
+[[file:figures/fig10_4.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
