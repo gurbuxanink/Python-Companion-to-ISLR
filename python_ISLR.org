@@ -7172,6 +7172,28 @@ from figure [[fig:unsup_learnFig5]].
 #+CAPTION: /K/-means clustering performed six times on the data from figure [[fig:unsup_learnFig5]] with $K = 3$, each time with a different random assignment of the observations in Step 1 of the /K/-means algorithm.  Above each plot is the value of the objective (sum of squares of distances from centroids).  Three different local optima were obtained, one of which resulted in a smaller value of the objective and provides better separation between the clusters.  Those labeled in red all achieved the same best solution.
 #+RESULTS: fig10_7plot
 [[file:figures/fig10_7.png]]
+#+LATEX: \FloatBarrier
+*** Hierarchical Clustering
+We begin with the simulated data set shown in figure [[fig:unsup_learnFig8]],
+consisting of 45 observations in two-dimensional space.  The data were generated
+from a three-class model; the true class labels for each observation are shown
+in distinct colors. 
+#+NAME: fig10_8plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_8.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from dendrogram import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig8
+#+CAPTION: Forty five observations generated in two-dimensional space.  In reality there are three distinct classes, shown in separate colors.  However, we will treat these class labels as unknown.  To discover the classes, we will seek to cluster the observations.
+#+RESULTS: fig10_8plot
+[[file:figures/fig10_8.png]]
 
 * Footnotes
 
