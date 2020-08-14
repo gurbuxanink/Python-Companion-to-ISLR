@@ -7177,7 +7177,10 @@ from figure [[fig:unsup_learnFig5]].
 We begin with the simulated data set shown in figure [[fig:unsup_learnFig8]],
 consisting of 45 observations in two-dimensional space.  The data were generated
 from a three-class model; the true class labels for each observation are shown
-in distinct colors. 
+in distinct colors. However, suppose the data were observed without class
+labels, and that we wanted to perform hierarchical clustering of the data.
+Hierarchical clustering yields the results shown in the left-hand panel of
+figure [[fig:unsup_learnFig9]].  
 #+NAME: fig10_8plot
 #+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_8.png"
   import matplotlib
@@ -7194,6 +7197,24 @@ in distinct colors.
 #+CAPTION: Forty five observations generated in two-dimensional space.  In reality there are three distinct classes, shown in separate colors.  However, we will treat these class labels as unknown.  To discover the classes, we will seek to cluster the observations.
 #+RESULTS: fig10_8plot
 [[file:figures/fig10_8.png]]
+
+
+#+NAME: fig10_9plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_9.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from dendrogram import fig_dendro
+  fig_dendro.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig9
+#+CAPTION: Left: Dendrogram obtained from hierarchically clustering the data from figure [[fig:unsup_learnFig8]] with complete linkage and Euclidean distance.  Center: Dendrogram from left-hand panel, cut at a height of 15 (indicated by dashed line).  This cut results in two distinct clusters, shown in different colors.  Right: Dendrogram from left-hand panel, now cut at a height of 10.  This cut results in three distinct clusters, shown in different colors.  The colors were not used in clustering, but are simply used for display purposes. 
+#+RESULTS: fig10_9plot
+[[file:figures/fig10_9.png]]
 
 * Footnotes
 
