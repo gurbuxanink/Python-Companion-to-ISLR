@@ -7246,6 +7246,26 @@ observations 2 and 4.
 #+RESULTS: fig10_10plot
 [[file:figures/fig10_10.png]]
 
+Figure [[fig:unsup_learnFig11]] displays the first few steps in hierarchical
+clustering algorithm, for the data from figure [[fig:unsup_learnFig9]]
+
+#+NAME: fig10_11plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_11plot.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from cluster_steps import fig_steps
+  fig_steps.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig11
+#+CAPTION: An illustration of the first few steps of the hierarchical clustering algorithm, using data from figure [[fig:unsup_learnFig10]], with complete linkage and Euclidean distance.  Top Left: Initially there are nine clusters, {1}, {2}, ..., {9}.  Top Right: The two clusters that are closest together, {2} and {4}, are fused into a single cluster.  Bottom Left: The next two clusters that are closest together, {1} and {7}, are fused into a single cluster. Bottom Right: The two clusters that are closest together using complete linkage, {8} and {2, 4}, are fused into a single cluster.
+#+RESULTS: fig10_11plot
+[[file:figures/fig10_11plot.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
