@@ -4,7 +4,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram, linkage
-import pdb
 
 np.random.seed(4)
 X = np.random.normal(size=(9, 2))
