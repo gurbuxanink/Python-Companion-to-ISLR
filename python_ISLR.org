@@ -7288,6 +7288,27 @@ tend to yield more balanced clusters.
 #+RESULTS: fig10_12plot
 [[file:figures/fig10_12plot.png]]
 
+#+LATEX: \FloatBarrier
+Figure [[fig:unsup_learnFig13]] illustrates the difference between Euclidean and
+correlation-based distance. 
+
+#+NAME: fig10_13plot
+#+BEGIN_SRC python :exports results :results file :var fname="figures/fig10_13.png"
+  import matplotlib
+  matplotlib.use('Agg')
+  import sys
+  sys.path.append('code/chap10')
+
+  from corr_dist import fig
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig13
+#+CAPTION: Three observations with measurements on 20 variables.  Observations 0 and 1 have similar values for each variable.  Therefore, there is a small distance between them.  But since they are weakly correlated, they have a large correlation-based distance.  On the other hand, observations 0 and 2 have quite different values for each variable, and so there is a large Euclidean distance between them.  But since they are highly correlated, there is a small correlation-based distance between them.
+#+RESULTS: fig10_13plot
+[[file:figures/fig10_13.png]]
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
