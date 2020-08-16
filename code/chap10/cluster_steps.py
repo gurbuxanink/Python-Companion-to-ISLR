@@ -28,32 +28,40 @@ ax2.set(xlim=[x1_min - 0.2, x1_max + 0.2], ylim=[x2_min - 0.2, x2_max + 0.2],
 fig.tight_layout()
 
 
+def include_ind(z_ind, Z):
+    '''Find all indexes included in z_ind'''
+    if int(Z[z_ind, 3]) == 2:
+        return [int(id) for id in Z[z_ind, :2]]
+    else:
+        x_ind = Z[z_ind, :2]
+        use_ind = []
+        for obs in x_ind:
+            if obs < Z[-1, -1]:
+                use_ind.append(int(obs))
+            else:
+                new_ind = int(obs) - int(Z[-1, -1])
+                use_ind.extend(include_ind(new_ind, Z))
+        return use_ind
+
+
 # Figure 10.11
-def plot_Z(z_ind, Z, X, ax, col='gray'):
-    '''Plot z_ind data from X'''
-    x_ind = Z[z_ind, :2].astype(int)
-    for obs in x_ind:
-        if obs >= X.shape[0]:
-            obs -= X.shape[0]
-            plot_Z(obs, Z, X, ax, col=col)
-        else:
-            ax.text(X[obs, 0], X[obs, 1], str(y[obs]), ha='center',
-                    va='center', bbox=dict(facecolor=col, alpha=0.2),
-                    zorder=1)
-
-
 fig_steps, ax = plt.subplots(2, 2)
 
-for axi in ax.flatten():
-    for i, s in enumerate(y):
-        axi.text(X[i, 0], X[i, 1], str(s), ha='center', va='center')
-        axi.set(xlim=[x1_min - 0.2, x1_max + 0.2],
-                ylim=[x2_min - 0.2, x2_max + 0.2],
-                xlabel=r'$X_1$', ylabel=r'$X_2$')
-
-my_colors = ['red', 'green', 'blue']
+my_colors = ['red', 'green', 'gray']
 for i, axi in enumerate(ax.flatten()):
-    for j in range(i):
-        plot_Z(j, Z, X, axi, col=my_colors[j])
+    used_ind = []
+    for j in np.arange(i)[::-1]:
+        plot_ind = include_ind(j, Z)
+        for ind in plot_ind:
+            if ind not in used_ind:
+                axi.text(X[ind, 0], X[ind, 1], str(y[ind]), ha='center',
+                         va='center', bbox=dict(facecolor=my_colors[j], alpha=0.2))
+        used_ind.extend(plot_ind)
+    remain_ind = list(set(range(len(y))) - set(used_ind))
+    for ind in remain_ind:
+        axi.text(X[ind, 0], X[ind, 1], str(y[ind]), ha='center', va='center')
+    axi.set(xlim=[x1_min - 0.2, x1_max + 0.2],
+            ylim=[x2_min - 0.2, x2_max + 0.2],
+            xlabel=r'$X_1$', ylabel=r'$X_2$')
 
 fig_steps.tight_layout()
