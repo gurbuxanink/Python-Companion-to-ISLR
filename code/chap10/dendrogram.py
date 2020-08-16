@@ -1,5 +1,5 @@
 # dendrogram.py
-# Plot figures 10.8 and 10.9
+# Plot figures 10.8, 10.9, and 10.12
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,3 +30,14 @@ for i, thresh in enumerate([21, 15, 10]):
     ax.set(ylim=[0, 20])
 
 fig_dendro.tight_layout()
+
+
+# Figure 10.12
+fig_linkage = plt.figure(figsize=[8, 3])
+for i, method in enumerate(['average', 'complete', 'single']):
+    axi = fig_linkage.add_subplot(1, 3, i + 1)
+    Z = linkage(X, method=method)
+    dn = dendrogram(Z, ax=axi)
+    axi.set_title(method.capitalize() + ' Linkage')
+
+fig_linkage.tight_layout()
