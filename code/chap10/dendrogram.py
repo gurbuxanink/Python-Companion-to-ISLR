@@ -37,7 +37,7 @@ fig_linkage = plt.figure(figsize=[8, 3])
 for i, method in enumerate(['average', 'complete', 'single']):
     axi = fig_linkage.add_subplot(1, 3, i + 1)
     Z = linkage(X, method=method)
-    dn = dendrogram(Z, ax=axi)
+    dn = dendrogram(Z, no_labels=True, ax=axi)
     axi.set_title(method.capitalize() + ' Linkage')
 
 fig_linkage.tight_layout()
