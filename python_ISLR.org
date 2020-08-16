@@ -7376,6 +7376,107 @@ Proportion of variance explained:
 [0.6201 0.2474 0.0891 0.0434]
 #+end_example
 ** Lab 2: Clustering
+*** K-Means Clustering
+
+#+BEGIN_SRC python :exports both :results output
+  from rpy2 import robjects
+  import numpy as np
+  from sklearn.cluster import KMeans
+
+  X = robjects.r('set.seed(2); x <- rnorm(50 * 2)')
+  X = np.array(X).reshape((50, 2), order='F')
+
+  X[:25, 0] += 3
+  X[:25, 1] -= 4
+
+  km = KMeans(n_clusters=2, random_state=0)
+  km.fit(X)
+
+  print('Predicted cluster assignments:')
+  print(km.predict(X))
+  print('------')
+  # To plot clusters, see code/chap10/km_cluster.py
+
+  # K-means clusters with 3 clusters
+  km3 = KMeans(n_clusters=3, random_state=2)
+  km3.fit(X)
+
+  print('Cluster centers:')
+  print(km3.cluster_centers_)
+
+  y_predict = km3.predict(X)
+  within_clust_dist_sq = [((X[y_predict == i] - km3.cluster_centers_[i]) ** 2).sum()
+			  for i in range(3)]
+  total_dist_sq = ((X - X.mean(axis = 0)) ** 2).sum()
+  print('between_SS / total_SS =',
+	round(1 - sum(within_clust_dist_sq) / total_dist_sq, 3) * 100, '%')
+
+  # To select the number of times k-means algorithm will be run, assign a value to n_init
+#+END_SRC
+
+#+RESULTS:
+: Predicted cluster assignments:
+: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+:  0 0 0 0 0 0 0 0 0 0 0 0 0]
+: ------
+: Cluster centers:
+: [[ 3.77895672 -4.56200798]
+:  [-0.38203973 -0.08740753]
+:  [ 2.30015453 -2.69622023]]
+: between_SS / total_SS = 79.3 %
+*** Hierarchical Clustering
+#+BEGIN_SRC python :exports both :results output
+  from rpy2 import robjects
+  import numpy as np
+  from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+  import matplotlib.pyplot as plt
+
+  X = robjects.r('set.seed(2); x <- rnorm(50 * 2)')
+  X = np.array(X).reshape((50, 2), order='F')
+
+  X[:25, 0] += 3
+  X[:25, 1] -= 4
+
+  hc_complete = linkage(X, method='complete')
+  hc_average = linkage(X, method='average')
+  hc_single = linkage(X, method='single')
+  link_names = ['Complete', 'Average', 'Single']
+
+  fig = plt.figure(figsize=(8, 3))
+  for i, hc in enumerate([hc_complete, hc_average, hc_single]):
+      axi = fig.add_subplot(1, 3, i + 1)
+      dn = dendrogram(hc, ax=axi)
+      axi.set(title=link_names[i] + ' Linkage')
+
+  print('Cluster labels using complete linkage:')
+  print(fcluster(hc_complete, t=2, criterion='maxclust'))
+  print('Cluster labels using average linkage:')
+  print(fcluster(hc_average, t=2, criterion='maxclust'))
+  print('Cluster labels using single linkage:')
+  print(fcluster(hc_single, t=2, criterion='maxclust'))
+  print('------')
+
+  print('When four clusters are selected in single linkage:')
+  print(fcluster(hc_single, t=4, criterion='maxclust'))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Cluster labels using complete linkage:
+[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 2 2 2 2 2 2 2 2 2 2 2]
+Cluster labels using average linkage:
+[2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 2 1 1 1 1
+ 1 1 1 1 1 1 2 1 2 1 1 1 1]
+Cluster labels using single linkage:
+[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1]
+------
+When four clusters are selected in single linkage:
+[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 2 2 3 2 2 2 2 2 2 2 2]
+#+end_example
+** Lab 3: NCI60 Data Example
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
