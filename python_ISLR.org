@@ -7309,6 +7309,73 @@ correlation-based distance.
 #+RESULTS: fig10_13plot
 [[file:figures/fig10_13.png]]
 
+#+LATEX: \FloatBarrier
+** Lab 1: Principal Components Analysis
+
+#+BEGIN_SRC python :exports both :results output
+  from statsmodels.datasets import get_rdataset
+  import pandas as pd
+  from sklearn.decomposition import PCA
+
+  arrests = get_rdataset('USArrests').data
+
+  print('Variables in USArrests data:')
+  print(arrests.columns)
+  print('Means of variables:')
+  print(arrests.mean().round(2))
+  print('Variances of variables:')
+  print(arrests.var().round(2))
+  print('------')
+
+  # Normalize data by subtracting mean and dividing by standard deviation
+  arrests_normalized = (arrests - arrests.mean()) / arrests.std()
+
+  # Calculate principal components
+  pca = PCA()
+  pca.fit(arrests_normalized)
+
+  arrests_pc = pd.DataFrame(pca.components_.T, index=arrests_normalized.columns)
+  print('Principal components of USArrests:')
+  print(arrests_pc)
+  print('------')
+
+  # To plot Figure 10.1, see program code/chap10/arrest_pca.py
+  print('Variance explained by principal components:')
+  print(pca.explained_variance_.round(3))
+  print('Proportion of variance explained:')
+  print(pca.explained_variance_ratio_.round(4))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Variables in USArrests data:
+Index(['Murder', 'Assault', 'UrbanPop', 'Rape'], dtype='object')
+Means of variables:
+Murder        7.79
+Assault     170.76
+UrbanPop     65.54
+Rape         21.23
+dtype: float64
+Variances of variables:
+Murder        18.97
+Assault     6945.17
+UrbanPop     209.52
+Rape          87.73
+dtype: float64
+------
+Principal components of USArrests:
+                 0         1         2         3
+Murder    0.535899  0.418181 -0.341233  0.649228
+Assault   0.583184  0.187986 -0.268148 -0.743407
+UrbanPop  0.278191 -0.872806 -0.378016  0.133878
+Rape      0.543432 -0.167319  0.817778  0.089024
+------
+Variance explained by principal components:
+[2.48  0.99  0.357 0.173]
+Proportion of variance explained:
+[0.6201 0.2474 0.0891 0.0434]
+#+end_example
+** Lab 2: Clustering
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
