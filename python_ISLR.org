@@ -7458,6 +7458,16 @@ Proportion of variance explained:
 
   print('When four clusters are selected in single linkage:')
   print(fcluster(hc_single, t=4, criterion='maxclust'))
+
+  # Scale data before applying hierarchical clustering
+  X_scale = (X - X.mean(axis=0)) / X.std(axis=0)
+  hc = linkage(X_scale, method='complete')
+  dn = dendrogram(hc)
+
+  # Use correlation-based distance
+  X_new = np.random.normal(size=(30, 3))
+  hc_corr = linkage(X_new, method='complete', metric='correlation')
+  dn = dendrogram(hc_corr)
 #+END_SRC
 
 #+RESULTS:
@@ -7477,6 +7487,148 @@ When four clusters are selected in single linkage:
  2 2 2 2 3 2 2 2 2 2 2 2 2]
 #+end_example
 ** Lab 3: NCI60 Data Example
+#+NAME: NCI60
+#+BEGIN_SRC python :exports none :results none
+  import numpy as np
+  import pandas as pd
+  import matplotlib.pyplot as plt
+  from statsmodels.datasets import get_rdataset
+
+  nci = get_rdataset('NCI60', package='ISLR')
+  nci_data = nci.data
+#+END_SRC
+
+#+BEGIN_SRC python :noweb yes :exports both :results output
+  <<NCI60>>
+
+  print('Data dimensions:', nci_data.shape)
+  print('Counts of cancer types:')
+  print(nci_data['labs'].value_counts())
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Data dimensions: (64, 6831)
+Counts of cancer types:
+RENAL          9
+NSCLC          9
+MELANOMA       8
+COLON          7
+BREAST         7
+LEUKEMIA       6
+OVARIAN        6
+CNS            5
+PROSTATE       2
+K562B-repro    1
+K562A-repro    1
+MCF7A-repro    1
+UNKNOWN        1
+MCF7D-repro    1
+Name: labs, dtype: int64
+#+end_example
+*** PCA on NCI60 Data
+#+NAME: fig10_15plot
+#+BEGIN_SRC python :noweb yes :exports both :results file :var fname="figures/fig10_15.png"
+  <<NCI60>>
+
+  from sklearn.decomposition import PCA
+
+  X = nci_data.iloc[:, :-1]       # do not include labs
+
+  pca = PCA(n_components=3)
+  pca.fit(X)
+
+  labs = nci_data['labs']
+  lab_names = nci_data['labs'].unique()
+  lab_names.sort()
+  lab_colors = labs.apply(lambda x: np.where(lab_names == x)[0][0])
+
+  Z = pca.transform(X)
+
+  fig = plt.figure(figsize=(8, 4))
+  ax1 = fig.add_subplot(1, 2, 1)
+  ax1.scatter(Z[:, 0], Z[:, 1], c=lab_colors,
+	      cmap=plt.cm.get_cmap('rainbow', len(lab_names)), alpha=0.7)
+  ax1.set(xlabel=r'$Z_1$', ylabel=r'$Z_2$')
+
+  ax2 = fig.add_subplot(1, 2, 2)
+  ax2.scatter(Z[:, 0], Z[:, 2], c=lab_colors,
+	      cmap=plt.cm.get_cmap('rainbow', len(lab_names)), alpha=0.7)
+  ax2.set(xlabel=r'$Z_1$', ylabel=r'$Z_3$')
+
+  fig.tight_layout()
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig15
+#+CAPTION: Projections of the =NCI60= cancer cell lines onto the first three principal components.  On the whole, in this low-dimensional space, observations belonging to a single canceer type tend to be near each other.  It would not have been possible to visualize the data without using a dimension reduction method such as PCA.  Based on the full data set, there are ${6,830 \choose 2}$ possible scatterplots, none of which would have been particularly informative. 
+#+RESULTS: fig10_15plot
+[[file:figures/fig10_15.png]]
+
+#+BEGIN_SRC python :noweb yes :exports both :results output
+  <<NCI60>>
+
+  from sklearn.decomposition import PCA
+  import pandas as pd
+
+  X = nci_data.iloc[:, :-1]       # do not include labs
+  X_scaled = (X - X.mean()) / X.std()
+
+  pca = PCA(n_components=5)
+  pca.fit(X_scaled)
+
+  pca_res = np.vstack([np.sqrt(pca.explained_variance_),
+		       pca.explained_variance_ratio_,
+		       np.cumsum(pca.explained_variance_ratio_)])
+
+  pca_res_df = pd.DataFrame(
+      pca_res, columns=['PC1', 'PC2', 'PC3', 'PC4', 'PC5'],
+      index=['Standard deviation', 'Proportion of variance',
+	     'Cumulative proportion'])
+
+  print('Proportion of variance explained (PVE) of first five principal components:')
+  print(pca_res_df.round(4))
+#+END_SRC
+
+#+RESULTS:
+: Proportion of variance explained (PVE) of first five principal components:
+:                             PC1      PC2      PC3      PC4      PC5
+: Standard deviation      27.8535  21.4814  19.8205  17.0326  15.9718
+: Proportion of variance   0.1136   0.0676   0.0575   0.0425   0.0373
+: Cumulative proportion    0.1136   0.1812   0.2387   0.2811   0.3185
+
+#+NAME: fig10_16plot
+#+BEGIN_SRC python :noweb yes :exports both :results file :var fname="figures/fig10_16.png"
+  <<NCI60>>
+
+  from sklearn.decomposition import PCA
+
+  X = nci_data.iloc[:, :-1]       # do not include labs
+  X_normalized = (X - X.mean()) / X.std()
+
+  pca = PCA()
+  pca.fit(X_normalized)
+
+  fig = plt.figure(figsize=(8, 4))
+  ax1 = fig.add_subplot(1, 2, 1)
+  ax1.plot(pca.explained_variance_ratio_)
+  ax1.set(xlabel='Principal Component', ylabel='PVE')
+
+  ax2 = fig.add_subplot(1, 2, 2)
+  ax2.plot(np.cumsum(pca.explained_variance_ratio_))
+  ax2.set(xlabel='Principal Component', ylabel='Cumulative PVE')
+
+  fig.tight_layout()
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig16
+#+CAPTION: The PVE of principal components of the =NCI60= cancer cell line microarray data set.  Left: PVE of each principal component is shown.  Right: Cumulative PVE of the principal components is shown.  Together, all principal components explain all of the variance.
+#+RESULTS: fig10_16plot
+[[file:figures/fig10_16.png]]
+*** Clustering the Observations of the NCI60 Data
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
