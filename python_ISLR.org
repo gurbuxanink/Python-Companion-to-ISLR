@@ -7629,6 +7629,131 @@ Name: labs, dtype: int64
 #+RESULTS: fig10_16plot
 [[file:figures/fig10_16.png]]
 *** Clustering the Observations of the NCI60 Data
+#+NAME: fig10_17plot
+#+BEGIN_SRC python :noweb yes :exports both :results file :var fname="figures/fig10_17.png"
+  <<NCI60>>
+
+  from scipy.cluster.hierarchy import linkage, dendrogram
+
+  X = nci_data.iloc[:, :-1]       # do not include labs
+  X_scaled = (X - X.mean()) / X.std()
+
+  linkages = ['complete', 'average', 'single']
+
+  fig = plt.figure(figsize=(6, 8))
+  for i, link in enumerate(linkages):
+      axi = fig.add_subplot(3, 1, i + 1)
+      Z = linkage(X_scaled, method=link)
+      dn = dendrogram(Z, labels=nci_data['labs'], leaf_rotation=90, ax=axi)
+      axi.set(title=link.capitalize() + ' Linkage')
+
+  fig.tight_layout()
+  fig.savefig(fname)
+  return fname
+#+END_SRC
+
+#+NAME: fig:unsup_learnFig17
+#+CAPTION: The =NCI60= cancer cell line microarray data, clustered with average, complete, and single linkage, all using Euclidean distance as the dissimilarity measure.  Complete and average linkages tend to yield evenly sized clusters.  Single linkage tends to yield extended clusters to which single leaves are fused one by one.
+#+RESULTS: fig10_17plot
+[[file:figures/fig10_17.png]]
+
+#+BEGIN_SRC python :noweb yes :exports both :results output
+  <<NCI60>>
+
+  from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+  from sklearn.cluster import KMeans
+  from sklearn.decomposition import PCA
+
+  X = nci_data.iloc[:, :-1]
+  X_scaled = (X - X.mean()) / X.std()
+
+  Z = linkage(X_scaled, method='complete')
+  Z_labels = fcluster(Z, t=4, criterion='maxclust')
+
+  res_tab = pd.crosstab(nci_data['labs'], Z_labels)
+  res_tab.columns.name = 'predict_label'
+  print('Cross table when dendrogram is used to predict four labels:')
+  print(res_tab)
+  print('------')
+
+  # Plot the cut on the dendrogram that produces these four clusters
+  fig, ax = plt.subplots()
+  dn = dendrogram(Z, labels=nci_data['labs'], ax=ax)
+  ax.axhline(y=139, color='red', linestyle='--', alpha=0.7)
+  fig.tight_layout()
+
+  # Fit data to K-means clustering, compare results with hierarchical clustering
+  kmm = KMeans(n_clusters=4, random_state=0)
+  kmm.fit(X_scaled)
+
+  kmm_vs_hier = pd.crosstab(kmm.predict(X_scaled), Z_labels)
+  kmm_vs_hier.index.name = 'k-means clusters'
+  kmm_vs_hier.columns.name = 'hierarchical clusters'
+  print('Cross table of k-means clusters and hierarchical clusters:')
+  print(kmm_vs_hier)
+  print('------')
+
+  # Hierarchical clustering on first five principal components
+  pca = PCA(n_components=5)
+
+  Z_pca = linkage(pca.fit_transform(X_scaled), method='complete')
+  dn_pca = dendrogram(Z_pca, labels=nci_data['labs'])
+  plt.tight_layout()
+
+  res_pca_hier_tab = pd.crosstab(nci_data['labs'],
+				 fcluster(Z_pca, t=4, criterion='maxclust'))
+  res_pca_hier_tab.columns.name = 'predict_label'
+  print('Cross table when hierarchical clustering is performed on first five principal components:')
+  print(res_pca_hier_tab)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Cross table when dendrogram is used to predict four labels:
+predict_label  1  2  3  4
+labs                     
+BREAST         3  2  2  0
+CNS            2  3  0  0
+COLON          0  2  5  0
+K562A-repro    0  0  0  1
+K562B-repro    0  0  0  1
+LEUKEMIA       0  0  0  6
+MCF7A-repro    0  0  1  0
+MCF7D-repro    0  0  1  0
+MELANOMA       0  8  0  0
+NSCLC          1  8  0  0
+OVARIAN        0  6  0  0
+PROSTATE       0  2  0  0
+RENAL          1  8  0  0
+UNKNOWN        0  1  0  0
+------
+Cross table of k-means clusters and hierarchical clusters:
+hierarchical clusters  1   2  3  4
+k-means clusters                  
+0                      0   2  9  0
+1                      0   0  0  8
+2                      0   9  0  0
+3                      7  29  0  0
+------
+Cross table when hierarchical clustering is performed on first five principal components:
+predict_label  1  2  3  4
+labs                     
+BREAST         0  5  2  0
+CNS            2  3  0  0
+COLON          7  0  0  0
+K562A-repro    0  0  0  1
+K562B-repro    0  0  0  1
+LEUKEMIA       2  0  0  4
+MCF7A-repro    0  0  1  0
+MCF7D-repro    0  0  1  0
+MELANOMA       1  7  0  0
+NSCLC          8  1  0  0
+OVARIAN        5  1  0  0
+PROSTATE       2  0  0  0
+RENAL          7  2  0  0
+UNKNOWN        0  1  0  0
+#+end_example
+
 * Footnotes
 
 [fn:1] The middle panel is from a different data set.
