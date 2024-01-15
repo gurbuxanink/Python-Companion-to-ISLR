@@ -733,6 +733,30 @@ max     46.600000    8.000000  ...   82.000000    3.000000
 [8 rows x 7 columns]
 #+end_example
 
+*** Accessing =R= Objects and Functions
+With package =rpy2=, it is possible to access =R= objects and functions in a
+python program.
+
+#+begin_src python :exports both :results output
+  import rpy2
+  from rpy2 import robjects
+  from rpy2.robjects.packages import importr
+  import pandas as pd
+
+  ISLR = importr('ISLR')
+  rstats = importr('stats')
+  reg = rstats.lm('mpg ~ horsepower')
+  # reg = rstats.lm('mpg ~ horsepower, data = Auto')
+  # ISLR = rpy2.robjects.packages.importr('ISLR')
+  # rstats = rpy2.robjects.packages.importr('stats')
+  # reg = robjects.r('mpg ~ horsepower + I(horsepower ^ 2), data = Auto')
+  # print([x for x in reg.names()])
+  # reg = robjects.r('lm(Hwt ~ Bwt, data = Cats)')
+  print(robjects.r('pi'))
+  print(robjects.r('dim(iris)'))
+#+end_src
+
+#+RESULTS:
 
 #+LATEX: \FloatBarrier
 
